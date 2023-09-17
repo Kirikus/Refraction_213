@@ -14,7 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/qcustomplot) # here adding qcustomplot subfolder
 
-find_package(Boost REQUIRED COMPONENTS locale unit_test_framework)
+find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 set(Boost_COMPILER=mgw8)
 
 add_subdirectory(lib)
