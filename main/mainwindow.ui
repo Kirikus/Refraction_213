@@ -6,17 +6,273 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1485</width>
+    <height>770</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_6">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="2">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QPushButton" name="reverseTaskButton">
+          <property name="text">
+           <string>Обратная задача</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="directTaskButton">
+          <property name="text">
+           <string>Прямая задача</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QComboBox" name="atmosphereModelBox">
+            <item>
+             <property name="text">
+              <string>Модель атмосферы</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="refractionModelBox">
+            <item>
+             <property name="text">
+              <string>Модель преломления</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Численное интегрирование</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Геометрическая модель</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>4/3</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>среднее  k (1 метод)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>среднее  k (2 метод)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>среднее p</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="2">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="inaccuracyOfTargetDistance">
+            <property name="text">
+             <string>Ошибка расстояния до цели:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="inaccuracyOfDeclinationAngle">
+            <property name="text">
+             <string>Ошибка угла склонения:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="inaccuracyOfTargetDistanceEdit"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="inaccuracyOfDeclinationAngleEdit"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="1" column="0">
+           <widget class="QLabel" name="recalculatedDeclinationAngle">
+            <property name="text">
+             <string>Восстановленный угол склонения:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="recalculatedDistanceToTargetEdit"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="recalculatedDeclinationAngleEdit"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="recalculatedDistanceToTarget">
+            <property name="text">
+             <string> Восстановленная дальность до цели:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="distanceToSurfaceEdit"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="slidingAngleEdit"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="slidingAngle">
+            <property name="text">
+             <string> Угол скольжения у цели:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="declinationAngleEdit">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="distanceToSurface">
+            <property name="text">
+             <string>Расстояние по поверхности:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="declinationAngle">
+            <property name="text">
+             <string>Угол склонения:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCustomPlot" name="plot" native="true"/>
+      </item>
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="0">
+         <widget class="QLineEdit" name="targetCoordinatesEdit">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="stationCoordinatesEdit">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLineEdit" name="distanceToTargetEdit">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1485</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menufile">
+    <property name="title">
+     <string>&amp;file</string>
+    </property>
+   </widget>
+   <addaction name="menufile"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
