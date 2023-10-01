@@ -19,11 +19,11 @@ BOOST_AUTO_TEST_CASE(ground_level_psi_d) { BOOST_TEST(R_via_psi_d(0, 0) == 0); }
 BOOST_AUTO_TEST_CASE(ground_level_psi_g) { BOOST_TEST(R_via_psi_g(0, 0) == 0); }
 
 BOOST_AUTO_TEST_CASE(ha_2000m) {
-  BOOST_TEST(R_via_psi_d(2000, pi/2) == 2000, tt::tolerance(1e-6));
+  BOOST_TEST(R_via_psi_d(2000, M_PI/2) == 2000, tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(ha_8000m) {
-  BOOST_TEST(R_via_psi_g(2000, pi/2) == 2000, tt::tolerance(1e-6));
+  BOOST_TEST(R_via_psi_g(2000, M_PI/2) == 2000, tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(psi_g_0) {
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(psi_g_0) {
 }
 
 BOOST_AUTO_TEST_CASE(d_simple) {
-  BOOST_TEST(d(pi/3, pi/6) == Re * pi/6, tt::tolerance(1e-6));
+  BOOST_TEST(d(M_PI/3, M_PI/6) == Re * M_PI/6, tt::tolerance(1e-6));
 }
 
 #ifdef TEST_PLOTS
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_d) {
   const double ha_min = -10000, ha_max = 3 * 1000000;
   // bins for angles
   const int M = 6;
-  const double psi_min = 0, psi_max = pi / 2;
+  const double psi_min = 0, psi_max = M_PI / 2;
   QVector<double> x(N), y(N);
 
   // add subgrid
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_g) {
   const double ha_min = -10000, ha_max = 3 * 1000000;
   // bins for angles
   const int M = 6;
-  const double psi_min = 0, psi_max = pi / 2;
+  const double psi_min = 0, psi_max = M_PI / 2;
   QVector<double> x(N), y(N);
 
   // add subgrid

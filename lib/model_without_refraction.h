@@ -1,11 +1,11 @@
 #ifndef MODEL_WITHOUT_REFRACTION_H
 #define MODEL_WITHOUT_REFRACTION_H
 
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 // radius of the Earth in meters
 const double Re = 6378000;
-const double pi = 3.14159265359;
 
 // Formula for slant range from aircraft to surface target via declination angle and height
 // SRle (2.10) from citation
