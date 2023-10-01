@@ -30,10 +30,14 @@ BOOST_AUTO_TEST_CASE(psi_g_0) {
   BOOST_TEST(R_via_psi_g(2000, 0) == std::sqrt(pow(2000+Re, 2) - Re*Re), tt::tolerance(1e-6));
 }
 
+BOOST_AUTO_TEST_CASE(d_simple) {
+  BOOST_TEST(d(pi/3, pi/6) == Re * pi/6, tt::tolerance(1e-6));
+}
+
 #ifdef TEST_PLOTS
-BOOST_AUTO_TEST_CASE(random_plot) {
+BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_d) {
   int argc = 1;
-  char *argv[] = {"tests"};
+  char *argv[] = {"R_via_psi_d"};
   QApplication a(argc, argv);
 
   QCustomPlot customPlot;
@@ -74,6 +78,51 @@ BOOST_AUTO_TEST_CASE(random_plot) {
 
   a.exec();
 }
+
+BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_g) {
+  int argc = 1;
+  char *argv[] = {"R_via_psi_g"};
+  QApplication a(argc, argv);
+
+  QCustomPlot customPlot;
+  // bins for high
+  const int N = 1000;
+  const double ha_min = -10000, ha_max = 3 * 1000000;
+  // bins for angles
+  const int M = 6;
+  const double psi_min = 0, psi_max = pi / 2;
+  QVector<double> x(N), y(N);
+
+  // add subgrid
+  customPlot.xAxis->grid()->setSubGridVisible(true);
+  customPlot.yAxis->grid()->setSubGridVisible(true);
+  // add labels
+  customPlot.xAxis->setLabel("ha, m");
+  customPlot.yAxis->setLabel("R, m");
+
+  for (int i = 0; i < M; ++i) {
+      double psi = psi_min + i * (psi_max - psi_min) / (M - 1);
+      for (int j = 0; j < N; ++j) {
+        x[j] = ha_min + j * (ha_max - ha_min) / (N - 1);
+        y[j] = R_via_psi_g(x[j], psi);
+        // pass data points to graphs:
+        customPlot.addGraph();
+        customPlot.graph(i)->setPen(QPen(Qt::blue));
+        customPlot.graph(i)->setData(x, y);
+      }
+    }
+  // Note: we could have also just called customPlot->rescaleAxes(); instead
+  // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
+  // graphs by clicking:
+  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
+                             QCP::iSelectPlottables);
+
+  customPlot.show();
+  customPlot.resize(640, 480);
+
+  a.exec();
+}
+
 #endif
 
 BOOST_AUTO_TEST_SUITE_END()
