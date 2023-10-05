@@ -14,24 +14,26 @@ namespace tt = boost::test_tools;
 
 BOOST_AUTO_TEST_SUITE(R)
 
-BOOST_AUTO_TEST_CASE(ground_level_psi_d) { BOOST_TEST(R_via_psi_d(0, 0) == 0); }
+ModelWithoutRefraction testModel;
 
-BOOST_AUTO_TEST_CASE(ground_level_psi_g) { BOOST_TEST(R_via_psi_g(0, 0) == 0); }
+BOOST_AUTO_TEST_CASE(ground_level_psi_d) { BOOST_TEST(testModel.R_via_psi_g(0, 0, 0) == 0); }
+
+BOOST_AUTO_TEST_CASE(ground_level_psi_g) { BOOST_TEST(testModel.R_via_psi_g(0, 0, 0) == 0); }
 
 BOOST_AUTO_TEST_CASE(ha_2000m) {
-  BOOST_TEST(R_via_psi_d(2000, M_PI/2) == 2000, tt::tolerance(1e-6));
+  BOOST_TEST(testModel.R_via_psi_d(2000, 0, M_PI/2) == 2000, tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(ha_8000m) {
-  BOOST_TEST(R_via_psi_g(2000, M_PI/2) == 2000, tt::tolerance(1e-6));
+  BOOST_TEST(testModel.R_via_psi_g(2000, 0, M_PI/2) == 2000, tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(psi_g_0) {
-  BOOST_TEST(R_via_psi_g(2000, 0) == std::sqrt(pow(2000+Re, 2) - Re*Re), tt::tolerance(1e-6));
+  BOOST_TEST(testModel.R_via_psi_g(2000, 0, 0) == std::sqrt(pow(2000+Re, 2) - Re*Re), tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(d_simple) {
-  BOOST_TEST(d(M_PI/3, M_PI/6) == Re * M_PI/6, tt::tolerance(1e-6));
+  BOOST_TEST(testModel.d(M_PI/3, M_PI/6) == Re * M_PI/6, tt::tolerance(1e-6));
 }
 
 #ifdef TEST_PLOTS
@@ -60,7 +62,7 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_d) {
       double psi = psi_min + i * (psi_max - psi_min) / (M - 1);
       for (int j = 0; j < N; ++j) {
         x[j] = ha_min + j * (ha_max - ha_min) / (N - 1);
-        y[j] = R_via_psi_d(x[j], psi);
+        y[j] = testModel.R_via_psi_d(x[j], 0, psi);
         // pass data points to graphs:
         customPlot.addGraph();
         customPlot.graph(i)->setPen(QPen(Qt::blue));
@@ -104,7 +106,7 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_g) {
       double psi = psi_min + i * (psi_max - psi_min) / (M - 1);
       for (int j = 0; j < N; ++j) {
         x[j] = ha_min + j * (ha_max - ha_min) / (N - 1);
-        y[j] = R_via_psi_g(x[j], psi);
+        y[j] = testModel.R_via_psi_g(x[j], 0, psi);
         // pass data points to graphs:
         customPlot.addGraph();
         customPlot.graph(i)->setPen(QPen(Qt::blue));
