@@ -63,11 +63,11 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_d) {
       for (int j = 0; j < N; ++j) {
         x[j] = ha_min + j * (ha_max - ha_min) / (N - 1);
         y[j] = testModel.R_via_psi_d(x[j], 0, psi);
-        // pass data points to graphs:
-        customPlot.addGraph();
-        customPlot.graph(i)->setPen(QPen(Qt::blue));
-        customPlot.graph(i)->setData(x, y);
       }
+      // pass data points to graphs:
+      customPlot.addGraph();
+      customPlot.graph(i)->setPen(QPen(Qt::blue));
+      customPlot.graph(i)->setData(x, y);
     }
   // Note: we could have also just called customPlot->rescaleAxes(); instead
   // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
@@ -107,11 +107,11 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_g) {
       for (int j = 0; j < N; ++j) {
         x[j] = ha_min + j * (ha_max - ha_min) / (N - 1);
         y[j] = testModel.R_via_psi_g(x[j], 0, psi);
-        // pass data points to graphs:
-        customPlot.addGraph();
-        customPlot.graph(i)->setPen(QPen(Qt::blue));
-        customPlot.graph(i)->setData(x, y);
       }
+      // pass data points to graphs:
+      customPlot.addGraph();
+      customPlot.graph(i)->setPen(QPen(Qt::blue));
+      customPlot.graph(i)->setData(x, y);
     }
   // Note: we could have also just called customPlot->rescaleAxes(); instead
   // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
