@@ -18,8 +18,6 @@ ModelWithoutRefraction testModel;
 
 BOOST_AUTO_TEST_CASE(ground_level_psi_d) { BOOST_TEST(testModel.R_via_psi_g(0, 0, 0) == 0); }
 
-BOOST_AUTO_TEST_CASE(ground_level_psi_g) { BOOST_TEST(testModel.R_via_psi_g(0, 0, 0) == 0); }
-
 BOOST_AUTO_TEST_CASE(ha_2000m) {
   BOOST_TEST(testModel.R_via_psi_d(2000, 0, M_PI/2) == 2000, tt::tolerance(1e-6));
 }
@@ -68,8 +66,7 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_d) {
       customPlot.addGraph();
       customPlot.graph(i)->setPen(QPen(Qt::blue));
       customPlot.graph(i)->setData(x, y);
-    }
-  // Note: we could have also just called customPlot->rescaleAxes(); instead
+  }
   // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
   // graphs by clicking:
   customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
@@ -112,8 +109,7 @@ BOOST_AUTO_TEST_CASE(plot_for_R_via_psi_g) {
       customPlot.addGraph();
       customPlot.graph(i)->setPen(QPen(Qt::blue));
       customPlot.graph(i)->setData(x, y);
-    }
-  // Note: we could have also just called customPlot->rescaleAxes(); instead
+  }
   // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
   // graphs by clicking:
   customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
