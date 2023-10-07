@@ -1,9 +1,9 @@
 #ifndef MODEL_WITHOUT_REFRACTION_H
 #define MODEL_WITHOUT_REFRACTION_H
 
-#include "atmospheric_model.h"
+#include "refraction_model.h"
 
-struct ModelWithoutRefraction : public AtmosphericModel {
+struct ModelWithoutRefraction : public RefractionModel {
 
     // Formula for slant range from aircraft to surface target via declination angle and heights
     // SRC: (2.10) from citation, image (2.30), inferential

@@ -1,5 +1,5 @@
-﻿#ifndef ATMOSPHERIC_MODEL_H
-#define ATMOSPHERIC_MODEL_H
+﻿#ifndef REFRACTION_MODEL_H
+#define REFRACTION_MODEL_H
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -7,7 +7,7 @@
 // radius of the Earth in meters
 const double Re = 6378000;
 
-struct AtmosphericModel {
+struct RefractionModel {
     // Formula for slant range from aircraft to surface target via declination angle and heights
     virtual double R_via_psi_d(double ha, double hs, double psi_d, void *opaque) = 0;
 
@@ -30,4 +30,4 @@ struct AtmosphericModel {
     virtual double hs_via_psi_d(double ha, double psi_d, double R, void *opaque) = 0;
 };
 
-#endif // ATMOSPHERIC_MODEL_H
+#endif // REFRACTION_MODEL_H
