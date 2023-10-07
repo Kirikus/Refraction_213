@@ -24,18 +24,20 @@ double ModelWithoutRefraction::d(double psi_d, double psi_g, void* opaque) {
 double ModelWithoutRefraction::psi_d(double ha, double hs, double R,
                                      void* opaque) {
   if (R == 0) return 0;  // if purpose and radar in same dote
-  double psi_d =
-      std::asin((R * R + ha * ha + 2 * ha * Re - hs * hs - 2 * hs * Re) /
-                (2 * R * (Re + ha)));
+  double cos_90_psi_d =
+      (R * R + ha * ha + 2 * ha * Re - hs * hs - 2 * hs * Re) /
+      (2 * R * (Re + ha));
+  double psi_d = M_PI / 2 - acos(cos_90_psi_d);
   return psi_d;
 }
 
 double ModelWithoutRefraction::psi_g(double ha, double hs, double R,
                                      void* opaque) {
   if (R == 0) return 0;  // if purpose and radar in same dote
-  double psi_g =
-      std::asin((R * R - ha * ha - 2 * ha * Re + hs * hs + 2 * hs * Re) /
-                (2 * R * (Re + hs)));
+  double cos_90_psi_g =
+      (R * R - ha * ha - 2 * ha * Re + hs * hs + 2 * hs * Re) /
+      (2 * R * (Re + hs));
+  double psi_g = acos(cos_90_psi_g) - M_PI / 2;
   return psi_g;
 }
 
@@ -47,8 +49,8 @@ double ModelWithoutRefraction::phi_e(double ha, double hs, double R,
 
 double ModelWithoutRefraction::hs_via_psi_d(double ha, double psi_d, double R,
                                             void* opaque) {
-  double hs =
-      std::sqrt(R * R + pow(ha + Re, 2) - 2 * R * (ha + Re) * std::sin(psi_d)) -
-      Re;
+  double hs = std::sqrt(R * R + pow(ha + Re, 2) -
+                        2 * R * (ha + Re) * std::cos(M_PI / 2 - psi_d)) -
+              Re;
   return hs;
 }
