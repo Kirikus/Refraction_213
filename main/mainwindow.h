@@ -16,7 +16,13 @@ class MainWindow : public QMainWindow {
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
- private:
+private slots:
+  void on_directTaskButton_clicked();
+
+private slots:
+  void on_reverseTaskButton_clicked();
+
+private:
   Ui::MainWindow *ui;
 };
 #endif  // MAINWINDOW_H
