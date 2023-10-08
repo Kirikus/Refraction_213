@@ -23,7 +23,7 @@ double ModelWithoutRefraction::d(double psi_d, double psi_g, void* opaque) {
 
 double ModelWithoutRefraction::psi_d(double ha, double hs, double R,
                                      void* opaque) {
-  if (R == 0) return 0;  // if purpose and radar in same dote
+  if (R == 0) return 0;  // if target and radar in same dote
   double cos_90_psi_d =
       (R * R + ha * ha + 2 * ha * Re - hs * hs - 2 * hs * Re) /
       (2 * R * (Re + ha));
@@ -33,7 +33,7 @@ double ModelWithoutRefraction::psi_d(double ha, double hs, double R,
 
 double ModelWithoutRefraction::psi_g(double ha, double hs, double R,
                                      void* opaque) {
-  if (R == 0) return 0;  // if purpose and radar in same dote
+  if (R == 0) return 0;  // if target and radar in same dote
   double cos_90_psi_g =
       (R * R - ha * ha - 2 * ha * Re + hs * hs + 2 * hs * Re) /
       (2 * R * (Re + hs));

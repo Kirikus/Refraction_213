@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(plot_for_psi_d) {
   const int N = 100;
   const double h_min = 1000, h_max = 3 * 1000;
   QVector<double> x(N), y(N);
-  const double R = 1000;   // distance between purpose and radar
+  const double R = 1000;   // distance between target and radar
   const double ha = 2000;  // high of radar
 
   // add subgrid
@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_CASE(plot_for_psi_g) {
   const int N = 100;
   const double h_min = 1000, h_max = 3 * 1000;
   QVector<double> x(N), y(N);
-  const double R = 1000;   // distance between purpose and radar
+  const double R = 1000;   // distance between target and radar
   const double ha = 2000;  // high of radar
 
   // add subgrid
@@ -296,7 +296,7 @@ BOOST_AUTO_TEST_CASE(plot_for_phi_e) {
   const int N = 100;
   const double h_min = 1000, h_max = 3 * 100000;
   QVector<double> x(N), y(N);
-  const double hs = 1000;  // high of purpose
+  const double hs = 1000;  // high of target
   const double ha = 1000;  // high of radar
 
   // add subgrid
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE(plot_for_hs_via_psi_d) {
   // bins for angles
   const int M = 6;
   const double psi_min = 0, psi_max = M_PI / 2;
-  const double R = 1000;  // distance between purpose and radar
+  const double R = 1000;  // distance between target and radar
   QVector<double> x(N), y(N);
 
   // add subgrid

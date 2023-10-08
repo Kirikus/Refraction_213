@@ -19,21 +19,21 @@ struct RefractionModel {
                              void *opaque) = 0;
 
   // Formula for length of the arc on the Earth's surface between the nadir
-  // direction of the radar and purpose
+  // direction of the radar and target
   virtual double d(double psi_d, double psi_g, void *opaque) = 0;
 
   // Formula for declination angle via slant range, heights of the radar and
-  // purpose
+  // target
   virtual double psi_d(double ha, double hs, double R, void *opaque) = 0;
 
-  // Formula for sliding angle via slant range, heights of the radar and purpose
+  // Formula for sliding angle via slant range, heights of the radar and target
   virtual double psi_g(double ha, double hs, double R, void *opaque) = 0;
 
   // Formula for angular measure of the arc of the Earth's surface from the
   // radar to the target
   virtual double phi_e(double ha, double hs, double R, void *opaque) = 0;
 
-  // Formula for height of purpose above sea level via declination angle, height
+  // Formula for height of target above sea level via declination angle, height
   // of the radar, slant range
   virtual double hs_via_psi_d(double ha, double psi_d, double R,
                               void *opaque) = 0;
