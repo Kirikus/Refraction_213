@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(plot_dummy) {
   char *argv[] = {"tests"};
   QApplication a(argc, argv);
 
-  QCustomPlot customPlot = QCustomPlot();
+  QCustomPlot customPlot;
   customPlot.addGraph();
   customPlot.graph(0)->setPen(QPen(Qt::blue));
   const int N = 1000;
