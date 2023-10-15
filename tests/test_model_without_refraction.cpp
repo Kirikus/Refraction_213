@@ -274,15 +274,18 @@ BOOST_AUTO_TEST_SUITE(phi_e)
 
 ModelWithoutRefraction testModel;
 
-BOOST_AUTO_TEST_CASE(simple) { BOOST_TEST(testModel.phi_e(0, 0, 0) == 0); }
+BOOST_AUTO_TEST_CASE(simple) {
+  BOOST_TEST(testModel.phi_e_via_distances(0, 0, 0) == 0);
+}
 
 BOOST_AUTO_TEST_CASE(equilateral_triangle) {
-  BOOST_TEST(testModel.phi_e(2000, 2000, Re + 2000) == M_PI / 3,
+  BOOST_TEST(testModel.phi_e_via_distances(2000, 2000, Re + 2000) == M_PI / 3,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(same_dote) {
-  BOOST_TEST(testModel.phi_e(2000, 2000, 0) == 0, tt::tolerance(1e-6));
+  BOOST_TEST(testModel.phi_e_via_distances(2000, 2000, 0) == 0,
+             tt::tolerance(1e-6));
 }
 
 #ifdef TEST_PLOTS
@@ -308,7 +311,7 @@ BOOST_AUTO_TEST_CASE(plot_for_phi_e) {
 
   for (int j = 0; j < N; ++j) {
     x[j] = (h_min + j * (h_max - h_min) / (N - 1)) / 100000;
-    y[j] = testModel.phi_e(ha, hs, x[j] * 100000);
+    y[j] = testModel.phi_e_via_distances(ha, hs, x[j] * 100000);
   }
 
   // pass data points to graphs:

@@ -41,8 +41,14 @@ double ModelWithoutRefraction::psi_g(double ha, double hs, double R,
   return psi_g;
 }
 
-double ModelWithoutRefraction::phi_e(double ha, double hs, double R,
-                                     void* opaque) {
+double ModelWithoutRefraction::phi_e_via_angles(double psi_d, double psi_g,
+                                                void* opaque) {
+  double phi_e = psi_d - psi_g;
+  return phi_e;
+}
+
+double ModelWithoutRefraction::phi_e_via_distances(double ha, double hs,
+                                                   double R, void* opaque) {
   double phi_e = psi_d(ha, hs, R) - psi_g(ha, hs, R);
   return phi_e;
 }

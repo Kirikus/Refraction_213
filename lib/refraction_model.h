@@ -30,8 +30,13 @@ struct RefractionModel {
   virtual double psi_g(double ha, double hs, double R, void *opaque) = 0;
 
   // Formula for angular measure of the arc of the Earth's surface from the
-  // radar to the target
-  virtual double phi_e(double ha, double hs, double R, void *opaque) = 0;
+  // radar to the target via heights of the radar and target and slant range
+  virtual double phi_e_via_distances(double ha, double hs, double R,
+                                     void *opaque) = 0;
+
+  // Formula for angular measure of the arc of the Earth's surface from the
+  // radar to the target via sliding and declination angles
+  virtual double phi_e_via_angles(double psi_d, double psi_g, void *opaque) = 0;
 
   // Formula for height of target above sea level via declination angle, height
   // of the radar, slant range

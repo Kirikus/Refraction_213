@@ -60,20 +60,33 @@ struct ModelWithoutRefraction : public RefractionModel {
   // Formula for angular measure of the arc of the Earth's surface from the
   // radar to the target
   // SRC: (2.9) from citation
-  //   psi_g : angular measure of the arc of the Earth's surface from the radar
-  //   to the target, radians ha : height of aircraft above sea level, m hs :
-  //   height of target above sea level, m R : slant range from aircraft to
-  //   surface target, m opaque : not used
-  virtual double phi_e(double ha, double hs, double R,
-                       void* opaque = nullptr) override;
+  //   phi_e_via_distances : angular measure, radians
+  //   ha : height of aircraft above sea level, m
+  //   hs : height of target above sea level, m
+  //   R : slant range from aircraft to surface target, m
+  //   opaque : not used
+  virtual double phi_e_via_distances(double ha, double hs, double R,
+                                     void* opaque = nullptr) override;
+
+  // Formula for angular measure of the arc of the Earth's surface from the
+  // radar to the target
+  // SRC: (2.9) from citation
+  //   phi_e_via_distances : angular measure, radians
+  //   psi_d : declination angle, radians
+  //   psi_g : sliding angle, radians
+  virtual double phi_e_via_angles(double psi_d, double psi_g,
+                                  void* opaque = nullptr) override;
 
   // Formula for height of target above sea level via declination angle, height
   // of the radar, slant range
   // SRC: image (2.30), inferential
   //   hs_via_psi_d : height of target above sea level via declination angle,
-  //   height of the radar, slant range, m ha : height of aircraft above sea
-  //   level, m psi_d : declination angle, radians R : slant range from aircraft
-  //   to surface target, m opaque : not used
+  //        height of the radar, slant range, m
+  //   ha : height of aircraft above sea level, m
+  //   psi_d : declination angle, radians R : slant range from aircraft
+  //        to surface target, m
+  //   R : slant range from aircraft to surface target, m
+  //   opaque : not used
   virtual double hs_via_psi_d(double ha, double psi_d, double R,
                               void* opaque = nullptr) override;
 };
