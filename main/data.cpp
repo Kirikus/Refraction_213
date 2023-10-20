@@ -1,5 +1,7 @@
 #include "data.h"
 
+Data user_input_data = Data();
+
 Data::Data(int station_coords, int target_coords, int dist_to_target, std::string atmosphere_model, std::string refraction_model, std::string task) {
   this -> station_coords = station_coords;
   this -> target_coords = target_coords;
