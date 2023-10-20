@@ -5,9 +5,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  ui->stationCoordinatesEdit->setPlaceholderText("100");
-  ui->targetCoordinatesEdit->setPlaceholderText("1000");
-  ui->distanceToTargetEdit->setPlaceholderText("1400");
   ui -> stationCoordinatesEdit -> setValidator(new QIntValidator());
   ui -> targetCoordinatesEdit -> setValidator(new QIntValidator());
   ui -> distanceToTargetEdit -> setValidator(new QIntValidator());
