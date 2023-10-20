@@ -28,4 +28,6 @@ class Data {
   int getDstToTarget();
 };
 
+extern Data user_input_data;
+
 #endif
