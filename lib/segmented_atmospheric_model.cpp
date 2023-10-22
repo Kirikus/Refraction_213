@@ -1,8 +1,9 @@
 #include "segmented_atmosheric_model.h"
 
 double SegmentedAtmosphericModel::N(double h) {
-  set_dN();
-  set_H();
+  this->set_dN();
+  this->set_N1();
+  this->set_H();
   if (h >= hs && h <= hs + 1000) {
     return Ns + (h - hs) * dN;
   }
@@ -14,11 +15,11 @@ double SegmentedAtmosphericModel::N(double h) {
   }
 }
 
-double SegmentedAtmosphericModel::set_hs(double hs) { this->hs = hs; }
+void SegmentedAtmosphericModel::set_hs(double hs) { this->hs = hs; }
 
-double SegmentedAtmosphericModel::set_N1(double N1) { this->N1 = N1; }
+void SegmentedAtmosphericModel::set_N1() { this->N1 = Ns + (1000 - hs) * dN; }
 
-double SegmentedAtmosphericModel::set_Ns(double Ns) { this->Ns = Ns; }
+void SegmentedAtmosphericModel::set_Ns(double Ns) { this->Ns = Ns; }
 
 void SegmentedAtmosphericModel::set_dN() {
   this->dN = -0.00732 * exp(0.005577 * Ns);

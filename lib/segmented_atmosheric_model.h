@@ -12,19 +12,17 @@ struct SegmentedAtmosphericModel : public AtmosphericModel {
 
   // Formula for determination height of ground surface above sea level
   // hs : height of ground surface above sea level, m
-  double set_hs(double hs);
-  // Formula for determination refractive index at 1 km above the surface
-  // N1 : refractive index at 1 km above the surface, n/u
-  double set_N1(double N1);
+  void set_hs(double hs);
+
   // Formula for determination refractive index at the Earth's surface
   // Ns : refractive index at the Earth's surface, n/u
-  double set_Ns(double Ns);
+  void set_Ns(double Ns);
 
  private:
   // height of ground surface above sea level, m
   double hs = 0;
   // refractive index at 1 km above the surface, n/u
-  double N1 = 1;
+  double N1;
   // refractive index at the Earth's surface, n/u
   double Ns = 324.8;
   // exponential decay constant N, n/u
@@ -39,6 +37,9 @@ struct SegmentedAtmosphericModel : public AtmosphericModel {
   // Formula for exponential decay constant N
   // SRC: (2.28) from citation
   void set_H();
+
+  // Formula for determination refractive index at 1 km above the surface
+  void set_N1();
 };
 
 #endif  // SEGMENTED_ATMOSHERIC_MODEL_H
