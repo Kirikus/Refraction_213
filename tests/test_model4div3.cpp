@@ -1,4 +1,4 @@
-#include "test_effective_radius_model.h"
+#include "test_model4div3.h"
 
 #include <QApplication>
 
