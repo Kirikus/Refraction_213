@@ -12,11 +12,14 @@ class Data {
   std::string atmosphere_model = "Не выбрано";
   std::string refraction_model = "Не выбрано";
   std::string task = "Прямая задача";
-  public:
-    QCustomPlot * plot = nullptr;
-  Data(int station_coords, int target_coords, int dist_to_target, std::string atmosphere_model, std::string refraction_model, std::string task);
+
+public:
+  QCustomPlot *plot = nullptr;
+  Data(int station_coords, int target_coords, int dist_to_target,
+       std::string atmosphere_model, std::string refraction_model,
+       std::string task);
   Data();
-  void setPlot(QCustomPlot * plt);
+  void setPlot(QCustomPlot *plt);
   void setStCoords(double station_coords);
   void setTrgCoords(double target_coords);
   void setDstToTarget(double target_distance);
@@ -31,3 +34,4 @@ class Data {
 extern Data user_input_data;
 
 #endif
+
