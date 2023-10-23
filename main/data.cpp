@@ -18,26 +18,26 @@ Data::Data() {
   this -> refraction_model = "Не выбрано";
   this -> task = "Прямая задача";
 }
-void Data::setDstToTarget(int dist) {
+void Data::setDstToTarget(double dist) {
   this -> dist_to_target = dist;
 }
 void Data::setPlot(QCustomPlot * plt) {
   this -> plot = plt;
 }
 
-void Data::setStCoords(int station_coords) {
+void Data::setStCoords(double station_coords) {
   this -> station_coords = station_coords;
 }
-void Data::setTrgCoords(int target_coords) {
+void Data::setTrgCoords(double target_coords) {
   this -> target_coords = target_coords;
 }
-int Data::getDstToTarget() {
+double Data::getDstToTarget() {
   return this -> dist_to_target;
 }
-int Data::getTrgCoords() {
+double Data::getTrgCoords() {
   return this -> target_coords;
 }
 
-int Data::getStCoords() {
+double Data::getStCoords() {
   return this -> station_coords;
 }

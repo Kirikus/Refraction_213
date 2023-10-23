@@ -19,16 +19,12 @@ class MainWindow : public QMainWindow {
   private slots:
     void on_stationCoordinatesEdit_textEdited(const QString & arg1);
 
-  private slots:
     void on_targetCoordinatesEdit_textEdited(const QString & arg1);
 
-  private slots:
     void on_distanceToTargetEdit_textEdited(const QString & arg1);
 
-  private slots:
     void on_directTaskButton_clicked();
 
-  private slots:
     void on_reverseTaskButton_clicked();
 
 private:
