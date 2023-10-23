@@ -8,6 +8,7 @@ void addTargetAndStation() {
   double st_coords = user_input_data.getStCoords();
   double trg_coords = user_input_data.getTrgCoords();
   double dist = user_input_data.getDstToTarget();
+  double recession_koef = 1.1;
   user_input_data.plot -> addGraph();
   QVector < double > x_st(1), y_st(1);
   x_st[0] = 100;
@@ -23,6 +24,8 @@ void addTargetAndStation() {
     user_input_data.plot -> graph(1) -> setData(x_trg, y_trg);
     user_input_data.plot -> graph(1) -> setPen(QColor(0, 255, 70, 255));
     user_input_data.plot -> graph(1) -> setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 10));
+    user_input_data.plot->xAxis->setRange(0, std::max((100 + sqrt(dist * dist - (trg_coords - st_coords) * (trg_coords - st_coords))), std::max(y_st[0] , y_trg[0])) * recession_koef);
+    user_input_data.plot->yAxis->setRange(0, std::max((100 + sqrt(dist * dist - (trg_coords - st_coords) * (trg_coords - st_coords))), std::max(y_st[0] , y_trg[0])) * recession_koef);
     user_input_data.plot -> replot();
   }
 }
