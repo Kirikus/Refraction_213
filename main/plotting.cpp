@@ -5,9 +5,9 @@
 #include <cmath>
 
 void addTargetAndStation() {
-  int st_coords = user_input_data.getStCoords();
-  int trg_coords = user_input_data.getTrgCoords();
-  int dist = user_input_data.getDstToTarget();
+  double st_coords = user_input_data.getStCoords();
+  double trg_coords = user_input_data.getTrgCoords();
+  double dist = user_input_data.getDstToTarget();
   user_input_data.plot -> addGraph();
   QVector < double > x_st(1), y_st(1);
   x_st[0] = 100;
