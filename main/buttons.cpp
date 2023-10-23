@@ -4,6 +4,8 @@
 
 #include "QMessageBox"
 
+#include "plotting.h"
+
 void MainWindow::on_reverseTaskButton_clicked() {
   QMessageBox msg;
   msg.setWindowTitle("reverse task");
