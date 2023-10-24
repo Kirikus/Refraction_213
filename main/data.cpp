@@ -2,7 +2,7 @@
 
 Data user_input_data = Data();
 
-Data::Data(int station_coords, int target_coords, int dist_to_target,
+Data::Data(double station_coords, double target_coords, double dist_to_target,
            std::string atmosphere_model, std::string refraction_model,
            std::string task) {
   this->station_coords = station_coords;
