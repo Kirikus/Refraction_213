@@ -1,8 +1,8 @@
-#include "test_model_without_refraction.h"
+#include "test_model4div3.h"
 
 #include <QApplication>
 
-#include "../lib/model_without_refraction.h"
+#include "../lib/model4div3.h"
 #include "qcustomplot.h"
 
 #if !defined(WIN32)
@@ -12,37 +12,40 @@
 
 namespace tt = boost::test_tools;
 
-BOOST_AUTO_TEST_SUITE(d_without_refraction)
+BOOST_AUTO_TEST_SUITE(d_effective_radius)
 
-ModelWithoutRefraction testModel;
+Model4div3 testModel4div3;
 
 BOOST_AUTO_TEST_CASE(d_simple) {
-  BOOST_TEST(testModel.calculate_d(M_PI / 3, M_PI / 6) == Re * M_PI / 6,
+  double hs = 2000;
+  BOOST_TEST(testModel4div3.calculate_d(M_PI / 3, M_PI / 6,
+                                        reinterpret_cast<void *>(&hs)) ==
+                 4 / 3 * (Re + hs) * M_PI / 6,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(psi_d_without_refraction)
+BOOST_AUTO_TEST_SUITE(psi_d_effective_radius)
 
-ModelWithoutRefraction testModel;
+Model4div3 testModel4div3;
 
 BOOST_AUTO_TEST_CASE(simple) {
-  BOOST_TEST(testModel.calculate_psi_d(0, 0, 0) == 0);
+  BOOST_TEST(testModel4div3.calculate_psi_d(0, 0, 0) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(equilateral_triangle) {
-  BOOST_TEST(testModel.calculate_psi_d(2000, 2000, Re + 2000) == M_PI / 6,
+  BOOST_TEST(testModel4div3.calculate_psi_d(2000, 2000, Re + 2000) == M_PI / 6,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(psi_d_pi_2) {
-  BOOST_TEST(testModel.calculate_psi_d(2000, 1000, 1000) == M_PI / 2,
+  BOOST_TEST(testModel4div3.calculate_psi_d(2000, 1000, 1000) == M_PI / 2,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(same_dote) {
-  BOOST_TEST(testModel.calculate_psi_d(2000, 2000, 0) == 0,
+  BOOST_TEST(testModel4div3.calculate_psi_d(2000, 2000, 0) == 0,
              tt::tolerance(1e-6));
 }
 
@@ -69,7 +72,7 @@ BOOST_AUTO_TEST_CASE(plot_for_psi_d) {
 
   for (int j = 0; j < N; ++j) {
     x[j] = (h_min + j * (h_max - h_min) / (N - 1)) / 1000;
-    y[j] = testModel.calculate_psi_d(ha, x[j] * 1000, R);
+    y[j] = testModel4div3.calculate_psi_d(ha, x[j] * 1000, R);
   }
 
   // pass data points to graphs:
@@ -92,26 +95,26 @@ BOOST_AUTO_TEST_CASE(plot_for_psi_d) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(psi_g_without_refraction)
+BOOST_AUTO_TEST_SUITE(psi_g_effective_radius)
 
-ModelWithoutRefraction testModel;
+Model4div3 testModel4div3;
 
 BOOST_AUTO_TEST_CASE(simple) {
-  BOOST_TEST(testModel.calculate_psi_g(0, 0, 0) == 0);
+  BOOST_TEST(testModel4div3.calculate_psi_g(0, 0, 0) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(equilateral_triangle) {
-  BOOST_TEST(testModel.calculate_psi_g(2000, 2000, Re + 2000) == -M_PI / 6,
+  BOOST_TEST(testModel4div3.calculate_psi_g(2000, 2000, Re + 2000) == -M_PI / 6,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(psi_g_pi_2) {
-  BOOST_TEST(testModel.calculate_psi_g(2000, 1000, 1000) == M_PI / 2,
+  BOOST_TEST(testModel4div3.calculate_psi_g(2000, 1000, 1000) == M_PI / 2,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(same_dote) {
-  BOOST_TEST(testModel.calculate_psi_g(2000, 2000, 0) == 0,
+  BOOST_TEST(testModel4div3.calculate_psi_g(2000, 2000, 0) == 0,
              tt::tolerance(1e-6));
 }
 
@@ -138,7 +141,7 @@ BOOST_AUTO_TEST_CASE(plot_for_psi_g) {
 
   for (int j = 0; j < N; ++j) {
     x[j] = (h_min + j * (h_max - h_min) / (N - 1)) / 1000;
-    y[j] = testModel.calculate_psi_g(ha, x[j] * 1000, R);
+    y[j] = testModel4div3.calculate_psi_g(ha, x[j] * 1000, R);
   }
 
   // pass data points to graphs:
