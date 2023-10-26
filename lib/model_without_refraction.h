@@ -39,7 +39,7 @@ struct ModelWithoutRefraction : public RefractionModel {
   // Formula for angular measure of the arc of the Earth's surface from the
   // radar to the target
   // SRC: (2.9) from citation
-  //    phi_e_via_distances : angular measure, radians
+  //    phi_e : angular measure, radians
   //    psi_d : declination angle, radians
   //    psi_g : sliding angle, radians
   virtual double calculate_phi_e(double psi_d, double psi_g,
