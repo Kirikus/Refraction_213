@@ -40,4 +40,3 @@ void addTargetAndStation() {
     user_input_data.plot->replot();
   }
 }
-

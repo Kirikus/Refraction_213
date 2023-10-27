@@ -20,4 +20,3 @@ double parse_double(std::string to_parse) {
   }
   return res + fraction / frac_order;
 }
-

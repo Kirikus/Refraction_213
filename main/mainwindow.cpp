@@ -5,9 +5,12 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  ui->stationCoordinatesEdit->setValidator(new QDoubleValidator(ui->stationCoordinatesEdit));
-  ui->targetCoordinatesEdit->setValidator(new QDoubleValidator(ui->targetCoordinatesEdit));
-  ui->distanceToTargetEdit->setValidator(new QDoubleValidator(ui->distanceToTargetEdit));
+  ui->stationCoordinatesEdit->setValidator(
+      new QDoubleValidator(ui->stationCoordinatesEdit));
+  ui->targetCoordinatesEdit->setValidator(
+      new QDoubleValidator(ui->targetCoordinatesEdit));
+  ui->distanceToTargetEdit->setValidator(
+      new QDoubleValidator(ui->distanceToTargetEdit));
   ui->plot->xAxis->setRange(0, 10000);
   ui->plot->yAxis->setRange(0, 10000);
   ui->plot->setInteraction(
@@ -18,4 +21,3 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() { delete ui; }
-

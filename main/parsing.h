@@ -6,4 +6,3 @@
 double parse_double(std::string to_parse);
 
 #endif // PARSING_H
-

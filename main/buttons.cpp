@@ -39,4 +39,3 @@ void MainWindow::on_stationCoordinatesEdit_textEdited(
   user_input_data.setStation(parse_double(st_height.toStdString()));
   addTargetAndStation();
 }
-
