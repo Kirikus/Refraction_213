@@ -4,7 +4,7 @@ Data user_input_data = Data();
 
 Data::Data(double station_height, double target_height, double dist_to_target,
            std::string atmosphere_model, std::string refraction_model,
-           std::string task) {
+           Task task) {
   this->station_height = station_height;
   this->target_height = target_height;
   this->dist_to_target = dist_to_target;
@@ -18,19 +18,21 @@ Data::Data() {
   this->dist_to_target = -1;
   this->atmosphere_model = "Не выбрано";
   this->refraction_model = "Не выбрано";
-  this->task = "Прямая задача";
+  this->task = Forward;
 }
-void Data::setDstToTarget(double dist) { this->dist_to_target = dist; }
-void Data::setPlot(QCustomPlot *plt) { this->plot = plt; }
+void Data::setDistance(double distance_from_station_to_target) {
+  this->dist_to_target = distance_from_station_to_target;
+}
+void Data::setPlot(QCustomPlot *plot) { this->plot = plot; }
 
-void Data::setStCoords(double station_height) {
-  this->station_height = station_height;
+void Data::setStation(double height) {
+  this->station_height = height;
 }
-void Data::setTrgCoords(double target_height) {
-  this->target_height = target_height;
+void Data::setTarget(double height) {
+  this->target_height = height;
 }
-double Data::getDstToTarget() { return this->dist_to_target; }
-double Data::getTrgCoords() { return this->target_height; }
+double Data::getDistance() { return this->dist_to_target; }
+double Data::getTarget() { return this->target_height; }
 
-double Data::getStCoords() { return this->station_height; }
+double Data::getStation() { return this->station_height; }
 

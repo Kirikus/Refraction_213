@@ -5,9 +5,9 @@
 #include <cmath>
 
 void addTargetAndStation() {
-  double st_height = user_input_data.getStCoords();
-  double trg_height = user_input_data.getTrgCoords();
-  double dist = user_input_data.getDstToTarget();
+  double st_height = user_input_data.getStation();
+  double trg_height = user_input_data.getTarget();
+  double dist = user_input_data.getDistance();
   double recession_koef = 1.1;
   user_input_data.plot->addGraph();
   QVector<double> x_st(1), y_st(1);
