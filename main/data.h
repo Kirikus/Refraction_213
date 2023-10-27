@@ -11,8 +11,8 @@ enum Task{
 };
 
 class Data {
-  double target_coords = 0;
-  double station_coords = 0;
+  double target_height = 0;
+  double station_height = 0;
   double dist_to_target = 0;
   std::string atmosphere_model = "Не выбрано";
   std::string refraction_model = "Не выбрано";
@@ -20,13 +20,13 @@ class Data {
 
 public:
   QCustomPlot *plot = nullptr;
-  Data(double station_coords, double target_coords, double dist_to_target,
+  Data(double station_height, double target_height, double dist_to_target,
        std::string atmosphere_model, std::string refraction_model,
        std::string task);
   Data();
   void setPlot(QCustomPlot *plt);
-  void setStCoords(double station_coords);
-  void setTrgCoords(double target_coords);
+  void setStCoords(double station_height);
+  void setTrgCoords(double target_height);
   void setDstToTarget(double target_distance);
   void setAtmosphereModel(std::string atmosphere_model);
   void setRefractionModel(std::string refraction_model);

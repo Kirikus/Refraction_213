@@ -29,14 +29,14 @@ void MainWindow::on_distanceToTargetEdit_textEdited(
 }
 
 void MainWindow::on_targetCoordinatesEdit_textEdited(
-    const QString &trg_coords) {
-  user_input_data.setTrgCoords(parse_double(trg_coords.toStdString()));
+    const QString &trg_height) {
+  user_input_data.setTrgCoords(parse_double(trg_height.toStdString()));
   addTargetAndStation();
 }
 
 void MainWindow::on_stationCoordinatesEdit_textEdited(
-    const QString &st_coords) {
-  user_input_data.setStCoords(parse_double(st_coords.toStdString()));
+    const QString &st_height) {
+  user_input_data.setStCoords(parse_double(st_height.toStdString()));
   addTargetAndStation();
 }
 
