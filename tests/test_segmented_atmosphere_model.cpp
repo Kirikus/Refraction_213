@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(plot_2_32) {
 
   QCustomPlot customPlot;
   customPlot.addGraph();
-  testModel.set_Ns(400);
+  testModel = SegmentedAtmosphericModel(0, 400);
   customPlot.graph(0)->setPen(QPen(Qt::red));
   const int N = 1000;
   const double h_min = 0, h_max = 15000;
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(plot_2_32) {
   customPlot.graph(0)->setData(x, y);
 
   customPlot.addGraph();
-  testModel.set_Ns(313);
+  testModel = SegmentedAtmosphericModel(0, 313);
   customPlot.graph(1)->setPen(QPen(Qt::green));
   for (int i = 0; i < N; ++i) {
     y[i] = h_min + i * (h_max - h_min) / (N - 1);
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(plot_2_32) {
   customPlot.graph(1)->setData(x, y);
 
   customPlot.addGraph();
-  testModel.set_Ns(250);
+  testModel = SegmentedAtmosphericModel(0, 250);
   customPlot.graph(2)->setPen(QPen(Qt::blue));
   for (int i = 0; i < N; ++i) {
     y[i] = h_min + i * (h_max - h_min) / (N - 1);
