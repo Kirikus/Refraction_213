@@ -32,10 +32,11 @@ double ModelWithoutRefraction::calculate_phi_e(double psi_d, double psi_g,
   return phi_e;
 }
 
-Answer ModelWithoutRefraction::calculate(double ha, double hs, double R,
-                                         void* opaque) {
-  psi_d = calculate_psi_d(ha, hs, R);
-  psi_g = calculate_psi_g(ha, hs, R);
-  d = calculate_d(psi_d, psi_g);
-  return Answer(psi_d, psi_g, d);
+RefractionModel::Answer ModelWithoutRefraction::calculate(double ha, double hs,
+                                                          double R,
+                                                          void* opaque) {
+  double psi_d = calculate_psi_d(ha, hs, R);
+  double psi_g = calculate_psi_g(ha, hs, R);
+  return Answer(
+      {.psi_d = psi_d, .psi_g = psi_g, .d = calculate_d(psi_d, psi_g)});
 }
