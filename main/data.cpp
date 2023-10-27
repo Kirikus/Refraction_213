@@ -3,7 +3,7 @@
 Data user_input_data = Data();
 
 Data::Data(double station_height, double target_height, double dist_to_target,
-           std::string atmosphere_model, std::string refraction_model,
+           AtmosphereModel atmosphere_model, RefractionModel refraction_model,
            Task task) {
   this->station_height = station_height;
   this->target_height = target_height;
@@ -16,8 +16,8 @@ Data::Data() {
   this->station_height = -1;
   this->target_height = -1;
   this->dist_to_target = -1;
-  this->atmosphere_model = "Не выбрано";
-  this->refraction_model = "Не выбрано";
+  this->atmosphere_model = GOST440481;
+  this->refraction_model = Geometric;
   this->task = Forward;
 }
 void Data::setDistance(double distance_from_station_to_target) {
