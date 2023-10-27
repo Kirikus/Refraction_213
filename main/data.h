@@ -5,6 +5,11 @@
 
 #include "qcustomplot.h"
 
+enum Task{
+  Forward,
+  Reversed
+};
+
 class Data {
   double target_coords = 0;
   double station_coords = 0;
@@ -25,7 +30,7 @@ public:
   void setDstToTarget(double target_distance);
   void setAtmosphereModel(std::string atmosphere_model);
   void setRefractionModel(std::string refraction_model);
-  void setTask(std::string task);
+  void setTask(enum Task);
   double getStCoords();
   double getTrgCoords();
   double getDstToTarget();
