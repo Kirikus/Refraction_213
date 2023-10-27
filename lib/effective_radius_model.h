@@ -3,7 +3,8 @@
 
 #include "refraction_model.h"
 
-struct EffectiveRadiusModel : public RefractionModel {
+class EffectiveRadiusModel : public RefractionModel {
+ public:
   // Formula for length of the arc on the Earth's surface between the nadir
   // direction of the radar and target
   // SRC: (2.19) from citation

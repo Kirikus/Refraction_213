@@ -3,7 +3,8 @@
 
 #include "effective_radius_model.h"
 
-struct Model4div3 : public EffectiveRadiusModel {
+class Model4div3 : public EffectiveRadiusModel {
+ public:
   // set k
   virtual double k() override;
 };
