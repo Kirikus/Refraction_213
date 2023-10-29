@@ -20,7 +20,8 @@ class Data {
 public:
   QCustomPlot *plot = nullptr;
   Data(double station_height, double target_height, double dist_to_target,
-       AtmosphereModel atmosphere_model, RefractionModel refraction_model, Task task);
+       AtmosphereModel atmosphere_model, RefractionModel refraction_model,
+       Task task);
   Data();
   void setPlot(QCustomPlot *plt);
   void setStation(double height);
