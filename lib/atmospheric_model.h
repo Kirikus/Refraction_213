@@ -3,7 +3,8 @@
 
 #include <cmath>
 
-struct AtmosphericModel {
+class AtmosphericModel {
+ public:
   // Formula for refractive index depended on height
   virtual double N(double h) = 0;
 };

@@ -3,7 +3,8 @@
 
 #include "refraction_model.h"
 
-struct ModelWithoutRefraction : public RefractionModel {
+class ModelWithoutRefraction : public RefractionModel {
+ public:
   // Formula for length of the arc on the Earth's surface between the nadir
   // direction of the radar and target
   // SRC: (2.9, 2.11) from citation
