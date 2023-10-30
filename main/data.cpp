@@ -3,12 +3,12 @@
 Data user_input_data = Data();
 
 Data::Data(double station_height, double target_height, double dist_to_target,
-           AtmosphericModel atmosphere_model, RefractionModel refraction_model,
+           AtmosphericModel atmospheric_model, RefractionModel refraction_model,
            Task task) {
   this->station_height = station_height;
   this->target_height = target_height;
   this->dist_to_target = dist_to_target;
-  this->atmosphere_model = atmosphere_model;
+  this->atmospheric_model = atmospheric_model;
   this->refraction_model = refraction_model;
   this->task = task;
 }
@@ -16,7 +16,7 @@ Data::Data() {
   this->station_height = -1;
   this->target_height = -1;
   this->dist_to_target = -1;
-  this->atmosphere_model = GOST440481;
+  this->atmospheric_model = GOST440481;
   this->refraction_model = Geometric;
   this->task = Forward;
 }
