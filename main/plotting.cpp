@@ -1,8 +1,7 @@
-#include "data.h"
-
-#include "mainwindow.h"
-
 #include <cmath>
+
+#include "data.h"
+#include "mainwindow.h"
 
 void addTargetAndStation() {
   double st_height = user_input_data.getStation();
@@ -15,7 +14,8 @@ void addTargetAndStation() {
   y_st[0] = st_height;
   user_input_data.plot->graph(0)->setData(x_st, y_st);
   QVector<double> x_trg(1), y_trg(1);
-  if (dist * dist - (trg_height - st_height) * (trg_height - st_height) > 0) {
+  if (dist * dist - (trg_height - st_height) * (trg_height - st_height) > 0 &&
+      trg_height != -1 && st_height != -1) {
     x_trg[0] = 100 + sqrt(dist * dist -
                           (trg_height - st_height) * (trg_height - st_height));
     y_trg[0] = trg_height;
