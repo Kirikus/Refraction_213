@@ -3,7 +3,7 @@
 Data user_input_data = Data();
 
 Data::Data(double station_height, double target_height, double dist_to_target,
-           AtmosphereModel atmosphere_model, RefractionModel refraction_model,
+           AtmosphericModel atmosphere_model, RefractionModel refraction_model,
            Task task) {
   this->station_height = station_height;
   this->target_height = target_height;
