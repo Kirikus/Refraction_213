@@ -8,7 +8,7 @@ class FunctionModel1D {
   virtual double y(double x) = 0;
   virtual void fromCSV() = 0;
 
- private:
+ protected:
   map<double, double> data;
 };
 
