@@ -14,29 +14,33 @@ void addTargetAndStation() {
   y_st[0] = st_height;
   user_input_data.plot->graph(0)->setData(x_st, y_st);
   QVector<double> x_trg(1), y_trg(1);
-  if (dist * dist - (trg_height - st_height) * (trg_height - st_height) > 0 &&
-      trg_height != -1 && st_height != -1) {
-    x_trg[0] = 100 + sqrt(dist * dist -
-                          (trg_height - st_height) * (trg_height - st_height));
-    y_trg[0] = trg_height;
-    user_input_data.plot->graph(0)->setData(x_st, y_st);
-    user_input_data.plot->graph(0)->setPen(QColor(255, 50, 70, 255));
-    user_input_data.plot->graph(0)->setScatterStyle(
-        QCPScatterStyle(QCPScatterStyle::ssDisc, 10));
-    user_input_data.plot->graph(1)->setData(x_trg, y_trg);
-    user_input_data.plot->graph(1)->setPen(QColor(0, 255, 70, 255));
-    user_input_data.plot->graph(1)->setScatterStyle(
-        QCPScatterStyle(QCPScatterStyle::ssDisc, 10));
-    user_input_data.plot->xAxis->setRange(
-        0, std::max((100 + sqrt(dist * dist - (trg_height - st_height) *
-                                                  (trg_height - st_height))),
-                    std::max(y_st[0], y_trg[0])) *
-               recession_koef);
-    user_input_data.plot->yAxis->setRange(
-        0, std::max((100 + sqrt(dist * dist - (trg_height - st_height) *
-                                                  (trg_height - st_height))),
-                    std::max(y_st[0], y_trg[0])) *
-               recession_koef);
-    user_input_data.plot->replot();
+  if (not(dist * dist -
+                  (trg_height - st_height) *
+                      (trg_height - st_height) >  // if (input is not correct)
+              0 &&
+          trg_height != -1 && st_height != -1)) {
+    return;
   }
+  x_trg[0] = 100 + sqrt(dist * dist -
+                        (trg_height - st_height) * (trg_height - st_height));
+  y_trg[0] = trg_height;
+  user_input_data.plot->graph(0)->setData(x_st, y_st);
+  user_input_data.plot->graph(0)->setPen(QColor(255, 50, 70, 255));
+  user_input_data.plot->graph(0)->setScatterStyle(
+      QCPScatterStyle(QCPScatterStyle::ssDisc, 10));
+  user_input_data.plot->graph(1)->setData(x_trg, y_trg);
+  user_input_data.plot->graph(1)->setPen(QColor(0, 255, 70, 255));
+  user_input_data.plot->graph(1)->setScatterStyle(
+      QCPScatterStyle(QCPScatterStyle::ssDisc, 10));
+  user_input_data.plot->xAxis->setRange(
+      0, std::max((100 + sqrt(dist * dist - (trg_height - st_height) *
+                                                (trg_height - st_height))),
+                  std::max(y_st[0], y_trg[0])) *
+             recession_koef);
+  user_input_data.plot->yAxis->setRange(
+      0, std::max((100 + sqrt(dist * dist - (trg_height - st_height) *
+                                                (trg_height - st_height))),
+                  std::max(y_st[0], y_trg[0])) *
+             recession_koef);
+  user_input_data.plot->replot();
 }
