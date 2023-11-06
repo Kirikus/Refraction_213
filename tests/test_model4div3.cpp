@@ -17,10 +17,10 @@ BOOST_AUTO_TEST_SUITE(d_effective_radius)
 Model4div3 testModel4div3;
 
 BOOST_AUTO_TEST_CASE(d_simple) {
-  double hs = 2000;
+  EffectiveRadiusModel::Input data{0, 2000, 2000};
   BOOST_TEST(testModel4div3.calculate_d(M_PI / 3, M_PI / 6,
-                                        reinterpret_cast<void *>(&hs)) ==
-                 4 / 3 * (Re + hs) * M_PI / 6,
+                                        reinterpret_cast<void *>(&data)) ==
+                 4 / 3 * (Re + data.hs) * M_PI / 6,
              tt::tolerance(1e-6));
 }
 
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(plot_for_psi_d) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(psi_g_effective_radius)
+BOOST_AUTO_TEST_SUITE(psi_g_4_div_3)
 
 Model4div3 testModel4div3;
 
