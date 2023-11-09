@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+
 #include "./ui_mainwindow.h"
 #include "data.h"
 
@@ -14,9 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
   ui->plot->xAxis->setRange(0, 10000);
   ui->plot->yAxis->setRange(0, 10000);
   ui->plot->setInteraction(
-      QCP::iRangeZoom, true); // Включаем взаимодействие удаления/приближения
+      QCP::iRangeZoom, true);  // Включаем взаимодействие удаления/приближения
   ui->plot->setInteraction(
-      QCP::iRangeDrag, true); // Включаем взаимодействие перетаскивания графика
+      QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
   user_input_data.setPlot(ui->plot);
 }
 

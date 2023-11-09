@@ -1,12 +1,8 @@
-#include "data.h"
-
-#include "mainwindow.h"
-
 #include "QMessageBox"
-
-#include "plotting.h"
-
+#include "data.h"
+#include "mainwindow.h"
 #include "parsing.h"
+#include "plotting.h"
 
 void MainWindow::on_reverseTaskButton_clicked() {
   QMessageBox msg;
