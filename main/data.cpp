@@ -1,5 +1,7 @@
 #include "data.h"
 
+using namespace gui;
+
 Data user_input_data = Data();
 
 Data::Data(double station_height, double target_height, double dist_to_target,

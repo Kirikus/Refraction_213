@@ -5,6 +5,8 @@
 
 #include "qcustomplot.h"
 
+namespace gui {
+
 enum Task { Forward, Reversed };
 enum AtmosphericModel { GOST440481, Segmented, Numerical_Integration };
 enum RefractionModel { Effective_Radius43, Geometric, AverageK, AverageRho };
@@ -34,7 +36,7 @@ class Data {
   double getTarget();
   double getDistance();
 };
-
-extern Data user_input_data;
+}  // namespace gui
+extern gui::Data user_input_data;
 
 #endif
