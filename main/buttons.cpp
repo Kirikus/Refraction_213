@@ -1,4 +1,5 @@
-#include "QMessageBox"
+#include <QMessageBox>
+
 #include "data.h"
 #include "mainwindow.h"
 #include "parsing.h"

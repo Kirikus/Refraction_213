@@ -1,9 +1,9 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include <string>
+#include <qcustomplot.h>
 
-#include "qcustomplot.h"
+#include <string>
 
 namespace gui {
 
