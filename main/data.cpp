@@ -15,9 +15,9 @@ Data::Data(double station_height, double target_height, double dist_to_target,
   this->task = task;
 }
 Data::Data() {
-  this->station_height = -1;
-  this->target_height = -1;
-  this->dist_to_target = -1;
+  this->station_height = std::nan("1");
+  this->target_height = std::nan("1");
+  this->dist_to_target = std::nan("1");
   this->atmospheric_model = GOST440481;
   this->refraction_model = Geometric;
   this->task = Forward;

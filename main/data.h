@@ -3,6 +3,7 @@
 
 #include <qcustomplot.h>
 
+#include <cmath>
 #include <string>
 
 namespace gui {
@@ -12,9 +13,9 @@ enum AtmosphericModel { GOST440481, Segmented, Numerical_Integration };
 enum RefractionModel { Effective_Radius43, Geometric, AverageK, AverageRho };
 
 class Data {
-  double target_height = 0;
-  double station_height = 0;
-  double dist_to_target = 0;
+  double target_height = std::nan("1");
+  double station_height = std::nan("1");
+  double dist_to_target = std::nan("1");
   AtmosphericModel atmospheric_model = GOST440481;
   RefractionModel refraction_model = Geometric;
   Task task = Forward;
