@@ -53,9 +53,11 @@ double SplineModel::y(double x) {
   double c1 = -k1 * (x1 - x0) + (y1 - y0);
   double a2 = k1 * (x2 - x1) - (y2 - y1);
   double c2 = -k2 * (x2 - x1) + (y2 - y1);
-  double t = (x - x1) / (x2 - x1);
-  if (x > first_point->x && x < second_point->x)
+  if (x > first_point->x && x < second_point->x) {
+    double t = (x - x0) / (x1 - x0);
     return (1 - t) * y0 + t * y1 + t * (1 - t) * ((1 - t) * a1 + t * c1);
-  else
+  } else {
+    double t = (x - x1) / (x2 - x1);
     return (1 - t) * y1 + t * y2 + t * (1 - t) * ((1 - t) * a2 + t * c2);
+  }
 }
