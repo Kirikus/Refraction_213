@@ -34,17 +34,19 @@ std::shared_ptr<SegmentedAtmosphericModel> atmosphere(
 AveragePModel testAveragePModel(atmosphere);
 
 BOOST_AUTO_TEST_CASE(simple) {
-  BOOST_TEST(testAveragePModel.calculate_psi_d(0, 0, 0) == 0);
+  RefractionModel::Input data{.ha = 0, .hs = 0, .R = 0};
+  BOOST_TEST(testAveragePModel.calculate_psi_d(data) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(psi_d_pi_2) {
-  BOOST_TEST(testAveragePModel.calculate_psi_d(2000, 1000, 1000) == M_PI / 2,
+  RefractionModel::Input data{.ha = 2000, .hs = 1000, .R = 1000};
+  BOOST_TEST(testAveragePModel.calculate_psi_d(data) == M_PI / 2,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(same_dote) {
-  BOOST_TEST(testAveragePModel.calculate_psi_d(2000, 2000, 0) == 0,
-             tt::tolerance(1e-6));
+  RefractionModel::Input data{.ha = 2000, .hs = 2000, .R = 0};
+  BOOST_TEST(testAveragePModel.calculate_psi_d(data) == 0, tt::tolerance(1e-6));
 }
 
 #ifdef TEST_PLOTS
@@ -68,7 +70,8 @@ BOOST_AUTO_TEST_CASE(plot_for_psi_d) {
 
   for (int j = 0; j < N; ++j) {
     x[j] = (h_min + j * (h_max - h_min) / (N - 1)) / 1000;
-    y[j] = testAveragePModel.calculate_psi_d(ha, x[j] * 1000, R);
+    RefractionModel::Input data{.ha = ha, .hs = x[j] * 1000, .R = R};
+    y[j] = testAveragePModel.calculate_psi_d(data);
   }
 
   customPlot.addGraph();
@@ -95,17 +98,19 @@ std::shared_ptr<SegmentedAtmosphericModel> atmosphere(
 AveragePModel testAveragePModel(atmosphere);
 
 BOOST_AUTO_TEST_CASE(simple) {
-  BOOST_TEST(testAveragePModel.calculate_psi_g(0, 0, 0) == 0);
+  RefractionModel::Input data{.ha = 0, .hs = 0, .R = 0};
+  BOOST_TEST(testAveragePModel.calculate_psi_g(data) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(psi_g_pi_2) {
-  BOOST_TEST(testAveragePModel.calculate_psi_g(2000, 1000, 1000) == M_PI / 2,
+  RefractionModel::Input data{.ha = 2000, .hs = 1000, .R = 1000};
+  BOOST_TEST(testAveragePModel.calculate_psi_g(data) == M_PI / 2,
              tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_CASE(same_dote) {
-  BOOST_TEST(testAveragePModel.calculate_psi_g(2000, 2000, 0) == 0,
-             tt::tolerance(1e-6));
+  RefractionModel::Input data{.ha = 2000, .hs = 2000, .R = 0};
+  BOOST_TEST(testAveragePModel.calculate_psi_g(data) == 0, tt::tolerance(1e-6));
 }
 
 #ifdef TEST_PLOTS

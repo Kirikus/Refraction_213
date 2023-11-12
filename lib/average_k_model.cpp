@@ -11,7 +11,7 @@ double AverageKModel::k(const Input& data) {
 
 double AverageKModel::Ro(const Input& data, double h) {
   ModelWithoutRefraction approximate;
-  double psi = approximate.calculate_psi_d(data.ha, data.hs, data.R);
+  double psi = approximate.calculate_psi_d(data);
   double delta = std::pow(10, -3);
   return -atmosphere->N(h) /
          (atmosphere->N(h + delta) - atmosphere->N(h - delta)) / std::cos(psi);
