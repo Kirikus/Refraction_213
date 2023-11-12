@@ -12,7 +12,9 @@ class AverageKModel : public EffectiveRadiusModel {
   // opaque : struct Input
   // SRC: (2.38) from citation
   virtual double k(const Input& data) override;
-  AverageKModel(std::shared_ptr<AtmosphericModel> atmosphere);
+
+  AverageKModel(std::shared_ptr<AtmosphericModel> atmosphere)
+      : atmosphere{atmosphere} {}
 
  private:
   // SRC: (2.33) from citation

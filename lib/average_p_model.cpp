@@ -2,10 +2,6 @@
 
 double AveragePModel::k(const Input& data) { return 1 / (1 - Re / Ro(data)); }
 
-AveragePModel::AveragePModel(std::shared_ptr<AtmosphericModel> atmosphere) {
-  this->atmosphere = atmosphere;
-}
-
 double AveragePModel::Ro(const Input& data) {
   double Ro_avg = 0;
   const size_t N = 100;

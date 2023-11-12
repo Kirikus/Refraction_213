@@ -9,10 +9,6 @@ double AverageKModel::k(const Input& data) {
   return k_avg;
 }
 
-AverageKModel::AverageKModel(std::shared_ptr<AtmosphericModel> atmosphere) {
-  this->atmosphere = atmosphere;
-}
-
 double AverageKModel::Ro(const Input& data, double h) {
   ModelWithoutRefraction approximate;
   double psi = approximate.calculate_psi_d(data.ha, data.hs, data.R);
