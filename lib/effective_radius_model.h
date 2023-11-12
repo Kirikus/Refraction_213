@@ -6,15 +6,6 @@
 
 class EffectiveRadiusModel : public RefractionModel {
  public:
-  // input data for k
-  // ha : height of aircraft above sea level, m
-  // hs : height of target above sea level, m
-  // R : slant range from aircraft to surface target, m
-  struct Input {
-    double ha;
-    double hs;
-    double R;
-  };
   // Formula for length of the arc on the Earth's surface between the nadir
   // direction of the radar and target
   // SRC: (2.19) from citation

@@ -14,6 +14,15 @@ class RefractionModel {
     double psi_g;
     double d;
   };
+  // input data
+  // ha : height of aircraft above sea level, m
+  // hs : height of target above sea level, m
+  // R : slant range from aircraft to surface target, m
+  struct Input {
+    double ha;
+    double hs;
+    double R;
+  };
 
   // Formula for length of the arc on the Earth's surface between the nadir
   // direction of the radar and target
