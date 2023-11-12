@@ -9,6 +9,11 @@ const double Re = 6378000;
 
 class RefractionModel {
  public:
+  // answer for task
+  //    d : the length of the arc on the Earth's surface between the nadir
+  //        direction of the radar and target, m
+  //    psi_d : declination angle, radians
+  //    psi_g : sliding angle, radians
   struct Answer {
     double psi_d;
     double psi_g;
