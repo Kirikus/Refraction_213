@@ -18,9 +18,6 @@ class EffectiveRadiusModel : public RefractionModel {
   // target
   // SRC: (2.17) from citation
   //    psi_d : declination angle, radians
-  //    ha : height of aircraft above sea level, m
-  //    hs : height of target above sea level, m
-  //    R : slant range from aircraft to surface target, m
   //    opaque : not used
   virtual double calculate_psi_d(const Input& data,
                                  void* opaque = nullptr) override;
@@ -28,9 +25,6 @@ class EffectiveRadiusModel : public RefractionModel {
   // Formula for sliding angle via slant range, heights of the radar and target
   // SRC: (2.17) from citation
   //    psi_g : sliding angle, radians
-  //    ha : height of aircraft above sea level, m
-  //    hs : height of target above sea level, m
-  //    R : slant range from aircraft to surface target, m
   //    opaque : not used
   virtual double calculate_psi_g(const Input& data,
                                  void* opaque = nullptr) override;
