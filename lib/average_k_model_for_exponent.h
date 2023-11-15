@@ -9,7 +9,7 @@ class AverageKModel_forExponent : public EffectiveRadiusModel {
   // set k : equivalent radius coefficient, n/u
   // SRC: (2.38) from citation
   virtual double k(const Input& data) override;
-  AverageKModel_forExponent(ExponentAtmosphericModel atmosphere)
+  AverageKModel_forExponent(const ExponentAtmosphericModel& atmosphere)
       : atmosphere{atmosphere} {}
 
  private:
