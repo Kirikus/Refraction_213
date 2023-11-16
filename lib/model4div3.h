@@ -6,7 +6,8 @@
 class Model4div3 : public EffectiveRadiusModel {
  public:
   // set k
-  virtual double k() override;
+  // Input data isn't used
+  virtual double k(const Input& data) override;
 };
 
 #endif  // 4DIV3MODEL_H

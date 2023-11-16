@@ -6,22 +6,24 @@ double ModelWithoutRefraction::calculate_d(double psi_d, double psi_g,
   return d;
 }
 
-double ModelWithoutRefraction::calculate_psi_d(double ha, double hs, double R,
+double ModelWithoutRefraction::calculate_psi_d(const Input& data,
                                                void* opaque) {
-  if (R == 0) return 0;  // if target and radar in same dote
+  if (data.R == 0) return 0;  // if target and radar in same dote
   double cos_90_psi_d =
-      (R * R + ha * ha + 2 * ha * Re - hs * hs - 2 * hs * Re) /
-      (2 * R * (Re + ha));
+      (data.R * data.R + data.ha * data.ha + 2 * data.ha * Re -
+       data.hs * data.hs - 2 * data.hs * Re) /
+      (2 * data.R * (Re + data.ha));
   double psi_d = M_PI / 2 - acos(cos_90_psi_d);
   return psi_d;
 }
 
-double ModelWithoutRefraction::calculate_psi_g(double ha, double hs, double R,
+double ModelWithoutRefraction::calculate_psi_g(const Input& data,
                                                void* opaque) {
-  if (R == 0) return 0;  // if target and radar in same dote
+  if (data.R == 0) return 0;  // if target and radar in same dote
   double cos_90_psi_g =
-      (R * R - ha * ha - 2 * ha * Re + hs * hs + 2 * hs * Re) /
-      (2 * R * (Re + hs));
+      (data.R * data.R - data.ha * data.ha - 2 * data.ha * Re +
+       data.hs * data.hs + 2 * data.hs * Re) /
+      (2 * data.R * (Re + data.hs));
   double psi_g = acos(cos_90_psi_g) - M_PI / 2;
   return psi_g;
 }
@@ -32,11 +34,10 @@ double ModelWithoutRefraction::calculate_phi_e(double psi_d, double psi_g,
   return phi_e;
 }
 
-RefractionModel::Answer ModelWithoutRefraction::calculate(double ha, double hs,
-                                                          double R,
+RefractionModel::Answer ModelWithoutRefraction::calculate(const Input& data,
                                                           void* opaque) {
-  double psi_d = calculate_psi_d(ha, hs, R);
-  double psi_g = calculate_psi_g(ha, hs, R);
+  double psi_d = calculate_psi_d(data);
+  double psi_g = calculate_psi_g(data);
   return Answer(
       {.psi_d = psi_d, .psi_g = psi_g, .d = calculate_d(psi_d, psi_g)});
 }

@@ -20,21 +20,15 @@ class ModelWithoutRefraction : public RefractionModel {
   // target
   // SRC: image (2.30), inferential
   //    psi_d : declination angle, radians
-  //    ha : height of aircraft above sea level, m
-  //    hs : height of target above sea level, m
-  //    R : slant range from aircraft to surface target, m
   //    opaque : not used
-  virtual double calculate_psi_d(double ha, double hs, double R,
+  virtual double calculate_psi_d(const Input& data,
                                  void* opaque = nullptr) override;
 
   // Formula for sliding angle via slant range, heights of the radar and target
   // SRC: image (2.30), inferential
   //    psi_g : sliding angle, radians
-  //    ha : height of aircraft above sea level, m
-  //    hs : height of target above sea level, m
-  //    R : slant range from aircraft to surface target, m
   //    opaque : not used
-  virtual double calculate_psi_g(double ha, double hs, double R,
+  virtual double calculate_psi_g(const Input& data,
                                  void* opaque = nullptr) override;
 
   // Formula for angular measure of the arc of the Earth's surface from the
@@ -47,8 +41,7 @@ class ModelWithoutRefraction : public RefractionModel {
                                  void* opaque = nullptr) override;
 
   // Formula for task of the library
-  virtual Answer calculate(double ha, double hs, double R,
-                           void* opaque = nullptr) override;
+  virtual Answer calculate(const Input& data, void* opaque = nullptr) override;
 };
 
 #endif  // MODEL_WITHOUT_REFRACTION_H
