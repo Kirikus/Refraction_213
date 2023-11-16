@@ -1,37 +1,43 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <qcustomplot.h>
+
+#include <cmath>
 #include <string>
 
-#include "qcustomplot.h"
+namespace gui {
+
+enum Task { Forward, Reversed };
+enum AtmosphericModel { GOST440481, Segmented, Numerical_Integration };
+enum RefractionModel { Effective_Radius43, Geometric, AverageK, AverageRho };
 
 class Data {
-  double target_coords = 0;
-  double station_coords = 0;
-  double dist_to_target = 0;
-  std::string atmosphere_model = "Не выбрано";
-  std::string refraction_model = "Не выбрано";
-  std::string task = "Прямая задача";
+  double target_height = std::nan("1");
+  double station_height = std::nan("1");
+  double dist_to_target = std::nan("1");
+  AtmosphericModel atmospheric_model = GOST440481;
+  RefractionModel refraction_model = Geometric;
+  Task task = Forward;
 
-public:
+ public:
   QCustomPlot *plot = nullptr;
-  Data(double station_coords, double target_coords, double dist_to_target,
-       std::string atmosphere_model, std::string refraction_model,
-       std::string task);
+  Data(double station_height, double target_height, double dist_to_target,
+       AtmosphericModel atmospheric_model, RefractionModel refraction_model,
+       Task task);
   Data();
   void setPlot(QCustomPlot *plt);
-  void setStCoords(double station_coords);
-  void setTrgCoords(double target_coords);
-  void setDstToTarget(double target_distance);
-  void setAtmosphereModel(std::string atmosphere_model);
-  void setRefractionModel(std::string refraction_model);
-  void setTask(std::string task);
-  double getStCoords();
-  double getTrgCoords();
-  double getDstToTarget();
+  void setStation(double height);
+  void setTarget(double height);
+  void setDistance(double distance_from_station_to_target);
+  void setAtmosphericModel(AtmosphericModel atmospheric_model);
+  void setRefractionModel(RefractionModel refraction_model);
+  void setTask(enum Task);
+  double getStation();
+  double getTarget();
+  double getDistance();
 };
-
-extern Data user_input_data;
+}  // namespace gui
+extern gui::Data user_input_data;
 
 #endif
-

@@ -1,12 +1,9 @@
+#include <QMessageBox>
+
 #include "data.h"
-
 #include "mainwindow.h"
-
-#include "QMessageBox"
-
-#include "plotting.h"
-
 #include "parsing.h"
+#include "plotting.h"
 
 void MainWindow::on_reverseTaskButton_clicked() {
   QMessageBox msg;
@@ -24,19 +21,18 @@ void MainWindow::on_directTaskButton_clicked() {
 
 void MainWindow::on_distanceToTargetEdit_textEdited(
     const QString &dst_to_target) {
-  user_input_data.setDstToTarget(parse_double(dst_to_target.toStdString()));
+  user_input_data.setDistance(parse_double(dst_to_target.toStdString()));
   addTargetAndStation();
 }
 
 void MainWindow::on_targetCoordinatesEdit_textEdited(
-    const QString &trg_coords) {
-  user_input_data.setTrgCoords(parse_double(trg_coords.toStdString()));
+    const QString &trg_height) {
+  user_input_data.setTarget(parse_double(trg_height.toStdString()));
   addTargetAndStation();
 }
 
 void MainWindow::on_stationCoordinatesEdit_textEdited(
-    const QString &st_coords) {
-  user_input_data.setStCoords(parse_double(st_coords.toStdString()));
+    const QString &st_height) {
+  user_input_data.setStation(parse_double(st_height.toStdString()));
   addTargetAndStation();
 }
-
