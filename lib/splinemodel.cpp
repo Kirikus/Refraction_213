@@ -1,63 +1,121 @@
 #include "splinemodel.h"
-
+//#include <QFile>
+#include <QDebug>
+#include <QTextStream>
 #include <algorithm>
 
-SplineModel::SplineModel() {}
+SplineModel::SplineModel(vector<Point> points) {
+  vector<vector<double>> matrix;
+  int eq_number = (points.size() - 1) * 4;
+  vector<double> coeff(eq_number, 0);
+  vector<double> answer(eq_number, 0);
+  for (int i = 0; i < points.size() - 1; ++i) {
+    double x1 = points[i].x;
+    double x2 = points[i + 1].x;
+    double y1 = points[i].y;
+    double y2 = points[i + 1].y;
+    coeff[4 * i] = 1;
+    coeff.push_back(y1);
+    matrix.push_back(coeff);
+    coeff.assign(eq_number, 0);
+    coeff[4 * i] = 1;
+    coeff[4 * i + 1] = (x2 - x1);
+    coeff[4 * i + 2] = (x2 - x1) * (x2 - x1);
+    coeff[4 * i + 3] = (x2 - x1) * (x2 - x1) * (x2 - x1);
+    coeff.push_back(y2);
+    matrix.push_back(coeff);
+    coeff.assign(eq_number, 0);
+    if (i < points.size() - 2) {
+      coeff[4 * i + 1] = 1;
+      coeff[4 * i + 2] = 2 * (x2 - x1);
+      coeff[4 * i + 3] = 3 * (x2 - x1) * (x2 - x1);
+      coeff[4 * i + 5] = -1;
+      coeff.push_back(0);
+      matrix.push_back(coeff);
+      coeff.assign(eq_number, 0);
+      coeff[4 * i + 2] = 2;
+      coeff[4 * i + 3] = 6 * (x2 - x1);
+      coeff[4 * (i + 1) + 2] = -2;
+      coeff.push_back(0);
+      matrix.push_back(coeff);
+      coeff.assign(eq_number, 0);
+    }
+    if (i == 0) {
+      coeff[4 * i + 2] = 2;
+      coeff.push_back(0);
+      matrix.push_back(coeff);
+      coeff.assign(eq_number, 0);
+    }
+  }
+  coeff[4 * (points.size() - 2) + 2] = 2;
+  coeff[4 * (points.size() - 2) + 3] =
+      6 * (points.back().x - points[points.size() - 2].x);
+  coeff.push_back(0);
+  matrix.push_back(coeff);
+  coeff.assign(eq_number, 0);
+  for (int i = 0; i < eq_number; ++i) {
+    if (matrix[i][i] == 0) {
+      int search = i;
+      while (matrix[search][i] == 0 && search < eq_number) search += 1;
+      if (search == eq_number - 1) continue;
+      for (int l = 0; l < matrix[search].size(); ++l) {
+        double tmp = matrix[search][l];
+        matrix[search][l] = matrix[i][l];
+        matrix[i][l] = tmp;
+      }
+    }
+    double tmp = matrix[i][i];
+    for (int j = eq_number; j >= i; --j) matrix[i][j] /= tmp;
+    for (int g = i + 1; g < eq_number; g++) {
+      tmp = matrix[g][i];
+      for (int k = eq_number; k >= i; --k) matrix[g][k] -= tmp * matrix[i][k];
+    }
+  }
+  answer[eq_number - 1] = matrix[eq_number - 1][eq_number];
+  for (int i = eq_number - 2; i >= 0; i--) {
+    answer[i] = matrix[i][eq_number];
+    for (int j = i + 1; j < eq_number; j++)
+      answer[i] -= matrix[i][j] * answer[j];
+    // TODO: Think about c0 coefficient from YouTube example
+  }
+  for (int i = 0; i < points.size() - 1; ++i) {
+    data.push_back(Data(points[i], points[i + 1], answer[4 * i],
+                        answer[4 * i + 1], answer[4 * i + 2],
+                        answer[4 * i + 3]));
+  }
+}
+
+SplineModel::SplineModel(QFile& file) {
+  vector<Point> data;
+  if (!file.open(QFile::ReadOnly | QFile::Text)) {
+    qDebug() << "File not exists";
+  } else {
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+      QString line = in.readLine();
+      vector<double> coords;
+      for (QString item : line.split(";")) coords.push_back(item.toDouble());
+      data.push_back(Point(coords));
+    }
+  }
+  SplineModel* spline = new SplineModel(data);
+  this->data = spline->data;
+  file.close();
+}
 
 double SplineModel::y(double x) {
   auto start = data.begin();
   auto finish = data.end();
   finish--;
-  if (x <= (start->x)) return start->y;
-  if (x >= (finish->x)) return finish->y;
-  auto second_point = upper_bound(data.begin(), data.end(), x,
-                                  [](int x, Point& z) { return x < z.x; });
-  auto first_point = second_point;
-  first_point--;
-  auto third_point = second_point;
-  if (second_point == finish) {
-    third_point = second_point;
-    second_point--;
-    first_point--;
-  } else {
-    third_point = second_point;
-    second_point++;
-  }
-  double x0 = first_point->x;
-  double y0 = first_point->y;
-  double x1 = second_point->x;
-  double y1 = second_point->y;
-  double x2 = third_point->x;
-  double y2 = third_point->y;
-  double a11 = 2 / (x1 - x0);
-  double a12 = 1 / (x1 - x0);
-  double a21 = 1 / (x1 - x0);
-  double a22 = 2 * (1 / (x1 - x0) + 1 / (x2 - x1));
-  double a23 = 1 / (x2 - x1);
-  double a32 = 1 / (x2 - x1);
-  double a33 = 2 / (x2 - x1);
-  double b1 = 3 * (y1 - y0) / ((x1 - x0) * (x1 - x0));
-  double b2 = 3 * ((y1 - y0) / ((x1 - x0) * (x1 - x0)) +
-                   (y2 - y1) / ((x2 - x1) * (x2 - x1)));
-  double b3 = 3 * (y2 - y1) / ((x2 - x1) * (x2 - x1));
-  double A = a21 * b1 / a11;
-  double B = a12 * a21 / a11;
-  double C = a22;
-  double D = b3 * a23 / a33;
-  double E = a23 * a32 / a33;
-  double F = b2;
-  double k1 = (A + D - F) / (B + E - C);
-  double k0 = (b1 - a12 * k1) / a11;
-  double k2 = (b3 - a32 * k1) / a33;
-  double a1 = k0 * (x1 - x0) - (y1 - y0);
-  double c1 = -k1 * (x1 - x0) + (y1 - y0);
-  double a2 = k1 * (x2 - x1) - (y2 - y1);
-  double c2 = -k2 * (x2 - x1) + (y2 - y1);
-  if (x > first_point->x && x < second_point->x) {
-    double t = (x - x0) / (x1 - x0);
-    return (1 - t) * y0 + t * y1 + t * (1 - t) * ((1 - t) * a1 + t * c1);
-  } else {
-    double t = (x - x1) / (x2 - x1);
-    return (1 - t) * y1 + t * y2 + t * (1 - t) * ((1 - t) * a2 + t * c2);
-  }
+  if (x <= start->first_point.x)
+    return data[0].a + data[0].b * (x - data[0].first_point.x);
+  if (x >= finish->second_point.x)
+    return data.back().a + data.back().b * (x - data.back().first_point.x);
+  for (auto interval = data.begin(); interval != data.end(); ++interval)
+    if (x >= interval->first_point.x && x <= interval->second_point.x) {
+      double x0 = interval->first_point.x;
+      return interval->a + interval->b * (x - x0) +
+             interval->c * (x - x0) * (x - x0) +
+             interval->d * (x - x0) * (x - x0) * (x - x0);
+    }
 }

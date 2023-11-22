@@ -7,22 +7,20 @@ using std::vector;
 
 class LinearModel : public FunctionModel1D {
  public:
-  LinearModel();
+  LinearModel(vector<Point>);
   double y(double x) override;
-  void fromCSV() override;
+  LinearModel(QFile&);
 
  private:
-  vector<Point> data;
-  struct IntervalData {
+  struct Data {
     double first_x;
     double second_x;
     double k;
     double b;
-    bool calculated{false};
-    IntervalData(double x1, double x2, double k1, double b1)
-        : first_x{x1}, second_x{x2}, k{k1}, b{b1}, calculated{true} {};
+    Data(double x1, double x2, double k1, double b1)
+        : first_x{x1}, second_x{x2}, k{k1}, b{b1} {};
   };
-  vector<IntervalData> interval_data;
+  vector<Data> data;
 };
 
 #endif  // LINEARMODEL_H
