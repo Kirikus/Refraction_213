@@ -13,23 +13,20 @@ class ModelWithoutRefraction : public RefractionModel {
   //    psi_d : declination angle, radians
   //    psi_g : sliding angle, radians
   //    opaque : not used
-  virtual double calculate_d(double psi_d, double psi_g,
-                             void* opaque = nullptr) override;
+  double calculate_d(double psi_d, double psi_g, void* opaque = nullptr);
 
   // Formula for declination angle via slant range, heights of the radar and
   // target
   // SRC: image (2.30), inferential
   //    psi_d : declination angle, radians
   //    opaque : not used
-  virtual double calculate_psi_d(const Input& data,
-                                 void* opaque = nullptr) override;
+  double calculate_psi_d(const Input& data, void* opaque = nullptr);
 
   // Formula for sliding angle via slant range, heights of the radar and target
   // SRC: image (2.30), inferential
   //    psi_g : sliding angle, radians
   //    opaque : not used
-  virtual double calculate_psi_g(const Input& data,
-                                 void* opaque = nullptr) override;
+  double calculate_psi_g(const Input& data, void* opaque = nullptr);
 
   // Formula for angular measure of the arc of the Earth's surface from the
   // radar to the target
@@ -37,8 +34,7 @@ class ModelWithoutRefraction : public RefractionModel {
   //    phi_e : angular measure, radians
   //    psi_d : declination angle, radians
   //    psi_g : sliding angle, radians
-  virtual double calculate_phi_e(double psi_d, double psi_g,
-                                 void* opaque = nullptr) override;
+  double calculate_phi_e(double psi_d, double psi_g, void* opaque = nullptr);
 
   // Formula for task of the library
   virtual Answer calculate(const Input& data, void* opaque = nullptr) override;
