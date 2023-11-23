@@ -22,12 +22,9 @@ class ExponentAtmosphericModel : public AtmosphericModel {
 
  private:
   // height of ground surface above sea level, m
-  double hs = 0;
+  double hs;
   // refractive index at the Earth's surface, n/u
-  double Ns = 324.8;
-
-  double hb = 12192;
-  double Nb = 66.65;
+  double Ns;
 };
 
 #endif  // EXPONENTMODEL_H
