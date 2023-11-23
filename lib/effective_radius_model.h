@@ -1,7 +1,6 @@
 #ifndef EFFECTIVE_RADIUS_MODEL_H
 #define EFFECTIVE_RADIUS_MODEL_H
 
-#include "atmospheric_model.h"
 #include "refraction_model.h"
 
 class EffectiveRadiusModel : public RefractionModel {

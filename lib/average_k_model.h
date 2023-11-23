@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "atmospheric_model.h"
 #include "effective_radius_model.h"
 #include "model_without_refraction.h"
 
