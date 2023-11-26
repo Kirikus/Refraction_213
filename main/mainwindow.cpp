@@ -133,3 +133,8 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 MainWindow::~MainWindow() { delete ui; }
+void MainWindow::showAnswer() {
+  ui->declinationAngleEdit->setText(QString::number(answer.psi_d));
+  ui->slidingAngleEdit->setText(QString::number(answer.psi_g));
+  ui->distanceToSurfaceEdit->setText(QString::number(answer.d));
+}
