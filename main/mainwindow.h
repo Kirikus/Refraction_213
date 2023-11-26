@@ -15,8 +15,15 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
-
-public:
+ public:
+  QLineEdit *SegmentedHeightAboveTheSeaEdit;
+  QLineEdit *SegmentedRefractiveIndexNearSurfaceEdit;
+  QLineEdit *ExponentHeightAboveTheSeaEdit;
+  QLineEdit *ExponentRefractiveIndexNearSurfaceEdit;
+  QRadioButton *averagekIntegrateButton;
+  QRadioButton *averagepIntegrateButton;
+  QRadioButton *averagekFittingButton;
+  QRadioButton *averagepFittingButton;
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
