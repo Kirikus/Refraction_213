@@ -130,6 +130,30 @@ MainWindow::MainWindow(QWidget* parent)
   section_averagep_model->setContentLayout(*averagep_model_layout);
   ui->refractionStackedWidget->insertWidget(3, section_averagep_model);
 
+  QObject::connect(
+      ExponentRefractiveIndexNearSurfaceEdit, &QLineEdit::textEdited, this,
+      &MainWindow::ExponentRefractiveIndexNearSurfaceEdit_textEdited);
+
+  QObject::connect(ExponentHeightAboveTheSeaEdit, &QLineEdit::textEdited, this,
+                   &MainWindow::ExponentHeightAboveTheSeaEdit_textEdited);
+
+  QObject::connect(SegmentedHeightAboveTheSeaEdit, &QLineEdit::textEdited, this,
+                   &MainWindow::SegmentedHeightAboveTheSeaEdit_textEdited);
+
+  QObject::connect(
+      SegmentedRefractiveIndexNearSurfaceEdit, &QLineEdit::textEdited, this,
+      &MainWindow::SegmentedRefractiveIndexNearSurfaceEdit_textEdited);
+
+  QObject::connect(averagekIntegrateButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_integrateButton_clicked);
+  QObject::connect(averagepIntegrateButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_integrateButton_clicked);
+  QObject::connect(averagekFittingButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_fittingButton_clicked);
+  QObject::connect(averagepFittingButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_fittingButton_clicked);
+}
+
 void MainWindow::ExponentRefractiveIndexNearSurfaceEdit_textEdited(
     const QString& index) {
   user_input_data.setRefractiveIndex(index.QString::toDouble());
