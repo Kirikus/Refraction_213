@@ -26,9 +26,22 @@ class MainWindow : public QMainWindow {
   QRadioButton *averagepFittingButton;
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+  void showAnswer();
 
-private slots:
+ private slots:
+  void on_refractionModelBox_currentIndexChanged(const QString &arg1);
+
+  void on_atmosphericModelBox_currentIndexChanged(const QString &arg1);
+
   void on_stationCoordinatesEdit_textEdited(const QString &arg1);
+
+  void ExponentRefractiveIndexNearSurfaceEdit_textEdited(const QString &arg1);
+
+  void ExponentHeightAboveTheSeaEdit_textEdited(const QString &arg1);
+
+  void SegmentedRefractiveIndexNearSurfaceEdit_textEdited(const QString &arg1);
+
+  void SegmentedHeightAboveTheSeaEdit_textEdited(const QString &arg1);
 
   void on_targetCoordinatesEdit_textEdited(const QString &arg1);
 
@@ -38,7 +51,11 @@ private slots:
 
   void on_reverseTaskButton_clicked();
 
-private:
+  void on_integrateButton_clicked();
+
+  void on_fittingButton_clicked();
+
+ private:
   Ui::MainWindow *ui;
 };
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H
