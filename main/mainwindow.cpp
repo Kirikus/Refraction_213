@@ -42,6 +42,39 @@ MainWindow::MainWindow(QWidget* parent)
   ui->plot->setInteraction(
       QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
   user_input_data.setPlot(ui->plot);
+  ui::Section* section_segmented_model =
+      new ui::Section("Параметры", 300, this, false, ModelType::Atmospheric);
+  auto* segmented_model_layout = new QGridLayout();
+  segmented_model_layout->addWidget(new QLabel(
+      "Высота поверхности над уровнем моря:", section_segmented_model));
+
+  SegmentedHeightAboveTheSeaEdit = new QLineEdit(this);
+
+  auto* SegmentedHeightAboveTheSeaEditValidator = new betterDoubleValidator(
+      0, max_surface_height, max_decimals, SegmentedHeightAboveTheSeaEdit);
+  SegmentedHeightAboveTheSeaEditValidator->setLocale(
+      QLocale(QLocale::English, QLocale::Europe));
+
+  SegmentedHeightAboveTheSeaEdit->setValidator(
+      SegmentedHeightAboveTheSeaEditValidator);
+  segmented_model_layout->addWidget(SegmentedHeightAboveTheSeaEdit, 0, 1);
+  segmented_model_layout->addWidget(new QLabel(
+      "Показатель преломления у поверхности:", section_segmented_model));
+  SegmentedRefractiveIndexNearSurfaceEdit = new QLineEdit(this);
+
+  auto* SegmentedRefractiveIndexNearSurfaceEditValidator =
+      new betterDoubleValidator(0, max_refractive_index, max_decimals,
+                                SegmentedRefractiveIndexNearSurfaceEdit);
+  SegmentedRefractiveIndexNearSurfaceEditValidator->setLocale(
+      QLocale(QLocale::English, QLocale::Europe));
+
+  SegmentedRefractiveIndexNearSurfaceEdit->setValidator(
+      SegmentedRefractiveIndexNearSurfaceEditValidator);
+  segmented_model_layout->addWidget(SegmentedRefractiveIndexNearSurfaceEdit, 1,
+                                    1);
+  section_segmented_model->setContentLayout(*segmented_model_layout);
+  ui->atmosphericStackedWidget->insertWidget(0, section_segmented_model);
+
 }
 
 MainWindow::~MainWindow() { delete ui; }
