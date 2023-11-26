@@ -133,6 +133,57 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::on_atmosphericModelBox_currentIndexChanged(
+    const QString& atmospheric_model) {
+  gui::AtmosphericModel current_atmoshperic_model =
+      string_to_atmospheric_model[atmospheric_model.toStdString()];
+  user_input_data.setAtmosphericModel(current_atmoshperic_model);
+  switch (current_atmoshperic_model) {
+    case gui::AtmosphericModel::Segmented: {
+      ui->atmosphericStackedWidget->setCurrentIndex(0);
+      break;
+    }
+    case gui::AtmosphericModel::Exponential: {
+      ui->atmosphericStackedWidget->setCurrentIndex(1);
+      break;
+    }
+    case gui::AtmosphericModel::GOST440481: {
+      ui->atmosphericStackedWidget->setCurrentIndex(2);
+      break;
+    }
+  }
+  calculateResult();
+  showAnswer();
+}
+
+void MainWindow::on_refractionModelBox_currentIndexChanged(
+    const QString& refraction_model) {
+  gui::RefractionModel current_refraction_model =
+      string_to_refraction_model[refraction_model.toStdString()];
+  user_input_data.setRefractionModel(current_refraction_model);
+  switch (current_refraction_model) {
+    case gui::RefractionModel::Effective_Radius43: {
+      ui->refractionStackedWidget->setCurrentIndex(0);
+      break;
+    }
+    case gui::RefractionModel::Geometric: {
+      ui->refractionStackedWidget->setCurrentIndex(1);
+      break;
+    }
+    case gui::RefractionModel::AverageK: {
+      ui->refractionStackedWidget->setCurrentIndex(2);
+      break;
+    }
+    case gui::RefractionModel::AverageRho: {
+      ui->refractionStackedWidget->setCurrentIndex(3);
+      break;
+    }
+  }
+  calculateResult();
+  showAnswer();
+}
+
 void MainWindow::showAnswer() {
   ui->declinationAngleEdit->setText(QString::number(answer.psi_d));
   ui->slidingAngleEdit->setText(QString::number(answer.psi_g));
