@@ -14,6 +14,17 @@ constexpr double max_refractive_index = 2000;
 constexpr double max_effective_radius_coefficient = 10;
 constexpr double min_effective_radius_coefficient = 0.1;
 
+std::map<std::string, gui::AtmosphericModel> string_to_atmospheric_model = {
+    {"Модель ГОСТ4401-81", gui::AtmosphericModel::GOST440481},
+    {"Сегментированная модель", gui::AtmosphericModel::Segmented},
+    {"Экспоненциальная модель", gui::AtmosphericModel::Exponential}};
+std::map<std::string, gui::RefractionModel> string_to_refraction_model = {
+    {"Модель эффективного радиуса 4/3",
+     gui::RefractionModel::Effective_Radius43},
+    {"Геометрическая модель", gui::RefractionModel::Geometric},
+    {"Модель среднего K", gui::RefractionModel::AverageK},
+    {"Модель среднего P", gui::RefractionModel::AverageRho}};
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
