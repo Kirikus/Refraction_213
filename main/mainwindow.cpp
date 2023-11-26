@@ -119,6 +119,17 @@ MainWindow::MainWindow(QWidget* parent)
   averagek_model_layout->addWidget(averagekFittingButton);
   section_averagek_model->setContentLayout(*averagek_model_layout);
   ui->refractionStackedWidget->insertWidget(2, section_averagek_model);
+
+  ui::Section* section_averagep_model =
+      new ui::Section("Параметры", 300, this, false, ModelType::Atmospheric);
+  auto* averagep_model_layout = new QGridLayout();
+  averagepIntegrateButton = new QRadioButton("Численное интегрирование");
+  averagepFittingButton = new QRadioButton("Подбор");
+  averagep_model_layout->addWidget(averagepIntegrateButton);
+  averagep_model_layout->addWidget(averagepFittingButton);
+  section_averagep_model->setContentLayout(*averagep_model_layout);
+  ui->refractionStackedWidget->insertWidget(3, section_averagep_model);
+
 }
 
 MainWindow::~MainWindow() { delete ui; }
