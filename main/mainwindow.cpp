@@ -75,6 +75,41 @@ MainWindow::MainWindow(QWidget* parent)
   section_segmented_model->setContentLayout(*segmented_model_layout);
   ui->atmosphericStackedWidget->insertWidget(0, section_segmented_model);
 
+  ui::Section* section_exponential_model =
+      new ui::Section("Параметры", 300, this, false, ModelType::Atmospheric);
+  auto* exponential_model_layout = new QGridLayout();
+  exponential_model_layout->addWidget(new QLabel(
+      "Высота поверхности над уровнем моря:", section_exponential_model));
+
+  ExponentHeightAboveTheSeaEdit = new QLineEdit(this);
+
+  auto* ExponentHeightAboveTheSeaEditValidator = new betterDoubleValidator(
+      0, max_refractive_index, max_decimals, ExponentHeightAboveTheSeaEdit);
+  ExponentHeightAboveTheSeaEditValidator->setLocale(
+      QLocale(QLocale::English, QLocale::Europe));
+
+  ExponentHeightAboveTheSeaEdit->setValidator(
+      ExponentHeightAboveTheSeaEditValidator);
+  exponential_model_layout->addWidget(ExponentHeightAboveTheSeaEdit, 0, 1);
+
+  exponential_model_layout->addWidget(new QLabel(
+      "Показатель преломления у поверхности:", section_exponential_model));
+  ExponentRefractiveIndexNearSurfaceEdit = new QLineEdit(this);
+
+  auto* ExponentRefractiveIndexNearSurfaceEditValidator =
+      new betterDoubleValidator(0, max_refractive_index, max_decimals,
+                                ExponentRefractiveIndexNearSurfaceEdit);
+  ExponentRefractiveIndexNearSurfaceEditValidator->setLocale(
+      QLocale(QLocale::English, QLocale::Europe));
+
+  ExponentRefractiveIndexNearSurfaceEdit->setValidator(
+      ExponentRefractiveIndexNearSurfaceEditValidator);
+  exponential_model_layout->addWidget(ExponentRefractiveIndexNearSurfaceEdit, 1,
+                                      1);
+  section_exponential_model->setContentLayout(*exponential_model_layout);
+  ui->atmosphericStackedWidget->insertWidget(1, section_exponential_model);
+  ui->atmosphericStackedWidget->setCurrentIndex(0);
+
 }
 
 MainWindow::~MainWindow() { delete ui; }
