@@ -110,6 +110,15 @@ MainWindow::MainWindow(QWidget* parent)
   ui->atmosphericStackedWidget->insertWidget(1, section_exponential_model);
   ui->atmosphericStackedWidget->setCurrentIndex(0);
 
+  ui::Section* section_averagek_model =
+      new ui::Section("Параметры", 300, this, false, ModelType::Atmospheric);
+  auto* averagek_model_layout = new QGridLayout();
+  averagekIntegrateButton = new QRadioButton("Численное интегрирование");
+  averagekFittingButton = new QRadioButton("Подбор");
+  averagek_model_layout->addWidget(averagekIntegrateButton);
+  averagek_model_layout->addWidget(averagekFittingButton);
+  section_averagek_model->setContentLayout(*averagek_model_layout);
+  ui->refractionStackedWidget->insertWidget(2, section_averagek_model);
 }
 
 MainWindow::~MainWindow() { delete ui; }
