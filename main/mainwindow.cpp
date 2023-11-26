@@ -130,6 +130,44 @@ MainWindow::MainWindow(QWidget* parent)
   section_averagep_model->setContentLayout(*averagep_model_layout);
   ui->refractionStackedWidget->insertWidget(3, section_averagep_model);
 
+void MainWindow::ExponentRefractiveIndexNearSurfaceEdit_textEdited(
+    const QString& index) {
+  user_input_data.setRefractiveIndex(index.QString::toDouble());
+  calculateResult();
+  showAnswer();
+}
+
+void MainWindow::ExponentHeightAboveTheSeaEdit_textEdited(
+    const QString& height) {
+  user_input_data.setHeightOfSurface(height.QString::toDouble());
+  calculateResult();
+  showAnswer();
+}
+
+void MainWindow::SegmentedRefractiveIndexNearSurfaceEdit_textEdited(
+    const QString& index) {
+  user_input_data.setRefractiveIndex(index.QString::toDouble());
+  calculateResult();
+  showAnswer();
+}
+
+void MainWindow::SegmentedHeightAboveTheSeaEdit_textEdited(
+    const QString& height) {
+  user_input_data.setHeightOfSurface(height.QString::toDouble());
+  calculateResult();
+  showAnswer();
+}
+
+void MainWindow::on_integrateButton_clicked() {
+  user_input_data.setCountingMethod(gui::Integration);
+  calculateResult();
+  showAnswer();
+}
+
+void MainWindow::on_fittingButton_clicked() {
+  user_input_data.setCountingMethod(gui::Fitting);
+  calculateResult();
+  showAnswer();
 }
 
 MainWindow::~MainWindow() { delete ui; }
