@@ -51,7 +51,4 @@ class Section : public QWidget {
 };
 }  // namespace ui
 
-extern std::vector<ui::Section*> atmospheric_models_sections;
-extern std::vector<ui::Section*> refraction_models_sections;
-
 #endif  // SECTION_H
