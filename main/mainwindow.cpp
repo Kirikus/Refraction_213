@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget* parent)
 
   ui->plot->xAxis->setRange(0, 10000);
   ui->plot->yAxis->setRange(0, 10000);
+  ui->plot->xAxis->setLabel("расстояние по Земной поверхности, м");
+  ui->plot->yAxis->setLabel("высота, м");
+
   ui->plot->setInteraction(
       QCP::iRangeZoom, true);  // Включаем взаимодействие удаления/приближения
   ui->plot->setInteraction(
