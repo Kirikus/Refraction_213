@@ -25,17 +25,7 @@ bool isInputCorrect() {
   return true;
 }
 
-void calculateResult() {
-  if (!isInputCorrect()) return;
-  switch (user_input_data.getTask()) {
-    case (gui::Task::Forward):
-      // set needed task;
-      break;
-    case (gui::Reversed):
-      // set needed task
-      break;
-  }
-  std::shared_ptr<AtmosphericModel> atmosphere;
+void chooseAtmosphericModel(std::shared_ptr<AtmosphericModel> atmosphere) {
   switch (user_input_data.getAtmosphericModel()) {
     case (gui::AtmosphericModel::GOST440481): {
     } break;
@@ -43,17 +33,18 @@ void calculateResult() {
       atmosphere = std::make_shared<SegmentedAtmosphericModel>(
           SegmentedAtmosphericModel(user_input_data.getHeightOfSurface(),
                                     user_input_data.getRefractiiveIndex()));
-      ;
       break;
     }
     case (gui::AtmosphericModel::Exponential): {
       atmosphere = std::make_shared<ExponentAtmosphericModel>(
           ExponentAtmosphericModel(user_input_data.getHeightOfSurface(),
                                    user_input_data.getRefractiiveIndex()));
-
       break;
     }
   }
+}
+
+void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
   RefractionModel::Input data{user_input_data.getStation(),
                               user_input_data.getTarget(),
                               user_input_data.getDistance()};
@@ -106,4 +97,19 @@ void calculateResult() {
       }
       break;
   }
+}
+
+void calculateResult() {
+  if (!isInputCorrect()) return;
+  switch (user_input_data.getTask()) {
+    case (gui::Task::Forward):
+      // set needed task;
+      break;
+    case (gui::Reversed):
+      // set needed task
+      break;
+  }
+  std::shared_ptr<AtmosphericModel> atmosphere;
+  chooseAtmosphericModel(atmosphere);
+  chooseRefractionModel(atmosphere);
 }
