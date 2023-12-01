@@ -14,10 +14,10 @@ BOOST_AUTO_TEST_SUITE(exponent_angle)
 
 //#ifdef TEST_PLOTS
 
-BOOST_AUTO_TEST_CASE(plot_2_34_g) {
+BOOST_AUTO_TEST_CASE(plot_2_34_d) {
   // Plot 2.34 from booklet
   int argc = 1;
-  char *argv[] = {"difference of angles exponent psi_g"};
+  char *argv[] = {"difference of angles exponent psi_d"};
   QApplication a(argc, argv);
 
   QCustomPlot customPlot;
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(plot_2_34_g) {
   for (int j = 0; j < angles.size(); ++j) {
     for (int i = 0; i < N; ++i) {
       y[i] = h_min + i * (h_max - h_min) / (N - 1);
-      x[i] = abs(testModel.psi_g(y[i], hs, angles.at(j)) - angles.at(j)) * 180 /
+      x[i] = abs(testModel.psi_d(y[i], hs, angles.at(j)) - angles.at(j)) * 180 /
              M_PI;
     }
     customPlot.graph(j)->setData(x, y);
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(plot_2_34_g) {
   customPlot.yAxis->grid()->setSubGridVisible(true);
 
   customPlot.yAxis->setLabel("h, m");
-  customPlot.xAxis->setLabel("psi_d - psi_g, degrees");
+  customPlot.xAxis->setLabel("|psi_d - psi_g|, degrees");
 
   customPlot.graph(angles.size() - 1)->rescaleAxes();
 
