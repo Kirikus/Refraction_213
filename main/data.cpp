@@ -2,30 +2,7 @@
 
 using namespace gui;
 
-Data user_input_data = Data();
-
-Data::Data(double station_height, double target_height, double dist_to_target,
-           AtmosphericModel atmospheric_model, RefractionModel refraction_model,
-           Task task) {
-  this->station_height = station_height;
-  this->target_height = target_height;
-  this->dist_to_target = dist_to_target;
-  this->atmospheric_model = atmospheric_model;
-  this->refraction_model = refraction_model;
-  this->task = task;
-}
-
-Data::Data() {
-  this->station_height = std::nan("1");
-  this->target_height = std::nan("1");
-  this->dist_to_target = std::nan("1");
-  this->height_of_surface = std::nan("1");
-  this->refractive_index_near_surface = std::nan("1");
-  this->counting_method = Fitting;
-  this->atmospheric_model = AtmosphericModel::Exponential;
-  this->refraction_model = RefractionModel::Geometric;
-  this->task = Forward;
-}
+Data user_input_data;
 
 void Data::setDistance(double distance_from_station_to_target) {
   this->dist_to_target = distance_from_station_to_target;

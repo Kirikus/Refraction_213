@@ -22,19 +22,17 @@ class Data {
   double target_height = std::nan("1");
   double station_height = std::nan("1");
   double dist_to_target = std::nan("1");
+
   double height_of_surface = std::nan("1");
   double refractive_index_near_surface = std::nan("1");
+
   CountingMethod counting_method = Fitting;
-  AtmosphericModel atmospheric_model = AtmosphericModel::GOST440481;
+  AtmosphericModel atmospheric_model = AtmosphericModel::Exponential;
   RefractionModel refraction_model = RefractionModel::Geometric;
   Task task = Forward;
 
  public:
   QCustomPlot *plot = nullptr;
-  Data(double station_height, double target_height, double dist_to_target,
-       AtmosphericModel atmospheric_model, RefractionModel refraction_model,
-       Task task);
-  Data();
   void setHeightOfSurface(double height);
   void setRefractiveIndex(double index);
   void setCountingMethod(CountingMethod method);
