@@ -3,8 +3,6 @@
 
 #include <qcustomplot.h>
 
-#include <cmath>
-#include <map>
 #include <string>
 
 namespace gui {

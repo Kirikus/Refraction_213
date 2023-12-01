@@ -3,9 +3,7 @@
 
 #include <QMainWindow>
 
-#include "Section.h"
 #include "data.h"
-#include "doubleValidator.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

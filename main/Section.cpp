@@ -1,7 +1,6 @@
 #include "Section.h"
 
 #include <QDebug>
-#include <QPalette>
 #include <QPropertyAnimation>
 
 namespace ui {
