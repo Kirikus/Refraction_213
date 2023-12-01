@@ -1,5 +1,7 @@
 #include "calculateResult.h"
 
+#include <memory>
+
 RefractionModel::Answer answer;
 
 bool isInputCorrect() {
@@ -14,8 +16,6 @@ bool isInputCorrect() {
 
 void calculateResult() {
   if (!isInputCorrect()) return;
-  ExponentAtmosphericModel exponential_atmospheric_model;
-  SegmentedAtmosphericModel segmented_atmospheric_model;
   switch (user_input_data.getTask()) {
     case (gui::Task::Forward):
       // set needed task;
@@ -24,21 +24,21 @@ void calculateResult() {
       // set needed task
       break;
   }
+  std::shared_ptr<AtmosphericModel> atmosphere;
   switch (user_input_data.getAtmosphericModel()) {
     case (gui::AtmosphericModel::GOST440481): {
     } break;
     case (gui::AtmosphericModel::Segmented): {
-      SegmentedAtmosphericModel atmosphere(
-          user_input_data.getHeightOfSurface(),
-          user_input_data.getRefractiiveIndex());
-      segmented_atmospheric_model = atmosphere;
+      atmosphere = std::make_shared<SegmentedAtmosphericModel>(
+          SegmentedAtmosphericModel(user_input_data.getHeightOfSurface(),
+                                    user_input_data.getRefractiiveIndex()));
+      ;
       break;
     }
     case (gui::AtmosphericModel::Exponential): {
-      ExponentAtmosphericModel atmosphere(
-          user_input_data.getHeightOfSurface(),
-          user_input_data.getRefractiiveIndex());
-      exponential_atmospheric_model = atmosphere;
+      atmosphere = std::make_shared<ExponentAtmosphericModel>(
+          ExponentAtmosphericModel(user_input_data.getHeightOfSurface(),
+                                   user_input_data.getRefractiiveIndex()));
 
       break;
     }
@@ -60,27 +60,37 @@ void calculateResult() {
     }
     case (gui::RefractionModel::AverageK): {
       if (user_input_data.getCountingMethod() == gui::Integration) {
-        AverageKModel_forExponent average_k_model_for_exponent(
-            exponential_atmospheric_model);
-        answer = average_k_model_for_exponent.calculate(data);
+        if (ExponentAtmosphericModel* exponent_atmosphere =
+                dynamic_cast<ExponentAtmosphericModel*>(atmosphere.get())) {
+          AverageKModel_forExponent average_k_model_for_exponent(
+              *exponent_atmosphere);
+          answer = average_k_model_for_exponent.calculate(data);
+        }
       } else {
         if (user_input_data.getAtmosphericModel() ==
             gui::AtmosphericModel::Segmented) {
-          // AverageKModel average_k_model(shared ptr ??);
+          AverageKModel average_k_model(atmosphere);
+          answer = average_k_model.calculate(data);
         } else {
+          // add options for GOST
         }
       }
     } break;
     case (gui::RefractionModel::AverageRho):
       if (user_input_data.getCountingMethod() == gui::Integration) {
-        AveragePModel_forExponent average_p_model_for_exponent(
-            exponential_atmospheric_model);
-        answer = average_p_model_for_exponent.calculate(data);
+        if (ExponentAtmosphericModel* exponent_atmosphere =
+                dynamic_cast<ExponentAtmosphericModel*>(atmosphere.get())) {
+          AveragePModel_forExponent average_p_model_for_exponent(
+              *exponent_atmosphere);
+          answer = average_p_model_for_exponent.calculate(data);
+        }
       } else {
         if (user_input_data.getAtmosphericModel() ==
             gui::AtmosphericModel::Segmented) {
-          // AverageKModel average_p_model(shared ptr ??);
+          AverageKModel average_k_model(atmosphere);
+          answer = average_k_model.calculate(data);
         } else {
+          // add options for GOST
         }
       }
       break;
