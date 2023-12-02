@@ -13,14 +13,14 @@ class SplineModel : public FunctionModel1D {
 
  private:
   struct Data {
-    Point first_point;
-    Point second_point;
+    double first_x;
+    double second_x;
     double a;
     double b;
     double c;
     double d;
-    Data(Point p1, Point p2, double a1, double b1, double c1, double d1)
-        : first_point{p1}, second_point{p2}, a{a1}, b{b1}, c{c1}, d{d1} {};
+    Data(double x0, double x1, double a1, double b1, double c1, double d1)
+        : first_x{x0}, second_x{x1}, a{a1}, b{b1}, c{c1}, d{d1} {};
   };
   vector<Data> data;
 };

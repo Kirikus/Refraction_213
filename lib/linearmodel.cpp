@@ -8,10 +8,10 @@ LinearModel::LinearModel(vector<Point> points_data) {
     auto second_point = point;
     second_point++;
     if (second_point == points_data.end()) return;
-    double x1 = (first_point)->x;
-    double x2 = (second_point)->x;
-    double y1 = (first_point)->y;
-    double y2 = (second_point)->y;
+    double x1 = first_point->x;
+    double x2 = second_point->x;
+    double y1 = first_point->y;
+    double y2 = second_point->y;
     double k = (y2 - y1) / (x2 - x1);
     double b = y1 - k * x1;
     data.push_back(Data(x1, x2, k, b));
@@ -28,7 +28,7 @@ LinearModel::LinearModel(QFile& file) {
       QString line = in.readLine();
       vector<double> coords;
       for (QString item : line.split(";")) coords.push_back(item.toDouble());
-      data.push_back(Point(coords));
+      data.push_back(Point(coords[0], coords[1]));
     }
   }
   LinearModel* line = new LinearModel(data);
@@ -37,6 +37,7 @@ LinearModel::LinearModel(QFile& file) {
 }
 
 double LinearModel::y(double x) {
+  if (data.size() == 0) return 0;
   auto start = data.begin();
   auto finish = data.end();
   finish--;

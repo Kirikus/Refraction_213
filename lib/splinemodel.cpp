@@ -79,24 +79,21 @@ SplineModel::SplineModel(vector<Point> points) {
     // TODO: Think about c0 coefficient from YouTube example
   }
   for (int i = 0; i < points.size() - 1; ++i) {
-    data.push_back(Data(points[i], points[i + 1], answer[4 * i],
+    data.push_back(Data(points[i].x, points[i + 1].x, answer[4 * i],
                         answer[4 * i + 1], answer[4 * i + 2],
                         answer[4 * i + 3]));
   }
 }
 
-SplineModel::SplineModel(QFile& file) {
-  vector<Point> data;
-  if (!file.open(QFile::ReadOnly | QFile::Text)) {
-    qDebug() << "File not exists";
-  } else {
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-      QString line = in.readLine();
-      vector<double> coords;
-      for (QString item : line.split(";")) coords.push_back(item.toDouble());
-      data.push_back(Point(coords));
-    }
+SplineModel::SplineModel(
+    QFile& file) {     // TODO: Change QFile to another structure
+  vector<Point> data;  // TODO:: Add checks
+  QTextStream in(&file);
+  while (!in.atEnd()) {
+    QString line = in.readLine();
+    vector<double> coords;
+    for (QString item : line.split(";")) coords.push_back(item.toDouble());
+    data.push_back(Point(coords[0], coords[1]));
   }
   SplineModel* spline = new SplineModel(data);
   this->data = spline->data;
@@ -104,16 +101,16 @@ SplineModel::SplineModel(QFile& file) {
 }
 
 double SplineModel::y(double x) {
+  if (data.size() == 0) return 0;
   auto start = data.begin();
   auto finish = data.end();
   finish--;
-  if (x <= start->first_point.x)
-    return data[0].a + data[0].b * (x - data[0].first_point.x);
-  if (x >= finish->second_point.x)
-    return data.back().a + data.back().b * (x - data.back().first_point.x);
+  if (x <= start->first_x) return data[0].a + data[0].b * (x - data[0].first_x);
+  if (x >= finish->second_x)
+    return data.back().a + data.back().b * (x - data.back().first_x);
   for (auto interval = data.begin(); interval != data.end(); ++interval)
-    if (x >= interval->first_point.x && x <= interval->second_point.x) {
-      double x0 = interval->first_point.x;
+    if (x >= interval->first_x && x <= interval->second_x) {
+      double x0 = interval->first_x;
       return interval->a + interval->b * (x - x0) +
              interval->c * (x - x0) * (x - x0) +
              interval->d * (x - x0) * (x - x0) * (x - x0);
