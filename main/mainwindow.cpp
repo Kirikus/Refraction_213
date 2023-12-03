@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QLocale>
+#include <iostream>
 
 #include "./ui_mainwindow.h"
 #include "Section.h"
@@ -192,8 +193,9 @@ MainWindow::MainWindow(QWidget* parent)
       ModelType::Atmospheric);  // Создаем Секцию с подписью "Параметры"
   auto* gost_model_layout =
       new QGridLayout();  // Создаем layout для этой секции
-  gost_model_layout->addWidget(
-      new QPushButton("Загрузить параметры из файла", section_gost_model));
+  downloadGostButton =
+      new QPushButton("Загрузить параметры из файла", section_gost_model);
+  gost_model_layout->addWidget(downloadGostButton);
   section_gost_model->setContentLayout(*gost_model_layout);
   ui->atmosphericStackedWidget->insertWidget(2, section_gost_model);
 
@@ -260,6 +262,8 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::on_fittingButton_clicked);
   QObject::connect(averagepFittingButton, &QRadioButton::clicked, this,
                    &MainWindow::on_fittingButton_clicked);
+  QObject::connect(downloadGostButton, &QPushButton::clicked, this,
+                   &MainWindow::on_downloadGostButton_clicked);
 }
 
 // Сами функции, вызываемые при нажатии кнопок
@@ -305,6 +309,22 @@ void MainWindow::on_fittingButton_clicked() {
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::on_downloadGostButton_clicked() {
+  QFile gost_qfile(QFileDialog::getOpenFileName(0, "Открыть модель ГОСТ4401-81",
+                                                "", "*.csv"));
+  if (!gost_qfile.open(QFile::ReadOnly | QFile::Text)) {
+    QMessageBox* msg = new QMessageBox(this);
+    msg->setWindowTitle("Ошибка чтения файла");
+    msg->setText("Не удалось прочитать информацию о модели");
+    msg->show();
+    return;
+  }
+  int fd = gost_qfile.handle();
+  FILE* gost_file = fdopen(fd, "rb");
+  gost_qfile.close();
+  // to do: use gost model on gost_file;
+}
 
 void MainWindow::on_atmosphericModelBox_currentIndexChanged(
     const QString& atmospheric_model) {
