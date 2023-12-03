@@ -184,6 +184,19 @@ MainWindow::MainWindow(QWidget* parent)
   ui->atmosphericStackedWidget->setCurrentIndex(
       0);  // Выставляем Сегментированную модель по умолчанию
 
+  // Создаем и добавляем секцию для задания модели атмосферы ГОСТ 4401-81
+  // Создаем кнопку загрузки данных из файла
+
+  ui::Section* section_gost_model = new ui::Section(
+      "Параметры", 300, this, false,
+      ModelType::Atmospheric);  // Создаем Секцию с подписью "Параметры"
+  auto* gost_model_layout =
+      new QGridLayout();  // Создаем layout для этой секции
+  gost_model_layout->addWidget(
+      new QPushButton("Загрузить параметры из файла", section_gost_model));
+  section_gost_model->setContentLayout(*gost_model_layout);
+  ui->atmosphericStackedWidget->insertWidget(2, section_gost_model);
+
   // Создаем и добавляем секцию для задания модели рефракции Среднее К
 
   ui::Section* section_averagek_model =
