@@ -14,8 +14,6 @@ constexpr double max_height = 15000;
 constexpr double max_decimals = 5;
 constexpr double max_surface_height = 20000;
 constexpr double max_refractive_index = 2000;
-constexpr double max_effective_radius_coefficient = 10;
-constexpr double min_effective_radius_coefficient = 0.1;
 
 std::map<std::string, gui::AtmosphericModel> string_to_atmospheric_model = {
     {"Модель ГОСТ4401-81", gui::AtmosphericModel::GOST440481},
@@ -264,48 +262,6 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::on_fittingButton_clicked);
   QObject::connect(downloadGostButton, &QPushButton::clicked, this,
                    &MainWindow::on_downloadGostButton_clicked);
-}
-
-// Сами функции, вызываемые при нажатии кнопок
-
-void MainWindow::ExponentRefractiveIndexNearSurfaceEdit_textEdited(
-    const QString& index) {
-  user_input_data.setRefractiveIndex(index.QString::toDouble());
-  calculateResult();
-  showAnswer();
-}
-
-void MainWindow::ExponentHeightAboveTheSeaEdit_textEdited(
-    const QString& height) {
-  user_input_data.setHeightOfSurface(height.QString::toDouble());
-  calculateResult();
-  showAnswer();
-}
-
-void MainWindow::SegmentedRefractiveIndexNearSurfaceEdit_textEdited(
-    const QString& index) {
-  user_input_data.setRefractiveIndex(index.QString::toDouble());
-  calculateResult();
-  showAnswer();
-}
-
-void MainWindow::SegmentedHeightAboveTheSeaEdit_textEdited(
-    const QString& height) {
-  user_input_data.setHeightOfSurface(height.QString::toDouble());
-  calculateResult();
-  showAnswer();
-}
-
-void MainWindow::on_integrateButton_clicked() {
-  user_input_data.setCountingMethod(gui::Integration);
-  calculateResult();
-  showAnswer();
-}
-
-void MainWindow::on_fittingButton_clicked() {
-  user_input_data.setCountingMethod(gui::Fitting);
-  calculateResult();
-  showAnswer();
 }
 
 MainWindow::~MainWindow() { delete ui; }
