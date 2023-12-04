@@ -12,9 +12,9 @@
 
 namespace tt = boost::test_tools;
 
-BOOST_AUTO_TEST_SUITE(universal_angle)
+#ifdef TEST_PLOTS
 
-//#ifdef TEST_PLOTS
+BOOST_AUTO_TEST_SUITE(universal_angle)
 
 BOOST_AUTO_TEST_CASE(plot_2_34_d) {
   // Plot 2.34 from booklet
@@ -107,6 +107,6 @@ BOOST_AUTO_TEST_CASE(plot_2_34_d_e) {
 
   a.exec();
 }
-//#endif
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()

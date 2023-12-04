@@ -2,6 +2,6 @@
 
 double LayeredModel::N(double h) {
   for (int i = 0; i < layeres.size(); ++i)
-    if (h <= layeres.at(i)) return atmosheres.at(i)->N(h);
-  return atmosheres.back()->N(h);
+    if (h <= layeres.at(i)) return atmospheres.at(i)->N(h);
+  return atmospheres.back()->N(h);
 }

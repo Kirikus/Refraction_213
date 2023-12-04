@@ -9,9 +9,9 @@ class LayeredModel : public AtmosphericModel {
  public:
   // atmospheres: pointers to AtmosphericModel
   // layeres: layers' upper limits
-  LayeredModel(const std::vector<AtmosphericModel*>& atmosheres,
+  LayeredModel(const std::vector<AtmosphericModel*>& atmospheres,
                const std::vector<double>& layeres)
-      : atmosheres{atmosheres}, layeres{layeres} {}
+      : atmospheres{atmospheres}, layeres{layeres} {}
   // Formula for refractive index depended on height
   // SRC: (2.27) from citation
   //    N : refractive index, n/u
@@ -19,7 +19,7 @@ class LayeredModel : public AtmosphericModel {
   virtual double N(double h) override;
 
  private:
-  std::vector<AtmosphericModel*> atmosheres;
+  std::vector<AtmosphericModel*> atmospheres;
   std::vector<double> layeres;
 };
 
