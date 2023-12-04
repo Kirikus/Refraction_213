@@ -1,7 +1,6 @@
 #include "average_p_model_for_exponent.h"
 
 double AveragePModel_forExponent::k(const RefractionModel::Input &data) {
-  ExponentAtmosphericModel atmosphere;
   ModelWithoutRefraction approximate;
   double Hb = atmosphere.get_Hb();
   double Ns = atmosphere.get_Ns();
