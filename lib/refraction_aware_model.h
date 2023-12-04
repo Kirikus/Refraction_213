@@ -1,11 +1,19 @@
 #ifndef REFRACTIONAWAREMODEL_H
 #define REFRACTIONAWAREMODEL_H
-#include "angle_calculator.h"
 
-class RefractionAwareModel {
+#include <memory>
+
+#include "angle_calculator.h"
+#include "refraction_model.h"
+
+class RefractionAwareModel : public RefractionModel {
  public:
-  virtual double calculate(double, double, double) = 0;
-  AngleCalculator* angle_difference_algorithm;
+  RefractionAwareModel(
+      std::shared_ptr<AngleCalculator> angle_difference_algorithm)
+      : angle_difference_algorithm{angle_difference_algorithm} {}
+
+ protected:
+  std::shared_ptr<AngleCalculator> angle_difference_algorithm;
 };
 
 #endif  // REFRACTIONAWAREMODEL_H
