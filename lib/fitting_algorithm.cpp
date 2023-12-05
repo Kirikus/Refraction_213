@@ -1,28 +1,26 @@
 ﻿#include "fitting_algorithm.h"
 
+#include "linearmodel.h"
 #include "model_without_refraction.h"
-
-int binary_search(double target_d, std::vector<double> d) {
-  for (int i = d.size() / 2, start = 0, finish = d.size();;) {
-    if (finish - start == 1) return start;
-    if (d.at(i) < target_d) {
-      start = i;
-      i = (finish - start) / 2;
-    }
-    if (d.at(i) > target_d) {
-      finish = i;
-      i = (finish - start) / 2;
-    }
-    if (d.at(i) == target_d) return i;
-  }
-}
 
 RefractionModel::Answer FittingAlgorithm::calculate(
     const RefractionModel::Input &data, void *opaque) {
   ModelWithoutRefraction approximate;
-  double target_d = approximate.calculate(data).d;
-  int i = binary_search(target_d, d);
-  return Answer{.psi_d = psi_d[i], .psi_g = psi_g[i], .d = d[i]};
+  Answer target_answer = approximate.calculate(data);
+  std::vector<FunctionModel1D::Point> point_d;
+  std::vector<FunctionModel1D::Point> point_psi_d;
+  std::vector<FunctionModel1D::Point> point_psi_g;
+  for (int i = 0; i < d.size() && i < psi_d.size() && i < psi_g.size(); ++i) {
+    point_d.push_back(FunctionModel1D::Point(d[i], d[i]));
+    point_psi_d.push_back(FunctionModel1D::Point(psi_d[i], psi_d[i]));
+    point_psi_g.push_back(FunctionModel1D::Point(psi_g[i], psi_g[i]));
+  }
+  LinearModel interpolate_d(point_d);
+  LinearModel interpolate_psi_d(point_psi_d);
+  LinearModel interpolate_psi_g(point_psi_g);
+  return Answer{.psi_d = interpolate_psi_d.y(target_answer.psi_d),
+                .psi_g = interpolate_psi_g.y(target_answer.psi_g),
+                .d = interpolate_d.y(target_answer.d)};
 }
 
 FittingAlgorithm::FittingAlgorithm(
