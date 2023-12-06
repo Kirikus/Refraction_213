@@ -1,9 +1,12 @@
 #include "splinemodel.h"
-//#include <QFile>
-#include <QDebug>
-#include <QTextStream>
-#include <algorithm>
 
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <stdexcept>
+using std::ifstream;
+using std::stringstream;
+using std::vector;
 SplineModel::SplineModel(vector<Point> points) {
   vector<vector<double>> matrix;
   int eq_number = (points.size() - 1) * 4;
@@ -84,15 +87,34 @@ SplineModel::SplineModel(vector<Point> points) {
                         answer[4 * i + 3]));
   }
 }
-
-SplineModel::SplineModel(
-    QFile& file) {     // TODO: Change QFile to another structure
-  vector<Point> data;  // TODO:: Add checks
-  QTextStream in(&file);
-  while (!in.atEnd()) {
-    QString line = in.readLine();
+SplineModel::SplineModel(std::string path) {
+  vector<Point> data;
+  ifstream file;
+  file.open(path);
+  string file_line;
+  while (getline(file, file_line)) {
     vector<double> coords;
-    for (QString item : line.split(";")) coords.push_back(item.toDouble());
+    stringstream input_string(file_line);
+    string line = input_string.str();
+    string delimiter = ";";
+    size_t pos = 0;
+    string token;
+    vector<string> parts;
+    while ((pos = line.find(delimiter)) != string::npos) {
+      token = line.substr(0, pos);
+      parts.push_back(token);
+      line.erase(0, pos + delimiter.length());
+    }
+    parts.push_back(line);
+    if (parts.size() != 2) throw std::runtime_error("Wrong format of string");
+    for (int i = 0; i < 2; ++i) {
+      try {
+        double d = std::stod(parts[i]);
+      } catch (const std::invalid_argument&) {
+        throw std::runtime_error("Wrong format of string");
+      }
+      coords.push_back(std::stod(parts[i]));
+    }
     data.push_back(Point(coords[0], coords[1]));
   }
   SplineModel* spline = new SplineModel(data);

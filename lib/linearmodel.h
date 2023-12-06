@@ -1,7 +1,8 @@
 #ifndef LINEARMODEL_H
 #define LINEARMODEL_H
+#include <string>
 #include <vector>
-
+using std::string;
 #include "functionmodel1d.h"
 using std::vector;
 
@@ -9,7 +10,7 @@ class LinearModel : public FunctionModel1D {
  public:
   LinearModel(vector<Point>);
   double y(double x) override;
-  LinearModel(QFile&);
+  LinearModel(string);
 
  private:
   struct Data {

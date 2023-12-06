@@ -1,14 +1,16 @@
 #ifndef SPLINEMODEL_H
 #define SPLINEMODEL_H
+#include <string>
 #include <vector>
+using std::string;
 
 #include "functionmodel1d.h"
 using std::vector;
 
 class SplineModel : public FunctionModel1D {
  public:
-  SplineModel(vector<Point>);
-  SplineModel(QFile&);
+  SplineModel(std::vector<Point>);
+  SplineModel(string);
   double y(double x) override;
 
  private:
