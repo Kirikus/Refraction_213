@@ -1,7 +1,7 @@
 #ifndef GOSTMODEL_H
 #define GOSTMODEL_H
 #include <../lib/functionmodel1d.h>
-#include <atmospheric_model.h>
+#include "atmospheric_model.h"
 
 class GOSTModel: public AtmosphericModel {
  public:
