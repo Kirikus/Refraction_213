@@ -5,12 +5,12 @@ betterDoubleValidator::betterDoubleValidator(double bottom, double top,
     : QDoubleValidator(bottom, top, decimals, parent) {}
 
 QValidator::State betterDoubleValidator::validate(QString &s, int &i) const {
-  if (s.isEmpty()) {
+  if (s.isEmpty() || s == "-") {
     return QValidator::Intermediate;
   }
-  if (s == "-" || s == "e") return QValidator::Invalid;
+  if (s == "e" || s == ",") return QValidator::Invalid;
 
-  QChar decimalPoint = locale().decimalPoint();
+  QChar decimalPoint = QChar('.');
 
   if (s.indexOf(decimalPoint) != -1) {
     int charsAfterPoint = s.length() - s.indexOf(decimalPoint) - 1;
