@@ -7,6 +7,7 @@
 #include "Section.h"
 #include "calculateResult.h"
 #include "doubleValidator.h"
+#include "plotting.h"
 
 constexpr double min_height = -500;
 constexpr double max_distance = 1000000;
@@ -292,6 +293,7 @@ void MainWindow::on_downloadGostButton_clicked() {
 void MainWindow::calculateAndShow() {
   calculateResult();
   user_input_data.setAnswer(answer);
+  addTargetAndStation();
   showAnswer();
 }
 
