@@ -26,7 +26,7 @@ class MainWindow : public QMainWindow {
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
   void showAnswer();
-
+  void calculateAndShow();
  private slots:
   void on_refractionModelBox_currentIndexChanged(const QString &arg1);
 

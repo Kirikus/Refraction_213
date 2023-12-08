@@ -48,8 +48,22 @@ double Data::getRefractiiveIndex() {
 }
 AtmosphericModel Data::getAtmosphericModel() { return this->atmospheric_model; }
 
-RefractionModel Data::getRefractionModel() { return this->refraction_model; }
+gui::RefractionModel Data::getRefractionModel() {
+  return this->refraction_model;
+}
 
 CountingMethod Data::getCountingMethod() { return counting_method; }
+
+void Data::setAnswer(::RefractionModel::Answer answer) {
+  this->sliding_angle = answer.psi_g;
+  this->declination_angle = answer.psi_d;
+  this->distance_on_surface = answer.d;
+}
+
+double Data::getSlidingAngle() { return this->sliding_angle; }
+
+double Data::getDeclinationAngle() { return this->declination_angle; }
+
+double Data::getSurfaceDistance() { return this->distance_on_surface; }
 
 Task Data::getTask() { return this->task; }

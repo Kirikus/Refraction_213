@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "../lib/refraction_model.h"
+
 namespace gui {
 enum CountingMethod { Fitting, Integration };
 enum Task { Forward, Reversed };
@@ -25,6 +27,10 @@ class Data {
   double height_of_surface = std::nan("1");
   double refractive_index_near_surface = std::nan("1");
 
+  double sliding_angle = std::nan("1");
+  double declination_angle = std::nan("1");
+  double distance_on_surface = std::nan("1");
+
   CountingMethod counting_method = Fitting;
   AtmosphericModel atmospheric_model = AtmosphericModel::Exponential;
   RefractionModel refraction_model = RefractionModel::Geometric;
@@ -42,6 +48,10 @@ class Data {
   void setAtmosphericModel(AtmosphericModel atmospheric_model);
   void setRefractionModel(RefractionModel refraction_model);
   void setTask(Task task);
+  void setAnswer(::RefractionModel::Answer answer);
+  double getSlidingAngle();
+  double getDeclinationAngle();
+  double getSurfaceDistance();
   double getStation();
   double getTarget();
   double getDistance();

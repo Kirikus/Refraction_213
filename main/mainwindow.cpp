@@ -265,6 +265,12 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::on_downloadGostButton_clicked);
 }
 
+void MainWindow::showAnswer() {
+  ui->declinationAngleEdit->setText(QString::number(answer.psi_d));
+  ui->slidingAngleEdit->setText(QString::number(answer.psi_g));
+  ui->distanceToSurfaceEdit->setText(QString::number(answer.d));
+}
+
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::on_downloadGostButton_clicked() {
@@ -281,6 +287,12 @@ void MainWindow::on_downloadGostButton_clicked() {
   FILE* gost_file = fdopen(fd, "rb");
   gost_qfile.close();
   // to do: use gost model on gost_file;
+}
+
+void MainWindow::calculateAndShow() {
+  calculateResult();
+  user_input_data.setAnswer(answer);
+  showAnswer();
 }
 
 void MainWindow::on_atmosphericModelBox_currentIndexChanged(
@@ -302,8 +314,7 @@ void MainWindow::on_atmosphericModelBox_currentIndexChanged(
       break;
     }
   }
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
 void MainWindow::on_refractionModelBox_currentIndexChanged(
@@ -333,12 +344,5 @@ void MainWindow::on_refractionModelBox_currentIndexChanged(
       break;
     }
   }
-  calculateResult();
-  showAnswer();
-}
-
-void MainWindow::showAnswer() {
-  ui->declinationAngleEdit->setText(QString::number(answer.psi_d));
-  ui->slidingAngleEdit->setText(QString::number(answer.psi_g));
-  ui->distanceToSurfaceEdit->setText(QString::number(answer.d));
+  calculateAndShow();
 }
