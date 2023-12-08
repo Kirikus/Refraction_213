@@ -284,9 +284,9 @@ void MainWindow::on_downloadGostButton_clicked() {
     msg->show();
     return;
   }
-  int fd = gost_qfile.handle();
-  FILE* gost_file = fdopen(fd, "rb");
-  gost_qfile.close();
+  std::vector<std::string> gost_data;
+  QTextStream in(&gost_qfile);
+  while (!in.atEnd()) gost_data.push_back(in.readLine().toStdString());
   // to do: use gost model on gost_file;
 }
 
