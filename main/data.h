@@ -13,7 +13,8 @@ enum class RefractionModel {
   Effective_Radius43,
   Geometric,
   AverageK,
-  AverageRho
+  AverageRho,
+  GeometricLine
 };
 
 class Data {

@@ -8,6 +8,7 @@
 #include "../lib/average_p_model.h"
 #include "../lib/average_p_model_for_exponent.h"
 #include "../lib/exponent_model.h"
+#include "../lib/geometric_model_line.h"
 #include "../lib/model4div3.h"
 #include "../lib/model_without_refraction.h"
 #include "../lib/segmented_atmosheric_model.h"
@@ -49,6 +50,11 @@ void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
                               user_input_data.getTarget(),
                               user_input_data.getDistance()};
   switch (user_input_data.getRefractionModel()) {
+    case (gui::RefractionModel::GeometricLine): {
+      GeometricModelLine lineModel;
+      answer = lineModel.calculate(data);
+      break;
+    }
     case (gui::RefractionModel::Effective_Radius43): {
       Model4div3 model4div3;
       answer = model4div3.calculate(data);
@@ -57,7 +63,6 @@ void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
     case (gui::RefractionModel::Geometric): {
       ModelWithoutRefraction model_without_refraction;
       answer = model_without_refraction.calculate(data);
-
       break;
     }
     case (gui::RefractionModel::AverageK): {

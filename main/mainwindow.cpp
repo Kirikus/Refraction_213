@@ -20,6 +20,7 @@ std::map<std::string, gui::AtmosphericModel> string_to_atmospheric_model = {
     {"Сегментированная модель", gui::AtmosphericModel::Segmented},
     {"Экспоненциальная модель", gui::AtmosphericModel::Exponential}};
 std::map<std::string, gui::RefractionModel> string_to_refraction_model = {
+    {"Модель плоской Земли", gui::RefractionModel::GeometricLine},
     {"Модель эффективного радиуса 4/3",
      gui::RefractionModel::Effective_Radius43},
     {"Геометрическая модель", gui::RefractionModel::Geometric},
@@ -325,6 +326,10 @@ void MainWindow::on_refractionModelBox_currentIndexChanged(
     }
     case gui::RefractionModel::AverageRho: {
       ui->refractionStackedWidget->setCurrentIndex(3);
+      break;
+    }
+    case gui::RefractionModel::GeometricLine: {
+      ui->refractionStackedWidget->setCurrentIndex(4);
       break;
     }
   }
