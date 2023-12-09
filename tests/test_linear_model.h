@@ -1,4 +1,4 @@
 #ifndef TEST_LINEAR_MODEL_H
 #define TEST_LINEAR_MODEL_H
 
-#endif // TEST_LINEAR_MODEL_H
+#endif  // TEST_LINEAR_MODEL_H

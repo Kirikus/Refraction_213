@@ -12,44 +12,35 @@
 
 namespace tt = boost::test_tools;
 
-vector<SplineModel::Point> data;
-
 BOOST_AUTO_TEST_SUITE(checks_for_spline_interpolation)
-
+std::vector<SplineModel::Point> test_data;
 BOOST_AUTO_TEST_CASE(check_dots) {
-  data.push_back(SplineModel::Point(-4, -64));
-  data.push_back(SplineModel::Point(-3, -27));
-  data.push_back(SplineModel::Point(-2, -8));
-  data.push_back(SplineModel::Point(-1.5, -3.375));
-  data.push_back(SplineModel::Point(-1.4, -2.744));
-  data.push_back(SplineModel::Point(-1, -1));
+  test_data.clear();
+  for (int i = 0; i < 100; ++i) {
+    test_data.push_back(
+        SplineModel::Point(double(i) / 10, double(i * i * i) / 1000));
+  }
+  SplineModel spline(test_data);
+  SplineModel testModel = SplineModel(test_data);
+  for (int i = 0; i < test_data.size(); ++i)
+    BOOST_TEST(testModel.y(test_data[i].x) == test_data[i].y,
+               tt::tolerance(1e-6));
+}
 
-  data.push_back(SplineModel::Point(0, 0));
-  data.push_back(SplineModel::Point(0.5, 0.125));
-  data.push_back(SplineModel::Point(1, 1));
-  data.push_back(SplineModel::Point(1.4, 2.744));
-  data.push_back(SplineModel::Point(1.5, 3.375));
-  data.push_back(SplineModel::Point(2, 8));
-
-  data.push_back(SplineModel::Point(3, 27));
-  data.push_back(SplineModel::Point(4, 64));
-  SplineModel spline(data);
-  SplineModel testModel = SplineModel(data);
-  BOOST_TEST(testModel.y(-4) == -64, tt::tolerance(1e-6));
-  BOOST_TEST(testModel.y(-2) == -8, tt::tolerance(1e-6));
-  BOOST_TEST(testModel.y(-1) == -1, tt::tolerance(1e-6));
-  BOOST_TEST(testModel.y(1.5) == 3.375, tt::tolerance(1e-6));
-  BOOST_TEST(testModel.y(2.5) == 15.625, tt::tolerance(0.1));
+BOOST_AUTO_TEST_CASE(dummy_spline_constructor) {
+  std::vector<std::string> test_strings{"1;3", "2;4", "3;5", "6;8"};
+  SplineModel simple_spline(test_strings);
+  BOOST_TEST(simple_spline.y(1) == 3, tt::tolerance(1e-6));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(graphs_for_spline_interpolation)
 
-#ifdef TEST_PLOTS
-BOOST_AUTO_TEST_CASE(plot_for_x_kub) {
+void plotting(std::vector<FunctionModel1D::Point>& test_data, int lower_bound,
+              int upper_bound) {
   int argc = 1;
-  char *argv[] = {"Spline interpolation for x^3"};
+  char* argv[] = {"Tests for spline interpolation"};
   QApplication a(argc, argv);
 
   QCustomPlot customPlot;
@@ -57,40 +48,18 @@ BOOST_AUTO_TEST_CASE(plot_for_x_kub) {
   customPlot.graph(0)->setPen(QPen(Qt::red));
 
   QVector<double> x_part, y_part;
-
-  vector<SplineModel::Point> data;
-  data.push_back(SplineModel::Point(-4, -64));
-  data.push_back(SplineModel::Point(-3, -27));
-  data.push_back(SplineModel::Point(-2, -8));
-  data.push_back(SplineModel::Point(-1.5, -3.375));
-  data.push_back(SplineModel::Point(-1.4, -2.744));
-  data.push_back(SplineModel::Point(-1, -1));
-
-  data.push_back(SplineModel::Point(0, 0));
-  data.push_back(SplineModel::Point(0.5, 0.125));
-  data.push_back(SplineModel::Point(1, 1));
-  data.push_back(SplineModel::Point(1.4, 2.744));
-  data.push_back(SplineModel::Point(1.5, 3.375));
-  data.push_back(SplineModel::Point(2, 8));
-
-  data.push_back(SplineModel::Point(3, 27));
-  data.push_back(SplineModel::Point(4, 64));
-  SplineModel spline(data);
-
+  SplineModel spline(test_data);
   customPlot.xAxis->grid()->setSubGridVisible(true);
   customPlot.yAxis->grid()->setSubGridVisible(true);
-
-  for (double i = -4; i < 4; i = i + 0.2) {
-    x_part.push_back(i);
-    y_part.push_back(spline.y(i));
+  customPlot.graph(0)->setData(x_part, y_part);
+  for (int i = lower_bound * 10; i < upper_bound * 10; ++i) {
+    x_part.push_back(i / 10.);
+    y_part.push_back(spline.y(i / 10.));
   }
-  // pass data points to graphs:
+  // pass test_data points to graphs:
   customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::blue));
   customPlot.graph(0)->setData(x_part, y_part);
 
-  // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
-  // graphs by clicking:
   customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
                              QCP::iSelectPlottables);
 
@@ -100,133 +69,42 @@ BOOST_AUTO_TEST_CASE(plot_for_x_kub) {
   a.exec();
 }
 
-#endif
+std::vector<SplineModel::Point> test_data;
+BOOST_AUTO_TEST_CASE(plot_for_x_kub) {
+  for (int i = -80; i < 80; i = i + 10) {
+    test_data.push_back(SplineModel::Point(i / 10., i * i * i / 1000.));
+  }
+  plotting(test_data, -8, 8);
+}
 
 BOOST_AUTO_TEST_CASE(spline_for_random_dots) {
-  int argc = 1;
-  char *argv[] = {"Spline interpolation for random dots"};
-  QApplication a(argc, argv);
-
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
-
-  QVector<double> x_part, y_part;
-
-  vector<SplineModel::Point> data;
-
-  data.push_back(SplineModel::Point(1, 2));
-  data.push_back(SplineModel::Point(2, 3));
-  data.push_back(SplineModel::Point(4, 1));
-  data.push_back(SplineModel::Point(7, 4));
-  SplineModel spline(data);
-
-  customPlot.xAxis->grid()->setSubGridVisible(true);
-  customPlot.yAxis->grid()->setSubGridVisible(true);
-
-  for (double i = -4; i < 7; i = i + 0.1) {
-    x_part.push_back(i);
-    y_part.push_back(spline.y(i));
-  }
-  // pass data points to graphs:
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::blue));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
-  // graphs by clicking:
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.show();
-  customPlot.resize(640, 480);
-
-  a.exec();
+  test_data.clear();
+  test_data.push_back(SplineModel::Point(1, 2));
+  test_data.push_back(SplineModel::Point(2, 3));
+  test_data.push_back(SplineModel::Point(4, 1));
+  test_data.push_back(SplineModel::Point(7, 4));
+  plotting(test_data, -4, 7);
 }
 
 BOOST_AUTO_TEST_CASE(plot_for_line) {
-  int argc = 1;
-  char *argv[] = {"Spline interpolation for line"};
-  QApplication a(argc, argv);
-
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
-
-  QVector<double> x_part, y_part;
-
-  vector<SplineModel::Point> data;
-
-  data.push_back(SplineModel::Point(1, 1));
-  data.push_back(SplineModel::Point(2, 2));
-  data.push_back(SplineModel::Point(3, 3));
-  data.push_back(SplineModel::Point(4, 4));
-  SplineModel spline(data);
-
-  customPlot.xAxis->grid()->setSubGridVisible(true);
-  customPlot.yAxis->grid()->setSubGridVisible(true);
-
-  for (double i = -1; i < 4; i = i + 0.1) {
-    x_part.push_back(i);
-    y_part.push_back(spline.y(i));
-  }
-  // pass data points to graphs:
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::blue));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
-  // graphs by clicking:
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.show();
-  customPlot.resize(640, 480);
-
-  a.exec();
+  test_data.clear();
+  test_data.push_back(SplineModel::Point(1, 1));
+  test_data.push_back(SplineModel::Point(2, 2));
+  test_data.push_back(SplineModel::Point(3, 3));
+  test_data.push_back(SplineModel::Point(4, 4));
+  plotting(test_data, -1, 6);
 }
 
-BOOST_AUTO_TEST_CASE(plot_for_random_dots_v2) {
-  int argc = 1;
-  char *argv[] = {"Spline interpolation for random dots"};
-  QApplication a(argc, argv);
+BOOST_AUTO_TEST_CASE(spline_for_random_dots_v2) {
+  test_data.clear();
 
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
+  test_data.push_back(SplineModel::Point(1, 2));
+  test_data.push_back(SplineModel::Point(2, 3));
+  test_data.push_back(SplineModel::Point(5, 8));
+  test_data.push_back(SplineModel::Point(6, 12));
+  test_data.push_back(SplineModel::Point(8, 23));
 
-  QVector<double> x_part, y_part;
-
-  vector<SplineModel::Point> data;
-
-  data.push_back(SplineModel::Point(1, 2));
-  data.push_back(SplineModel::Point(2, 3));
-  data.push_back(SplineModel::Point(5, 8));
-  data.push_back(SplineModel::Point(6, 12));
-  data.push_back(SplineModel::Point(8, 23));
-  SplineModel spline(data);
-
-  customPlot.xAxis->grid()->setSubGridVisible(true);
-  customPlot.yAxis->grid()->setSubGridVisible(true);
-
-  for (double i = 1; i < 9; i = i + 0.1) {
-    x_part.push_back(i);
-    y_part.push_back(spline.y(i));
-  }
-  // pass data points to graphs:
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::blue));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select
-  // graphs by clicking:
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.show();
-  customPlot.resize(640, 480);
-
-  a.exec();
+  plotting(test_data, 1, 15);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

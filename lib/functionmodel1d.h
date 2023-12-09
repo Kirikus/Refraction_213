@@ -1,8 +1,5 @@
 #ifndef FUNCTIONMODEL1D_H
 #define FUNCTIONMODEL1D_H
-#include <QFile>
-#include <vector>
-using std::vector;
 
 class FunctionModel1D {
  public:

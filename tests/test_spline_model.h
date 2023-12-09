@@ -1,4 +1,4 @@
 #ifndef TEST_SPLINE_MODEL_H
 #define TEST_SPLINE_MODEL_H
 
-#endif // TEST_SPLINE_MODEL_H
+#endif  // TEST_SPLINE_MODEL_H

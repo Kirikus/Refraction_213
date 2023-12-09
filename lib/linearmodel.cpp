@@ -1,13 +1,9 @@
 #include "linearmodel.h"
 
-#include <QDebug>
 #include <algorithm>
-#include <fstream>
-#include <sstream>
 #include <stdexcept>
-using std::ifstream;
-using std::stringstream;
-LinearModel::LinearModel(vector<Point> points_data) {
+
+LinearModel::LinearModel(std::vector<Point> points_data) {
   for (auto point = points_data.begin(); point != points_data.end(); point++) {
     auto first_point = point;
     auto second_point = point;
@@ -23,20 +19,16 @@ LinearModel::LinearModel(vector<Point> points_data) {
   }
 }
 
-LinearModel::LinearModel(std::string path) {
-  vector<Point> data;
-  ifstream file;
-  file.open(path);
-  string file_line;
-  while (getline(file, file_line)) {
-    vector<double> coords;
-    stringstream input_string(file_line);
-    string line = input_string.str();
-    string delimiter = ";";
+LinearModel::LinearModel(std::vector<std::string>& file_data) {
+  std::vector<Point> data;
+  for (int i = 0; i < file_data.size(); ++i) {
+    std::vector<double> coords;
+    std::string line = file_data[i];
+    std::string delimiter = ";";
     size_t pos = 0;
-    string token;
-    vector<string> parts;
-    while ((pos = line.find(delimiter)) != string::npos) {
+    std::string token;
+    std::vector<std::string> parts;
+    while ((pos = line.find(delimiter)) != std::string::npos) {
       token = line.substr(0, pos);
       parts.push_back(token);
       line.erase(0, pos + delimiter.length());
@@ -53,9 +45,8 @@ LinearModel::LinearModel(std::string path) {
     }
     data.push_back(Point(coords[0], coords[1]));
   }
-  LinearModel* interp = new LinearModel(data);
-  this->data = interp->data;
-  file.close();
+  LinearModel* spline = new LinearModel(data);
+  this->data = spline->data;
 }
 double LinearModel::y(double x) {
   if (data.size() == 0) return 0;

@@ -1,17 +1,14 @@
 #include "splinemodel.h"
 
 #include <algorithm>
-#include <fstream>
-#include <sstream>
+#include <cmath>
+#include <iostream>
 #include <stdexcept>
-using std::ifstream;
-using std::stringstream;
-using std::vector;
-SplineModel::SplineModel(vector<Point> points) {
-  vector<vector<double>> matrix;
+SplineModel::SplineModel(std::vector<Point> points) {
+  std::vector<std::vector<double>> matrix;
   int eq_number = (points.size() - 1) * 4;
-  vector<double> coeff(eq_number, 0);
-  vector<double> answer(eq_number, 0);
+  std::vector<double> coeff(eq_number, 0);
+  std::vector<double> answer(eq_number, 0);
   for (int i = 0; i < points.size() - 1; ++i) {
     double x1 = points[i].x;
     double x2 = points[i + 1].x;
@@ -87,20 +84,16 @@ SplineModel::SplineModel(vector<Point> points) {
                         answer[4 * i + 3]));
   }
 }
-SplineModel::SplineModel(std::string path) {
-  vector<Point> data;
-  ifstream file;
-  file.open(path);
-  string file_line;
-  while (getline(file, file_line)) {
-    vector<double> coords;
-    stringstream input_string(file_line);
-    string line = input_string.str();
-    string delimiter = ";";
+SplineModel::SplineModel(std::vector<std::string>& file_data) {
+  std::vector<Point> data;
+  for (int i = 0; i < file_data.size(); ++i) {
+    std::vector<double> coords;
+    std::string line = file_data[i];
+    std::string delimiter = ";";
     size_t pos = 0;
-    string token;
-    vector<string> parts;
-    while ((pos = line.find(delimiter)) != string::npos) {
+    std::string token;
+    std::vector<std::string> parts;
+    while ((pos = line.find(delimiter)) != std::string::npos) {
       token = line.substr(0, pos);
       parts.push_back(token);
       line.erase(0, pos + delimiter.length());
@@ -119,7 +112,6 @@ SplineModel::SplineModel(std::string path) {
   }
   SplineModel* spline = new SplineModel(data);
   this->data = spline->data;
-  file.close();
 }
 
 double SplineModel::y(double x) {
@@ -127,9 +119,22 @@ double SplineModel::y(double x) {
   auto start = data.begin();
   auto finish = data.end();
   finish--;
-  if (x <= start->first_x) return data[0].a + data[0].b * (x - data[0].first_x);
-  if (x >= finish->second_x)
-    return data.back().a + data.back().b * (x - data.back().first_x);
+  if (x < start->first_x) return (start->b) * (x - start->first_x) + start->a;
+  if (x > data.back().second_x) {
+    double final_value =
+        data.back().d *
+            std::pow(data.back().second_x - data.back().first_x, 3) +
+        data.back().c *
+            std::pow(data.back().second_x - data.back().first_x, 2) +
+        data.back().b * (data.back().second_x - data.back().first_x) +
+        data.back().a;
+    return (3 * data.back().d *
+                std::pow(data.back().second_x - data.back().first_x, 2) +
+            2 * data.back().c * (data.back().second_x - data.back().first_x) +
+            data.back().b) *
+               (x - data.back().second_x) +
+           final_value;
+  }
   for (auto interval = data.begin(); interval != data.end(); ++interval)
     if (x >= interval->first_x && x <= interval->second_x) {
       double x0 = interval->first_x;

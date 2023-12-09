@@ -13,16 +13,17 @@
 #include <boost/test/unit_test.hpp>
 
 namespace tt = boost::test_tools;
+std::vector<std::string> data1 = {"1000;2", "2000;3", "3000;4", "5000;6"};
+std::vector<std::string> data2 = {"1000;6", "2000;8", "3000;10", "4000;12"};
 
 BOOST_AUTO_TEST_SUITE(opening_files_and_interpolation_test)
 
-BOOST_AUTO_TEST_CASE(open_random_file) {
-  SplineModel* data_p = new SplineModel(
-      "..tests/p_h.csv"); //TODO: Ask about ways to files!
-  LinearModel* data_t = new LinearModel(
-      "..tests/t_h.csv");
+BOOST_AUTO_TEST_CASE(vector_string_gost_construction) {
+  SplineModel* data_p = new SplineModel(data1);
+  LinearModel* data_t = new LinearModel(data2);
   GOSTModel test_gost(data_p, data_t);
-  BOOST_TEST(test_gost.N(9) == 4836, tt::tolerance(1.0));  // TODO: Check it
+  BOOST_TEST(test_gost.Ro(1000) == 0.0057, tt::tolerance(0.01));
+  BOOST_TEST(test_gost.N(1000) == 2602, tt::tolerance(1.0));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -37,11 +38,11 @@ BOOST_AUTO_TEST_CASE(plot_for_random_dots_v2) {
   QCustomPlot customPlot;
   customPlot.addGraph();
   customPlot.graph(0)->setPen(QPen(Qt::red));
+  customPlot.yAxis->setLabel("h, m");
+  customPlot.xAxis->setLabel("Ro, g/m^3");
   QVector<double> x_part, y_part;
-  SplineModel* data_p = new SplineModel(
-      "p_h.csv");
-  LinearModel* data_t = new LinearModel(
-      "t_h.csv");
+  SplineModel* data_p = new SplineModel(data1);
+  LinearModel* data_t = new LinearModel(data2);
   GOSTModel gost(data_p, data_t);
   for (int i = 12000; i > 0; i--) {
     y_part.push_back(i);

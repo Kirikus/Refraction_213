@@ -12,8 +12,6 @@ class GOSTModel: public AtmosphericModel {
  private:
   FunctionModel1D* p_via_h;
   FunctionModel1D* T_via_h;
-
-
 };
 
 #endif  // GOSTMODEL_H

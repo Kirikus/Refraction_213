@@ -1,4 +1,4 @@
 #ifndef TEST_GOST_MODEL_H
 #define TEST_GOST_MODEL_H
 
-#endif // TEST_GOST_MODEL_H
+#endif  // TEST_GOST_MODEL_H

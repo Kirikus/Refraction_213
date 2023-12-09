@@ -1,7 +1,6 @@
 #include "gostmodel.h"
 
 #include <cmath>
-using std::pow;
 
 double GOSTModel::Ro(double h) {
   double rh = 0.6;
@@ -10,7 +9,7 @@ double GOSTModel::Ro(double h) {
   if (h <= 2000) return Ro_0 * (1 - 0.2523 * h * 0.001) * 0.001;
   if (2000 < h && h <= 8000)
     return 0.4954 * Ro_0 * pow(M_E, -(h - 2000) / 1861) * 0.001;
-  if (h > 8000) return 0.0197 * Ro_0 * pow(M_E, -(h - 8000) / 1158) * 0.001;
+  if (h > 8000) return 0.0197 * Ro_0 * exp(-(h - 8000) / 1158) * 0.001;
 }
 
 double GOSTModel::N(double h) {
@@ -19,3 +18,4 @@ double GOSTModel::N(double h) {
   double e = T * Ro(h) / 216.68;
   return 77.6 / T * (P * 100 + 4810 * e / T);
 }
+
