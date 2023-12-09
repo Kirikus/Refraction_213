@@ -405,16 +405,20 @@ void MainWindow::on_refractionModelBox_currentIndexChanged(
 
 void MainWindow::on_temperatureSplineButton_clicked() {
   user_input_data.setTemperatureInterpolationMethod(gui::Spline);
+  calculateAndShow();
 }
 
 void MainWindow::on_temperatureLinearButton_clicked() {
   user_input_data.setTemperatureInterpolationMethod(gui::Linear);
+  calculateAndShow();
 }
 
 void MainWindow::on_pressureSplineButton_clicked() {
   user_input_data.setPressureInterpolationMethod(gui::Spline);
+  calculateAndShow();
 }
 
 void MainWindow::on_pressureLinearButton_clicked() {
   user_input_data.setPressureInterpolationMethod(gui::Linear);
+  calculateAndShow();
 }

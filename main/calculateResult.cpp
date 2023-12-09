@@ -105,13 +105,8 @@ void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
           answer = average_k_model_for_exponent.calculate(data);
         }
       } else {
-        if (user_input_data.getAtmosphericModel() ==
-            gui::AtmosphericModel::Segmented) {
-          AverageKModel average_k_model(atmosphere);
-          answer = average_k_model.calculate(data);
-        } else {
-          // add options for GOST
-        }
+        AverageKModel average_k_model(atmosphere);
+        answer = average_k_model.calculate(data);
       }
     } break;
     case (gui::RefractionModel::AverageRho):
@@ -123,13 +118,8 @@ void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
           answer = average_p_model_for_exponent.calculate(data);
         }
       } else {
-        if (user_input_data.getAtmosphericModel() ==
-            gui::AtmosphericModel::Segmented) {
-          AverageKModel average_k_model(atmosphere);
-          answer = average_k_model.calculate(data);
-        } else {
-          // add options for GOST
-        }
+        AveragePModel average_p_model(atmosphere);
+        answer = average_p_model.calculate(data);
       }
       break;
   }
