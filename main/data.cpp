@@ -8,7 +8,7 @@ void Data::setDistance(double distance_from_station_to_target) {
   this->dist_to_target = distance_from_station_to_target;
 }
 
-void Data::setPlot(QCustomPlot *plot) { this->plot = plot; }
+void Data::setPlot(QCustomPlot* plot) { this->plot = plot; }
 
 void Data::setStation(double height) { this->station_height = height; }
 
@@ -30,6 +30,19 @@ void Data::setHeightOfSurface(double height) {
 
 void Data::setRefractiveIndex(double index) {
   this->refractive_index_near_surface = index;
+}
+
+void Data::setGostTemperature(std::vector<std::string>& temperature) {
+  this->gost_temperature_data = temperature;
+}
+void Data::setGostPressure(std::vector<std::string>& pressure) {
+  this->gost_pressure_data = pressure;
+}
+std::vector<std::string> Data::getGostPressure() {
+  return this->gost_temperature_data;
+}
+std::vector<std::string> Data::getGostTemperature() {
+  return this->gost_pressure_data;
 }
 
 void Data::setCountingMethod(CountingMethod method) {

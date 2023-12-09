@@ -4,6 +4,7 @@
 #include <qcustomplot.h>
 
 #include <string>
+#include <vector>
 
 #include "../lib/refraction_model.h"
 
@@ -26,6 +27,9 @@ class Data {
 
   double height_of_surface = std::nan("1");
   double refractive_index_near_surface = std::nan("1");
+
+  std::vector<std::string> gost_temperature_data;
+  std::vector<std::string> gost_pressure_data;
 
   double sliding_angle = std::nan("1");
   double declination_angle = std::nan("1");
