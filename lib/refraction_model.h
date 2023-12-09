@@ -30,7 +30,19 @@ class RefractionModel {
   };
 
   // Formula for task of the library
-  virtual Answer calculate(const Input &data, void *opaque) = 0;
+  virtual Answer calculate(const Input &data, void *opaque = nullptr) = 0;
+
+  // answer for reverse task
+  // hs : height of target above sea level, m
+  // d : the length of the arc on the Earth's surface between the nadir
+  //        direction of the radar and target, m
+  struct AnswerReverseTask {
+    double hs;
+    double d;
+  };
+
+  AnswerReverseTask calculate_reverse_task(double ha, double psi_d, double R,
+                                           double hs /*initial hs*/);
 };
 
 #endif  // REFRACTION_MODEL_H
