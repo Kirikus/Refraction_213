@@ -285,10 +285,20 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::on_fittingButton_clicked);
   QObject::connect(averagepFittingButton, &QRadioButton::clicked, this,
                    &MainWindow::on_fittingButton_clicked);
+
   QObject::connect(downloadTemperatureGostButton, &QPushButton::clicked, this,
                    &MainWindow::on_downloadTemperatureGostButton_clicked);
+  QObject::connect(temperatureSplineButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_temperatureSplineButton_clicked);
+  QObject::connect(temperatureLinearButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_temperatureLinearButton_clicked);
+
   QObject::connect(downloadPressureGostButton, &QPushButton::clicked, this,
                    &MainWindow::on_downloadPressureGostButton_clicked);
+  QObject::connect(pressureSplineButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_pressureSplineButton_clicked);
+  QObject::connect(pressureLinearButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_pressureLinearButton_clicked);
 }
 
 void MainWindow::showAnswer() {
@@ -391,4 +401,20 @@ void MainWindow::on_refractionModelBox_currentIndexChanged(
     }
   }
   calculateAndShow();
+}
+
+void MainWindow::on_temperatureSplineButton_clicked() {
+  user_input_data.setTemperatureInterpolationMethod(gui::Spline);
+}
+
+void MainWindow::on_temperatureLinearButton_clicked() {
+  user_input_data.setTemperatureInterpolationMethod(gui::Linear);
+}
+
+void MainWindow::on_pressureSplineButton_clicked() {
+  user_input_data.setPressureInterpolationMethod(gui::Spline);
+}
+
+void MainWindow::on_pressureLinearButton_clicked() {
+  user_input_data.setPressureInterpolationMethod(gui::Linear);
 }

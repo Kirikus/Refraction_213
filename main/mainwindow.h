@@ -55,16 +55,18 @@ class MainWindow : public QMainWindow {
   void on_distanceToTargetEdit_textEdited(const QString &arg1);
 
   void on_directTaskButton_clicked();
-
   void on_reverseTaskButton_clicked();
 
   void on_integrateButton_clicked();
-
   void on_fittingButton_clicked();
 
   void on_downloadTemperatureGostButton_clicked();
+  void on_temperatureSplineButton_clicked();
+  void on_temperatureLinearButton_clicked();
 
   void on_downloadPressureGostButton_clicked();
+  void on_pressureSplineButton_clicked();
+  void on_pressureLinearButton_clicked();
 
  private:
   Ui::MainWindow *ui;
