@@ -88,11 +88,11 @@ void Data::setPressureInterpolationMethod(InterpolationMethod method) {
 }
 
 InterpolationMethod Data::getTemperatureInterpolatingMethod() {
-  return this->getTemperatureInterpolatingMethod();
+  return this->temperature_interpolation;
 }
 
 InterpolationMethod Data::getPressureInterpolatingMethod() {
-  return this->getPressureInterpolatingMethod();
+  return this->pressure_interpolation;
 }
 
 Task Data::getTask() { return this->task; }

@@ -9,9 +9,12 @@
 #include "../lib/average_p_model_for_exponent.h"
 #include "../lib/exponent_model.h"
 #include "../lib/geometric_model_line.h"
+#include "../lib/gostmodel.h"
+#include "../lib/linearmodel.h"
 #include "../lib/model4div3.h"
 #include "../lib/model_without_refraction.h"
 #include "../lib/segmented_atmosheric_model.h"
+#include "../lib/splinemodel.h"
 #include "data.h"
 
 RefractionModel::Answer answer;
@@ -29,7 +32,35 @@ bool isInputCorrect() {
 void chooseAtmosphericModel(std::shared_ptr<AtmosphericModel> atmosphere) {
   switch (user_input_data.getAtmosphericModel()) {
     case (gui::AtmosphericModel::GOST440481): {
-    } break;
+      std::vector<std::string> temperature =
+          user_input_data.getGostTemperature();
+      std::vector<std::string> pressure = user_input_data.getGostPressure();
+      if (temperature.size() == 0 || pressure.size() == 0) break;
+      FunctionModel1D* data_t = nullptr;
+      FunctionModel1D* data_p = nullptr;
+      switch (user_input_data.getTemperatureInterpolatingMethod()) {
+        case (gui::Spline): {
+          data_t = new SplineModel(temperature);
+          break;
+        }
+        case (gui::Linear): {
+          data_t = new LinearModel(temperature);
+          break;
+        }
+      }
+      switch (user_input_data.getPressureInterpolatingMethod()) {
+        case (gui::Spline): {
+          data_p = new SplineModel(pressure);
+          break;
+        }
+        case (gui::Linear): {
+          data_p = new LinearModel(pressure);
+          break;
+        }
+      }
+      atmosphere = std::make_shared<GOSTModel>(GOSTModel(data_p, data_t));
+      break;
+    }
     case (gui::AtmosphericModel::Segmented): {
       atmosphere = std::make_shared<SegmentedAtmosphericModel>(
           SegmentedAtmosphericModel(user_input_data.getHeightOfSurface(),

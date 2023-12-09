@@ -396,7 +396,7 @@ void MainWindow::on_refractionModelBox_currentIndexChanged(
       break;
     }
     case gui::RefractionModel::GeometricLine: {
-      ui->refractionStackedWidget->setCurrentIndex(4);
+      ui->refractionStackedWidget->setCurrentIndex(0);
       break;
     }
   }
