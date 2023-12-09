@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1563</width>
-    <height>861</height>
+    <height>889</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -299,7 +299,7 @@
                    <x>10</x>
                    <y>30</y>
                    <width>581</width>
-                   <height>291</height>
+                   <height>310</height>
                   </rect>
                  </property>
                  <layout class="QGridLayout" name="gridLayout">
@@ -367,6 +367,18 @@
                   </item>
                   <item row="3" column="0" colspan="2">
                    <widget class="QStackedWidget" name="refractionStackedWidget">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>80</height>
+                     </size>
+                    </property>
                     <property name="palette">
                      <palette>
                       <active>
@@ -382,9 +394,9 @@
                        <colorrole role="Window">
                         <brush brushstyle="SolidPattern">
                          <color alpha="255">
-                          <red>222</red>
-                          <green>221</green>
-                          <blue>218</blue>
+                          <red>246</red>
+                          <green>245</green>
+                          <blue>244</blue>
                          </color>
                         </brush>
                        </colorrole>
@@ -411,9 +423,9 @@
                        <colorrole role="Window">
                         <brush brushstyle="SolidPattern">
                          <color alpha="255">
-                          <red>222</red>
-                          <green>221</green>
-                          <blue>218</blue>
+                          <red>246</red>
+                          <green>245</green>
+                          <blue>244</blue>
                          </color>
                         </brush>
                        </colorrole>
@@ -431,18 +443,18 @@
                        <colorrole role="Base">
                         <brush brushstyle="SolidPattern">
                          <color alpha="255">
-                          <red>222</red>
-                          <green>221</green>
-                          <blue>218</blue>
+                          <red>246</red>
+                          <green>245</green>
+                          <blue>244</blue>
                          </color>
                         </brush>
                        </colorrole>
                        <colorrole role="Window">
                         <brush brushstyle="SolidPattern">
                          <color alpha="255">
-                          <red>222</red>
-                          <green>221</green>
-                          <blue>218</blue>
+                          <red>246</red>
+                          <green>245</green>
+                          <blue>244</blue>
                          </color>
                         </brush>
                        </colorrole>
@@ -464,6 +476,18 @@
                   </item>
                   <item row="1" column="0" colspan="2">
                    <widget class="QStackedWidget" name="atmosphericStackedWidget">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>150</height>
+                     </size>
+                    </property>
                     <widget class="QWidget" name="page"/>
                     <widget class="QWidget" name="page_2"/>
                    </widget>
@@ -515,30 +539,6 @@
               <property name="sizeConstraint">
                <enum>QLayout::SetDefaultConstraint</enum>
               </property>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="inaccuracyOfTargetDistanceEdit">
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="inaccuracyOfTargetDistance">
-                <property name="text">
-                 <string>Ошибка расстояния до цели:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="inaccuracyOfDeclinationAngleEdit">
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="0" colspan="2">
                <layout class="QGridLayout" name="gridLayout_3">
                 <item row="1" column="1">
@@ -668,6 +668,30 @@
                  </layout>
                 </item>
                </layout>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="inaccuracyOfTargetDistance">
+                <property name="text">
+                 <string>Ошибка расстояния до цели:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="inaccuracyOfDeclinationAngleEdit">
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="inaccuracyOfTargetDistanceEdit">
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
               <item row="1" column="0">
                <widget class="QLabel" name="inaccuracyOfDeclinationAngle">

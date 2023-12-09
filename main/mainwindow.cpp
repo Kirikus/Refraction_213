@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QLocale>
+#include <QString>
 #include <iostream>
 
 #include "./ui_mainwindow.h"
@@ -187,20 +188,39 @@ MainWindow::MainWindow(QWidget* parent)
 
   // Создаем и добавляем секцию для задания модели атмосферы ГОСТ 4401-81
   // Создаем кнопку загрузки данных из файла
+  auto* gost_tab_widget = new QTabWidget();
 
-  ui::Section* section_gost_model = new ui::Section(
-      "Параметры", 300, this, false,
-      ModelType::Atmospheric);  // Создаем Секцию с подписью "Параметры"
-  auto* gost_model_layout =
-      new QGridLayout();  // Создаем layout для этой секции
-  downloadTemperatureGostButton =
-      new QPushButton("Загрузить температуру из файла", section_gost_model);
-  gost_model_layout->addWidget(downloadTemperatureGostButton);
-  downloadPressureGostButton =
-      new QPushButton("Загрузить давление из файла", section_gost_model);
-  gost_model_layout->addWidget(downloadPressureGostButton);
-  section_gost_model->setContentLayout(*gost_model_layout);
-  ui->atmosphericStackedWidget->insertWidget(2, section_gost_model);
+  ui::Section* section_gost_model_temperature = new ui::Section(
+      "Параметры Температуры", 300, this, false, ModelType::Atmospheric);
+  auto* gost_model_layout_temperature = new QGridLayout();
+  downloadTemperatureGostButton = new QPushButton(
+      "Загрузить Температуру из файла", section_gost_model_temperature);
+  gost_model_layout_temperature->addWidget(downloadTemperatureGostButton);
+  temperatureLinearButton =
+      new QRadioButton("Использовать линейную интерполяцию");
+  gost_model_layout_temperature->addWidget(temperatureLinearButton);
+  temperatureSplineButton =
+      new QRadioButton("Использовать Spline интерполяцию");
+  gost_model_layout_temperature->addWidget(temperatureSplineButton);
+  section_gost_model_temperature->setContentLayout(
+      *gost_model_layout_temperature);
+  gost_tab_widget->addTab(section_gost_model_temperature, "Температура");
+
+  ui::Section* section_gost_model_pressure = new ui::Section(
+      "Параметры Давления", 300, this, false, ModelType::Atmospheric);
+  auto* gost_model_layout_pressure = new QGridLayout();
+  downloadPressureGostButton = new QPushButton("Загрузить Давление из файла",
+                                               section_gost_model_pressure);
+  gost_model_layout_pressure->addWidget(downloadPressureGostButton);
+  pressureLinearButton = new QRadioButton("Использовать линейную интерполяцию");
+  gost_model_layout_pressure->addWidget(pressureLinearButton);
+  pressureSplineButton = new QRadioButton("Использовать Spline интерполяцию");
+  gost_model_layout_pressure->addWidget(pressureSplineButton);
+  section_gost_model_pressure->setContentLayout(*gost_model_layout_pressure);
+
+  gost_tab_widget->addTab(section_gost_model_pressure, "Давление");
+
+  ui->atmosphericStackedWidget->insertWidget(2, gost_tab_widget);
 
   // Создаем и добавляем секцию для задания модели рефракции Среднее К
 
@@ -293,6 +313,7 @@ void MainWindow::on_downloadTemperatureGostButton_clicked() {
   QTextStream in(&gost_qfile);
   while (!in.atEnd())
     gost_temperature_data.push_back(in.readLine().toStdString());
+  user_input_data.setGostTemperature(gost_temperature_data);
   calculateAndShow();
 }
 
@@ -309,6 +330,7 @@ void MainWindow::on_downloadPressureGostButton_clicked() {
   std::vector<std::string> gost_pressure_data;
   QTextStream in(&gost_qfile);
   while (!in.atEnd()) gost_pressure_data.push_back(in.readLine().toStdString());
+  user_input_data.setGostPressure(gost_pressure_data);
   calculateAndShow();
 }
 

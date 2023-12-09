@@ -24,6 +24,10 @@ class MainWindow : public QMainWindow {
   QRadioButton *averagepFittingButton;
   QPushButton *downloadTemperatureGostButton;
   QPushButton *downloadPressureGostButton;
+  QRadioButton *temperatureSplineButton;
+  QRadioButton *temperatureLinearButton;
+  QRadioButton *pressureSplineButton;
+  QRadioButton *pressureLinearButton;
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
   void showAnswer();
