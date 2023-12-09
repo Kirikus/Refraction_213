@@ -193,9 +193,12 @@ MainWindow::MainWindow(QWidget* parent)
       ModelType::Atmospheric);  // Создаем Секцию с подписью "Параметры"
   auto* gost_model_layout =
       new QGridLayout();  // Создаем layout для этой секции
-  downloadGostButton =
-      new QPushButton("Загрузить параметры из файла", section_gost_model);
-  gost_model_layout->addWidget(downloadGostButton);
+  downloadTemperatureGostButton =
+      new QPushButton("Загрузить температуру из файла", section_gost_model);
+  gost_model_layout->addWidget(downloadTemperatureGostButton);
+  downloadPressureGostButton =
+      new QPushButton("Загрузить давление из файла", section_gost_model);
+  gost_model_layout->addWidget(downloadPressureGostButton);
   section_gost_model->setContentLayout(*gost_model_layout);
   ui->atmosphericStackedWidget->insertWidget(2, section_gost_model);
 
@@ -262,8 +265,10 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::on_fittingButton_clicked);
   QObject::connect(averagepFittingButton, &QRadioButton::clicked, this,
                    &MainWindow::on_fittingButton_clicked);
-  QObject::connect(downloadGostButton, &QPushButton::clicked, this,
-                   &MainWindow::on_downloadGostButton_clicked);
+  QObject::connect(downloadTemperatureGostButton, &QPushButton::clicked, this,
+                   &MainWindow::on_downloadTemperatureGostButton_clicked);
+  QObject::connect(downloadPressureGostButton, &QPushButton::clicked, this,
+                   &MainWindow::on_downloadPressureGostButton_clicked);
 }
 
 void MainWindow::showAnswer() {
@@ -274,7 +279,7 @@ void MainWindow::showAnswer() {
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_downloadGostButton_clicked() {
+void MainWindow::on_downloadTemperatureGostButton_clicked() {
   QFile gost_qfile(QFileDialog::getOpenFileName(0, "Открыть модель ГОСТ4401-81",
                                                 "", "*.csv"));
   if (!gost_qfile.open(QFile::ReadOnly | QFile::Text)) {
@@ -284,10 +289,27 @@ void MainWindow::on_downloadGostButton_clicked() {
     msg->show();
     return;
   }
-  std::vector<std::string> gost_data;
+  std::vector<std::string> gost_temperature_data;
   QTextStream in(&gost_qfile);
-  while (!in.atEnd()) gost_data.push_back(in.readLine().toStdString());
-  // to do: use gost model on gost_file;
+  while (!in.atEnd())
+    gost_temperature_data.push_back(in.readLine().toStdString());
+  calculateAndShow();
+}
+
+void MainWindow::on_downloadPressureGostButton_clicked() {
+  QFile gost_qfile(QFileDialog::getOpenFileName(0, "Открыть модель ГОСТ4401-81",
+                                                "", "*.csv"));
+  if (!gost_qfile.open(QFile::ReadOnly | QFile::Text)) {
+    QMessageBox* msg = new QMessageBox(this);
+    msg->setWindowTitle("Ошибка чтения файла");
+    msg->setText("Не удалось прочитать информацию о модели");
+    msg->show();
+    return;
+  }
+  std::vector<std::string> gost_pressure_data;
+  QTextStream in(&gost_qfile);
+  while (!in.atEnd()) gost_pressure_data.push_back(in.readLine().toStdString());
+  calculateAndShow();
 }
 
 void MainWindow::calculateAndShow() {

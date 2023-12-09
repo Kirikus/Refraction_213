@@ -22,7 +22,8 @@ class MainWindow : public QMainWindow {
   QRadioButton *averagepIntegrateButton;
   QRadioButton *averagekFittingButton;
   QRadioButton *averagepFittingButton;
-  QPushButton *downloadGostButton;
+  QPushButton *downloadTemperatureGostButton;
+  QPushButton *downloadPressureGostButton;
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
   void showAnswer();
@@ -57,7 +58,9 @@ class MainWindow : public QMainWindow {
 
   void on_fittingButton_clicked();
 
-  void on_downloadGostButton_clicked();
+  void on_downloadTemperatureGostButton_clicked();
+
+  void on_downloadPressureGostButton_clicked();
 
  private:
   Ui::MainWindow *ui;
