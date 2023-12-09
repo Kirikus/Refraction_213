@@ -28,6 +28,9 @@ class MainWindow : public QMainWindow {
   void showAnswer();
   void calculateAndShow();
  private slots:
+  void on_tabWidget_currentChanged(int index);
+
+ private slots:
   void on_refractionModelBox_currentIndexChanged(const QString &arg1);
 
   void on_atmosphericModelBox_currentIndexChanged(const QString &arg1);

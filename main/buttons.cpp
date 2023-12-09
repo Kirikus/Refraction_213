@@ -35,3 +35,16 @@ void MainWindow::on_stationCoordinatesEdit_textEdited(
   user_input_data.setStation(st_height.toDouble());
   calculateAndShow();
 }
+
+void MainWindow::on_tabWidget_currentChanged(int index) {
+  switch (index) {
+    case 0: {
+      user_input_data.setTask(gui::Task::Forward);
+      break;
+    }
+    case 1: {
+      user_input_data.setTask(gui::Task::Reversed);
+      break;
+    }
+  }
+}
