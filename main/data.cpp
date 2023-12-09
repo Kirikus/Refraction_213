@@ -79,4 +79,18 @@ double Data::getDeclinationAngle() { return this->declination_angle; }
 
 double Data::getSurfaceDistance() { return this->distance_on_surface; }
 
+void Data::setTemperatureInterpolationMethod(InterpolationMethod method) {
+  this->temperature_interpolation = method;
+}
+void Data::setPressureInterpolationMethod(InterpolationMethod method) {
+  this->pressure_interpolation = method;
+}
+
+InterpolationMethod Data::getTemperatureInterpolatingMethod() {
+  return this->getTemperatureInterpolatingMethod();
+}
+InterpolationMethod Data::getPressureInterpolatingMethod() {
+  return this->getPressureInterpolatingMethod();
+}
+
 Task Data::getTask() { return this->task; }
