@@ -11,7 +11,7 @@ class EffectiveRadiusModel : public RefractionModel {
   //    psi_g : sliding angle, radians
   //    psi_d : declination angle, radians
   //    opaque : Input
-  double calculate_d(double psi_d, double psi_g, void* opaque);
+  double calculate_d(double psi_d, double psi_g, const Input& data);
 
   // Formula for declination angle via slant range, heights of the radar and
   // target

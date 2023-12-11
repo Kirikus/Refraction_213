@@ -1,8 +1,7 @@
 #include "effective_radius_model.h"
 
 double EffectiveRadiusModel::calculate_d(double psi_d, double psi_g,
-                                         void *opaque) {
-  Input data = *(reinterpret_cast<Input *>(opaque));
+                                         const Input &data) {
   double d = (k(data) * Re + data.hs) * calculate_phi_e(psi_d, psi_g);
   return d;
 }
@@ -39,7 +38,5 @@ RefractionModel::Answer EffectiveRadiusModel::calculate(const Input &data,
   double psi_g = calculate_psi_g(data);
   double hs = data.hs;
   return Answer(
-      {.psi_d = psi_d,
-       .psi_g = psi_g,
-       .d = calculate_d(psi_d, psi_g, reinterpret_cast<void *>(&hs))});
+      {.psi_d = psi_d, .psi_g = psi_g, .d = calculate_d(psi_d, psi_g, data)});
 }
