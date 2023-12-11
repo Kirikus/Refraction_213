@@ -15,7 +15,7 @@ constexpr double max_distance = 1000000;
 constexpr double max_height = 15000;
 constexpr double max_decimals = 5;
 constexpr double max_surface_height = 20000;
-constexpr double max_refractive_index = 2000;
+constexpr double max_refractive_index = 1000;
 
 std::map<std::string, gui::AtmosphericModel> string_to_atmospheric_model = {
     {"Модель ГОСТ4401-81", gui::AtmosphericModel::GOST440481},
@@ -148,7 +148,7 @@ MainWindow::MainWindow(QWidget* parent)
       this);  // Создаем LineEdit, куда будем записывать высоту поверхности
 
   auto* ExponentHeightAboveTheSeaEditValidator = new betterDoubleValidator(
-      0, max_refractive_index, max_decimals, ExponentHeightAboveTheSeaEdit);
+      0, max_surface_height, max_decimals, ExponentHeightAboveTheSeaEdit);
   ExponentHeightAboveTheSeaEditValidator->setLocale(
       QLocale(QLocale::English, QLocale::Europe));
 

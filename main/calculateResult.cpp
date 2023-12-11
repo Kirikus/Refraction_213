@@ -69,11 +69,9 @@ void chooseAtmosphericModel() {
       auto segmented_atmosphere = std::make_shared<SegmentedAtmosphericModel>(
           SegmentedAtmosphericModel(user_input_data.getHeightOfSurface(),
                                     user_input_data.getRefractiiveIndex()));
-      qDebug() << typeid(segmented_atmosphere).name() << "CAS";
       atmosphere =
           std::dynamic_pointer_cast<AtmosphericModel>(segmented_atmosphere);
 
-      qDebug() << typeid(atmosphere).name() << "ATM";
       break;
     }
     case (gui::AtmosphericModel::Exponential): {
@@ -94,7 +92,6 @@ void chooseRefractionModel() {
   RefractionModel::Input data{user_input_data.getStation(),
                               user_input_data.getTarget(),
                               user_input_data.getDistance()};
-  qDebug() << typeid(atmosphere).name();
   switch (user_input_data.getRefractionModel()) {
     case (gui::RefractionModel::GeometricLine): {
       GeometricModelLine lineModel;
