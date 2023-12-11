@@ -299,6 +299,8 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::on_pressureSplineButton_clicked);
   QObject::connect(pressureLinearButton, &QRadioButton::clicked, this,
                    &MainWindow::on_pressureLinearButton_clicked);
+  averagekFittingButton->setEnabled(false);
+  averagepFittingButton->setEnabled(false);
 }
 
 void MainWindow::showAnswer() {
@@ -359,14 +361,24 @@ void MainWindow::on_atmosphericModelBox_currentIndexChanged(
   switch (current_atmoshperic_model) {
     case gui::AtmosphericModel::Segmented: {
       ui->atmosphericStackedWidget->setCurrentIndex(0);
+      averagekFittingButton->setEnabled(false);
+      averagepFittingButton->setEnabled(false);
+      averagekIntegrateButton->click();
+      averagepIntegrateButton->click();
       break;
     }
     case gui::AtmosphericModel::Exponential: {
       ui->atmosphericStackedWidget->setCurrentIndex(1);
+      averagekFittingButton->setEnabled(true);
+      averagepFittingButton->setEnabled(true);
       break;
     }
     case gui::AtmosphericModel::GOST440481: {
       ui->atmosphericStackedWidget->setCurrentIndex(2);
+      averagekFittingButton->setEnabled(false);
+      averagepFittingButton->setEnabled(false);
+      averagekIntegrateButton->click();
+      averagepIntegrateButton->click();
       break;
     }
   }

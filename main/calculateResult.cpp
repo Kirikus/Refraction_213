@@ -19,6 +19,8 @@
 
 RefractionModel::Answer answer;
 
+std::shared_ptr<AtmosphericModel> atmosphere;
+
 bool isInputCorrect() {
   if (!(user_input_data.getDistance() - abs(user_input_data.getTarget() -
                                             user_input_data.getStation()) >=
@@ -29,7 +31,7 @@ bool isInputCorrect() {
   return true;
 }
 
-void chooseAtmosphericModel(std::shared_ptr<AtmosphericModel> atmosphere) {
+void chooseAtmosphericModel() {
   switch (user_input_data.getAtmosphericModel()) {
     case (gui::AtmosphericModel::GOST440481): {
       std::vector<std::string> temperature =
@@ -58,28 +60,41 @@ void chooseAtmosphericModel(std::shared_ptr<AtmosphericModel> atmosphere) {
           break;
         }
       }
-      atmosphere = std::make_shared<GOSTModel>(GOSTModel(data_p, data_t));
+      auto gost_atmosphere =
+          std::make_shared<GOSTModel>(GOSTModel(data_p, data_t));
+      atmosphere = std::dynamic_pointer_cast<AtmosphericModel>(gost_atmosphere);
       break;
     }
     case (gui::AtmosphericModel::Segmented): {
-      atmosphere = std::make_shared<SegmentedAtmosphericModel>(
+      auto segmented_atmosphere = std::make_shared<SegmentedAtmosphericModel>(
           SegmentedAtmosphericModel(user_input_data.getHeightOfSurface(),
                                     user_input_data.getRefractiiveIndex()));
+      qDebug() << typeid(segmented_atmosphere).name() << "CAS";
+      atmosphere =
+          std::dynamic_pointer_cast<AtmosphericModel>(segmented_atmosphere);
+
+      qDebug() << typeid(atmosphere).name() << "ATM";
       break;
     }
     case (gui::AtmosphericModel::Exponential): {
-      atmosphere = std::make_shared<ExponentAtmosphericModel>(
+      auto exponent_atmosphere = std::make_shared<ExponentAtmosphericModel>(
           ExponentAtmosphericModel(user_input_data.getHeightOfSurface(),
                                    user_input_data.getRefractiiveIndex()));
+      atmosphere =
+          std::dynamic_pointer_cast<AtmosphericModel>(exponent_atmosphere);
+
+      qDebug() << typeid(atmosphere).name();
+
       break;
     }
   }
 }
 
-void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
+void chooseRefractionModel() {
   RefractionModel::Input data{user_input_data.getStation(),
                               user_input_data.getTarget(),
                               user_input_data.getDistance()};
+  qDebug() << typeid(atmosphere).name();
   switch (user_input_data.getRefractionModel()) {
     case (gui::RefractionModel::GeometricLine): {
       GeometricModelLine lineModel;
@@ -109,7 +124,7 @@ void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
         answer = average_k_model.calculate(data);
       }
     } break;
-    case (gui::RefractionModel::AverageRho):
+    case (gui::RefractionModel::AverageRho): {
       if (user_input_data.getCountingMethod() == gui::Integration) {
         if (ExponentAtmosphericModel* exponent_atmosphere =
                 dynamic_cast<ExponentAtmosphericModel*>(atmosphere.get())) {
@@ -122,6 +137,7 @@ void chooseRefractionModel(std::shared_ptr<AtmosphericModel> atmosphere) {
         answer = average_p_model.calculate(data);
       }
       break;
+    }
   }
 }
 
@@ -135,7 +151,7 @@ void calculateResult() {
       // set needed task
       break;
   }
-  std::shared_ptr<AtmosphericModel> atmosphere;
-  chooseAtmosphericModel(atmosphere);
-  chooseRefractionModel(atmosphere);
+
+  chooseAtmosphericModel();
+  chooseRefractionModel();
 }

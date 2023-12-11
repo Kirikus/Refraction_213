@@ -65,7 +65,7 @@ gui::RefractionModel Data::getRefractionModel() {
   return this->refraction_model;
 }
 
-CountingMethod Data::getCountingMethod() { return counting_method; }
+CountingMethod Data::getCountingMethod() { return this->counting_method; }
 
 void Data::setAnswer(::RefractionModel::Answer answer) {
   this->sliding_angle = answer.psi_g;
