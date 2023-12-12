@@ -8,16 +8,21 @@
 #include "../lib/average_p_model.h"
 #include "../lib/average_p_model_for_exponent.h"
 #include "../lib/exponent_model.h"
+#include "../lib/fitting_algorithm.h"
 #include "../lib/geometric_model_line.h"
 #include "../lib/gostmodel.h"
+#include "../lib/iterative_algorithm.h"
 #include "../lib/linearmodel.h"
 #include "../lib/model4div3.h"
 #include "../lib/model_without_refraction.h"
 #include "../lib/segmented_atmosheric_model.h"
 #include "../lib/splinemodel.h"
+#include "../lib/universal_angle_calculator.h"
 #include "data.h"
 
 RefractionModel::Answer answer;
+
+constexpr double iterative_algorithm_accuracy = 0.01;
 
 std::shared_ptr<AtmosphericModel> atmosphere;
 
@@ -135,7 +140,26 @@ void chooseRefractionModel() {
       }
       break;
     }
+    case (gui::RefractionModel::FittingAngle): {
+      std::shared_ptr<UniversalAngleCalculator> angle_calculator(
+          new UniversalAngleCalculator(atmosphere));
+      FittingAlgorithm fitting_algoritm(angle_calculator,
+                                        iterative_algorithm_accuracy,
+                                        iterative_algorithm_accuracy);
+      answer = fitting_algoritm.calculate(data, nullptr);
+      break;
+    }
+    case (gui::RefractionModel::IterativeAlgorithm): {
+      std::shared_ptr<UniversalAngleCalculator> angle_calculator(
+          new UniversalAngleCalculator(atmosphere));
+      IterativeAlgorithm iterative_algoritm(angle_calculator,
+                                            iterative_algorithm_accuracy,
+                                            iterative_algorithm_accuracy);
+      answer = iterative_algoritm.calculate(data);
+      break;
+    }
   }
+  answer.d = abs(answer.d);
 }
 
 void calculateResult() {

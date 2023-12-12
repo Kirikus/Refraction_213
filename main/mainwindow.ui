@@ -337,6 +337,16 @@
                       <string>Модель плоской Земли</string>
                      </property>
                     </item>
+                    <item>
+                     <property name="text">
+                      <string>Подбор угла</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Итерационный алгоритм</string>
+                     </property>
+                    </item>
                    </widget>
                   </item>
                   <item row="0" column="0">
@@ -355,7 +365,7 @@
                     </item>
                     <item>
                      <property name="text">
-                      <string>ГОСТ 4401-81</string>
+                      <string>Модель ГОСТ 4401-81</string>
                      </property>
                     </item>
                     <item>

@@ -18,7 +18,9 @@ enum class RefractionModel {
   Geometric,
   AverageK,
   AverageRho,
-  GeometricLine
+  GeometricLine,
+  FittingAngle,
+  IterativeAlgorithm
 };
 
 class Data {

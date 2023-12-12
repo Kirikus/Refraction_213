@@ -27,7 +27,9 @@ std::map<std::string, gui::RefractionModel> string_to_refraction_model = {
      gui::RefractionModel::Effective_Radius43},
     {"Геометрическая модель", gui::RefractionModel::Geometric},
     {"Модель среднего K", gui::RefractionModel::AverageK},
-    {"Модель среднего P", gui::RefractionModel::AverageRho}};
+    {"Модель среднего P", gui::RefractionModel::AverageRho},
+    {"Подбор угла", gui::RefractionModel::FittingAngle},
+    {"Итерационный алгоритм", gui::RefractionModel::IterativeAlgorithm}};
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -408,6 +410,14 @@ void MainWindow::on_refractionModelBox_currentIndexChanged(
       break;
     }
     case gui::RefractionModel::GeometricLine: {
+      ui->refractionStackedWidget->setCurrentIndex(0);
+      break;
+    }
+    case gui::RefractionModel::FittingAngle: {
+      ui->refractionStackedWidget->setCurrentIndex(0);
+      break;
+    }
+    case gui::RefractionModel::IterativeAlgorithm: {
       ui->refractionStackedWidget->setCurrentIndex(0);
       break;
     }
