@@ -11,6 +11,8 @@
 #include "../lib/iterative_algorithm.h"
 #include "../lib/iterative_algorithm_for_exponent.h"
 #include "../lib/model4div3.h"
+#include "../lib/model_without_refraction.h"
+#include "../lib/segmented_atmosheric_model.h"
 #include "../lib/universal_angle_calculator.h"
 #include "qcustomplot.h"
 
@@ -21,699 +23,158 @@
 
 namespace tt = boost::test_tools;
 
+void testGraph(
+    double graph_height, double step, double Ns, double R, double accu_1 = 0.01,
+    double accu_2 =
+        0.01) {  // accu - параметры, задающие точность в итеративном алгоритме
+  int argc = 1;
+  double hs = 0;
+  char* argv[] = {"General tests"};
+
+  QApplication a(argc, {});
+  QCustomPlot customPlot;
+
+  customPlot.legend->setVisible(true);
+  std::shared_ptr<SegmentedAtmosphericModel> segm_model(
+      new SegmentedAtmosphericModel(hs, Ns));
+  std::shared_ptr<ExponentAtmosphericModel> exp_model(
+      new ExponentAtmosphericModel(hs, Ns));
+  QVector<double> test_it_data(graph_height + 10, 0);
+  AverageKModel testAverageKModel(exp_model);
+  const ExponentAtmosphericModel& exact_exp_model =
+      ExponentAtmosphericModel(hs, Ns);
+  std::shared_ptr<UniversalAngleCalculator> ang_calc_uni(
+      new UniversalAngleCalculator(segm_model));
+  IterativeAlgorithm test_it_alg(ang_calc_uni, accu_1, accu_2, 0.1);
+  for (int ha = graph_height; ha > 1000; ha = ha - step) {
+    EffectiveRadiusModel::Input data{double(ha), hs, R};
+    test_it_data[ha] = (test_it_alg.calculate(data).psi_d);
+  }
+  customPlot.addGraph();
+  customPlot.graph(0)->setName("Численное интегрирование с аппроксимацией");
+  QVector<double> x_part, y_part;
+  std::shared_ptr<AngleCalculatorForExponentModel> ang_calc_exp(
+      new AngleCalculatorForExponentModel(exact_exp_model));
+  IterativeAlgorithmForExponentModel test_it_alg_exp(ang_calc_exp, accu_1,
+                                                     accu_2, 0.1);
+  for (int ha = graph_height; ha > 900; ha = ha - step) {
+    EffectiveRadiusModel::Input data{(double)ha, hs, R};
+    y_part.push_back(ha);
+    x_part.push_back(
+        (test_it_data[ha] - test_it_alg_exp.calculate(data).psi_d) * 180 /
+        M_PI);
+  }
+  customPlot.graph(0)->setPen(QPen(Qt::darkCyan, 2));
+  customPlot.graph(0)->setData(x_part, y_part, true);
+
+  x_part.clear();
+  y_part.clear();
+  customPlot.addGraph();
+  customPlot.graph(1)->setPen(QPen(Qt::red, 2));
+
+  customPlot.graph(1)->setName("Геометрическая модель");
+  ModelWithoutRefraction test_geom_model;
+  for (int ha = graph_height; ha > 1000; ha = ha - step) {
+    EffectiveRadiusModel::Input data{(double)ha, hs, R};
+    y_part.push_back(ha);
+    x_part.push_back(
+        (test_it_data[ha] - test_geom_model.calculate_psi_d(data)) * 180 /
+        M_PI);
+  }
+  customPlot.graph(1)->setPen(QPen(Qt::green, 2));
+  customPlot.graph(1)->setData(x_part, y_part, true);
+
+  x_part.clear();
+  y_part.clear();
+  customPlot.addGraph();
+  customPlot.graph(2)->setName("Модель 4/3");
+  Model4div3 test_model_4div3;
+  for (int ha = graph_height; ha > 1000; ha = ha - step) {
+    EffectiveRadiusModel::Input data{(double)ha, hs, R};
+    y_part.push_back(ha);
+    x_part.push_back(
+        (test_it_data[ha] - test_model_4div3.calculate(data).psi_d) * 180 /
+        M_PI);
+  }
+  customPlot.graph(2)->setPen(QPen(Qt::red, 2));
+  customPlot.graph(2)->setData(x_part, y_part, true);
+
+  x_part.clear();
+  y_part.clear();
+  customPlot.addGraph();
+  customPlot.graph(3)->setName("Модель среднего К с подстановкой");
+  AverageKModel_forExponent test_average_k_exp(exact_exp_model);
+  for (int ha = graph_height; ha > 1000; ha = ha - step) {
+    EffectiveRadiusModel::Input data{(double)ha, hs, R};
+    y_part.push_back(ha);
+    x_part.push_back(
+        (test_it_data[ha] - test_average_k_exp.calculate(data).psi_d) * 180 /
+        M_PI);
+  }
+  customPlot.graph(3)->setPen(QPen(Qt::magenta, 2));
+  customPlot.graph(3)->setData(x_part, y_part, true);
+
+  x_part.clear();
+  y_part.clear();
+  customPlot.addGraph();
+  AverageKModel test_average_k(segm_model);
+  customPlot.graph(4)->setName("Модель среднего K");
+  for (int ha = graph_height; ha > 1000; ha = ha - step) {
+    EffectiveRadiusModel::Input data{(double)ha, hs, R};
+    y_part.push_back(ha);
+    x_part.push_back((test_it_data[ha] - test_average_k.calculate(data).psi_d) *
+                     180 / M_PI);
+  }
+  customPlot.graph(4)->setPen(QPen(Qt::black, 2));
+  customPlot.graph(4)->setData(x_part, y_part, true);
+
+  x_part.clear();
+  y_part.clear();
+  customPlot.addGraph();
+  customPlot.graph(5)->setPen(QPen(Qt::yellow, 2));
+
+  customPlot.graph(5)->setName("Модель среднего Р");
+  AveragePModel test_average_p(segm_model);
+  for (int ha = graph_height; ha > 1000; ha = ha - step) {
+    EffectiveRadiusModel::Input data{(double)ha, hs, R};
+    y_part.push_back(ha);
+    x_part.push_back((test_it_data[ha] - test_average_p.calculate(data).psi_d) *
+                     180 / M_PI);
+  }
+  customPlot.graph(5)->setPen(QPen(Qt::blue, 2));
+  customPlot.graph(5)->setData(x_part, y_part, true);
+
+  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
+                             QCP::iSelectPlottables);
+  customPlot.yAxis->scaleRange(1000, 1);
+  customPlot.xAxis->scaleRange(0.001, 0);
+  customPlot.xAxis->setLabel("Разность углов, градусы");
+  customPlot.yAxis->setLabel("Высота, м");
+  customPlot.show();
+  customPlot.resize(640, 480);
+  a.exec();
+}
+
 BOOST_AUTO_TEST_SUITE(errors)
 
-BOOST_AUTO_TEST_CASE(making_graphs_250) {
-  int argc = 1;
-  char* argv[] = {"Test for difference of angles (Ns = 250, R = 100)"};
-  QApplication a(argc, argv);
-
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
-
-  std::shared_ptr<ExponentAtmosphericModel> atmosphere(
-      new ExponentAtmosphericModel(0, 250));
-  AverageKModel testAverageKModel(atmosphere);
-
-  std::shared_ptr<UniversalAngleCalculator> AngCalc(
-      new UniversalAngleCalculator(atmosphere));
-  IterativeAlgorithm testItAlg(AngCalc, 0.1, 0.1);
-  QVector<double> x_part, y_part;
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAverageKModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(0)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(0)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(0)->setPen(QPen(Qt::green));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  //     Allow user to drag axis ranges with mouse, zoom with mouse wheel and
-  //     select
-  //   graphs by clicking:
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(1)->setPen(QPen(Qt::red));
-
-  AveragePModel testAveragePModel(atmosphere);
-
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAveragePModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(1)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(1)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(1)->setPen(QPen(Qt::blue));
-  customPlot.graph(1)->setData(x_part, y_part);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-
-  Model4div3 testModel4div3;
-
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testModel4div3.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(2)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(2)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-  customPlot.graph(2)->setData(x_part, y_part);
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-
-  const ExponentAtmosphericModel& atmosphere2 =
-      ExponentAtmosphericModel(0, 250);
-  AverageKModel_forExponent testAverageK2(atmosphere2);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageK2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-
-  AveragePModel_forExponent testAverageP2(atmosphere2);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageP2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-
-  std::shared_ptr<AngleCalculatorForExponentModel> AngAlgExp(
-      new AngleCalculatorForExponentModel(atmosphere2));
-  IterativeAlgorithmForExponentModel testItAlg2(AngAlgExp, 0.1, 0.1);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     -testItAlg2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(4)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(4)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(4)->setPen(QPen(Qt::magenta));
-  customPlot.graph(4)->setData(x_part, y_part);
-
-  customPlot.show();
-  customPlot.resize(640, 480);
-  a.exec();
+BOOST_AUTO_TEST_CASE(graph_errors_250_100) {
+  testGraph(30000, 100, 250, 100000, 0.01, 0.01);
 }
 
-BOOST_AUTO_TEST_CASE(making_graphs_313) {
-  int argc = 1;
-  char* argv[] = {"Test for difference of angles(Ns = 313, R = 100)"};
-  QApplication a(argc, argv);
-
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
-
-  std::shared_ptr<ExponentAtmosphericModel> atmosphere(
-      new ExponentAtmosphericModel(0, 313));
-  AverageKModel testAverageKModel(atmosphere);
-
-  std::shared_ptr<UniversalAngleCalculator> AngCalc(
-      new UniversalAngleCalculator(atmosphere));
-  IterativeAlgorithm testItAlg(AngCalc, 0.1, 0.1);
-  QVector<double> x_part, y_part;
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAverageKModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(0)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(0)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(0)->setPen(QPen(Qt::green));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  //     Allow user to drag axis ranges with mouse, zoom with mouse wheel and
-  //     select
-  //   graphs by clicking:
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(1)->setPen(QPen(Qt::red));
-
-  AveragePModel testAveragePModel(atmosphere);
-
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAveragePModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(1)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(1)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(1)->setPen(QPen(Qt::blue));
-  customPlot.graph(1)->setData(x_part, y_part);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-
-  Model4div3 testModel4div3;
-
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testModel4div3.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(2)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(2)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-  customPlot.graph(2)->setData(x_part, y_part);
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-
-  const ExponentAtmosphericModel& atmosphere2 =
-      ExponentAtmosphericModel(0, 313);
-  AverageKModel_forExponent testAverageK2(atmosphere2);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageK2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-
-  AveragePModel_forExponent testAverageP2(atmosphere2);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageP2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-  std::shared_ptr<AngleCalculatorForExponentModel> AngAlgExp(
-      new AngleCalculatorForExponentModel(atmosphere2));
-  IterativeAlgorithmForExponentModel testItAlg2(AngAlgExp, 0.1, 0.1);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     -testItAlg2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(4)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(4)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(4)->setPen(QPen(Qt::magenta));
-  customPlot.graph(4)->setData(x_part, y_part);
-
-  customPlot.show();
-  customPlot.resize(640, 480);
-  a.exec();
+BOOST_AUTO_TEST_CASE(graph_errors_313_100) {
+  testGraph(30000, 100, 313, 100000, 0.01, 0.01);
 }
 
-BOOST_AUTO_TEST_CASE(making_graphs_400) {
-  int argc = 1;
-  char* argv[] = {"Test for difference of angles(Ns = 400, R = 100)"};
-  QApplication a(argc, argv);
-
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
-
-  std::shared_ptr<ExponentAtmosphericModel> atmosphere(
-      new ExponentAtmosphericModel(0, 400));
-  AverageKModel testAverageKModel(atmosphere);
-
-  std::shared_ptr<UniversalAngleCalculator> AngCalc(
-      new UniversalAngleCalculator(atmosphere));
-  IterativeAlgorithm testItAlg(AngCalc, 0.1, 0.1);
-  QVector<double> x_part, y_part;
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAverageKModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(0)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(0)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(0)->setPen(QPen(Qt::green));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  //     Allow user to drag axis ranges with mouse, zoom with mouse wheel and
-  //     select
-  //   graphs by clicking:
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(1)->setPen(QPen(Qt::red));
-
-  AveragePModel testAveragePModel(atmosphere);
-
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAveragePModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(1)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(1)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(1)->setPen(QPen(Qt::blue));
-  customPlot.graph(1)->setData(x_part, y_part);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-
-  Model4div3 testModel4div3;
-
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testModel4div3.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(2)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(2)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-  customPlot.graph(2)->setData(x_part, y_part);
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-
-  const ExponentAtmosphericModel& atmosphere2 =
-      ExponentAtmosphericModel(0, 400);
-  AverageKModel_forExponent testAverageK2(atmosphere2);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageK2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-
-  AveragePModel_forExponent testAverageP2(atmosphere2);
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageP2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-  customPlot.show();
-  customPlot.resize(640, 480);
-  a.exec();
+BOOST_AUTO_TEST_CASE(graph_errors_400_100) {
+  testGraph(30000, 100, 400, 100000, 0.01, 0.01);
 }
 
-BOOST_AUTO_TEST_CASE(making_graphs_250_v2) {
-  int argc = 1;
-  char* argv[] = {"Test for difference of angles(Ns = 250, R = 30)"};
-  QApplication a(argc, argv);
-
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
-
-  std::shared_ptr<ExponentAtmosphericModel> atmosphere(
-      new ExponentAtmosphericModel(0, 250));
-  AverageKModel testAverageKModel(atmosphere);
-
-  std::shared_ptr<UniversalAngleCalculator> AngCalc(
-      new UniversalAngleCalculator(atmosphere));
-  IterativeAlgorithm testItAlg(AngCalc, 0.1, 0.1);
-  QVector<double> x_part, y_part;
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAverageKModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(0)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(0)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(0)->setPen(QPen(Qt::green));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  //     Allow user to drag axis ranges with mouse, zoom with mouse wheel and
-  //     select
-  //   graphs by clicking:
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(1)->setPen(QPen(Qt::red));
-
-  AveragePModel testAveragePModel(atmosphere);
-
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAveragePModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(1)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(1)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(1)->setPen(QPen(Qt::blue));
-  customPlot.graph(1)->setData(x_part, y_part);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-
-  Model4div3 testModel4div3;
-
-  for (int ha = 30000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testModel4div3.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(2)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(2)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-  customPlot.graph(2)->setData(x_part, y_part);
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-
-  const ExponentAtmosphericModel& atmosphere2 =
-      ExponentAtmosphericModel(0, 250);
-  AverageKModel_forExponent testAverageK2(atmosphere2);
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageK2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-
-  AveragePModel_forExponent testAverageP2(atmosphere2);
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 100000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageP2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-  customPlot.show();
-  customPlot.resize(640, 480);
-  std::shared_ptr<AngleCalculatorForExponentModel> AngAlgExp(
-      new AngleCalculatorForExponentModel(atmosphere2));
-  IterativeAlgorithmForExponentModel testItAlg2(AngAlgExp, 0.1, 0.1);
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     -testItAlg2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(4)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(4)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(4)->setPen(QPen(Qt::magenta));
-  customPlot.graph(4)->setData(x_part, y_part);
-
-  a.exec();
+BOOST_AUTO_TEST_CASE(graph_errors_250_30) {
+  testGraph(15000, 100, 250, 30000, 0.01, 0.01);
 }
 
-BOOST_AUTO_TEST_CASE(making_graphs_400_v2) {
-  int argc = 1;
-  char* argv[] = {"Test for difference of angles(Ns = 400, R = 30)"};
-  QApplication a(argc, argv);
-
-  QCustomPlot customPlot;
-  customPlot.addGraph();
-  customPlot.graph(0)->setPen(QPen(Qt::red));
-
-  std::shared_ptr<ExponentAtmosphericModel> atmosphere(
-      new ExponentAtmosphericModel(0, 400));
-  AverageKModel testAverageKModel(atmosphere);
-
-  std::shared_ptr<UniversalAngleCalculator> AngCalc(
-      new UniversalAngleCalculator(atmosphere));
-  IterativeAlgorithm testItAlg(AngCalc, 0.1, 0.1);
-  QVector<double> x_part, y_part;
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAverageKModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(0)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(0)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(0)->setPen(QPen(Qt::green));
-  customPlot.graph(0)->setData(x_part, y_part);
-
-  //     Allow user to drag axis ranges with mouse, zoom with mouse wheel and
-  //     select
-  //   graphs by clicking:
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(1)->setPen(QPen(Qt::red));
-
-  AveragePModel testAveragePModel(atmosphere);
-
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     testAveragePModel.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(1)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(1)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(1)->setPen(QPen(Qt::blue));
-  customPlot.graph(1)->setData(x_part, y_part);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-
-  Model4div3 testModel4div3;
-
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testModel4div3.calculate(data).psi_d);
-  }
-  customPlot.addGraph();
-  customPlot.graph(2)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(2)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(2)->setPen(QPen(Qt::red));
-  customPlot.graph(2)->setData(x_part, y_part);
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-
-  customPlot.addGraph();
-  x_part.clear();
-  y_part.clear();
-
-  const ExponentAtmosphericModel& atmosphere2 =
-      ExponentAtmosphericModel(0, 400);
-  AverageKModel_forExponent testAverageK2(atmosphere2);
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageK2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-
-  AveragePModel_forExponent testAverageP2(atmosphere2);
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d +
-                     -testAverageP2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(3)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(3)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(3)->setPen(QPen(Qt::magenta));
-  customPlot.graph(3)->setData(x_part, y_part);
-
-  std::shared_ptr<AngleCalculatorForExponentModel> AngAlgExp(
-      new AngleCalculatorForExponentModel(atmosphere2));
-  IterativeAlgorithmForExponentModel testItAlg2(AngAlgExp, 0.1, 0.1);
-  for (int ha = 15000; ha > 1000; ha = ha - 100) {
-    EffectiveRadiusModel::Input data{(double)ha, 0, 30000};
-    y_part.push_back(ha);
-    testAverageKModel.calculate(data);
-    x_part.push_back(testItAlg.calculate(data).psi_d -
-                     -testItAlg2.calculate(data).psi_d);
-  }
-  customPlot.setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                             QCP::iSelectPlottables);
-  customPlot.addGraph();
-  customPlot.graph(4)->setLineStyle(QCPGraph::lsNone);
-  customPlot.graph(4)->setScatterStyle(
-      QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-  customPlot.graph(4)->setPen(QPen(Qt::magenta));
-  customPlot.graph(4)->setData(x_part, y_part);
-
-  customPlot.show();
-  customPlot.resize(640, 480);
-  a.exec();
+BOOST_AUTO_TEST_CASE(graph_errors_400_30) {
+  testGraph(15000, 100, 400, 30000, 0.01, 0.01);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
