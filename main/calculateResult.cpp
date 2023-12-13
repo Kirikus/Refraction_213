@@ -23,7 +23,7 @@
 RefractionModel::Answer answer;
 
 constexpr double iterative_algorithm_accuracy = 0.01;
-constexpr double fitting_algorithm_accuracy = 0.8;
+constexpr double iterative_algorithm_step = 0.2;
 
 std::shared_ptr<AtmosphericModel> atmosphere;
 
@@ -151,9 +151,9 @@ void chooseRefractionModel() {
     case (gui::RefractionModel::IterativeAlgorithm): {
       std::shared_ptr<UniversalAngleCalculator> angle_calculator(
           new UniversalAngleCalculator(atmosphere));
-      IterativeAlgorithm iterative_algoritm(angle_calculator,
-                                            iterative_algorithm_accuracy,
-                                            iterative_algorithm_accuracy);
+      IterativeAlgorithm iterative_algoritm(
+          angle_calculator, iterative_algorithm_accuracy,
+          iterative_algorithm_accuracy, iterative_algorithm_step);
       answer = iterative_algoritm.calculate(data);
       break;
     }
