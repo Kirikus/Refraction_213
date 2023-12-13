@@ -7,7 +7,7 @@
 
 class FittingAlgorithm : public RefractionAwareModel {
  public:
-  virtual Answer calculate(const Input &data, void *opaque) override;
+  virtual Answer calculate(const Input &data, void *opaque = nullptr) override;
   FittingAlgorithm(std::shared_ptr<AngleCalculator> angle_difference_algorithm,
                    double ha, double hs);
 
