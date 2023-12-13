@@ -12,8 +12,6 @@ class FittingAlgorithm : public RefractionAwareModel {
                    double ha, double hs);
 
  private:
-  std::vector<double> psi_d;
   std::vector<double> psi_g;
-  std::vector<double> d;
 };
 #endif  // FITTING_ALGORITHM_H
