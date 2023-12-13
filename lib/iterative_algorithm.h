@@ -1,20 +1,19 @@
-#ifndef ITERATIVEALGORITHM_H
-#define ITERATIVEALGORITHM_H
-#include <vector>
-using std::vector;
+#ifndef ITERATIVE_ALGORITHM_H
+#define ITERATIVE_ALGORITHM_H
 
 #include "refraction_aware_model.h"
 
-class IterativeAlgorithm : public RefractionAwareModel
-{
-public:
- virtual Answer calculate(const Input &data, void *opaque = nullptr) override;
- IterativeAlgorithm(std::shared_ptr<AngleCalculator> angle_difference_algorithm, double, double);
+class IterativeAlgorithm : public RefractionAwareModel {
+ public:
+  virtual Answer calculate(const Input &data, void *opaque = nullptr) override;
+  IterativeAlgorithm(
+      std::shared_ptr<AngleCalculator> angle_difference_algorithm, double mu,
+      double eps0, double delta_psi_g);
 
-private:
- double delta_psi_g = 0.1;
- double mu = 1;
- double G(const Input&, double);
- double eps0 = 1;
+ private:
+  double G(const Input &data, double h);
+  double delta_psi_g = 0.1;
+  double mu = 0.1;
+  double eps0 = 0.1;
 };
-#endif // ITERATIVEALGORITHM_H
+#endif  // ITERATIVE_ALGORITHM_H
