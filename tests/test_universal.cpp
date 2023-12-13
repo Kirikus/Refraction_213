@@ -60,7 +60,9 @@ void testGraph(
   for (int ha = graph_height; ha > 900; ha = ha - step) {
     EffectiveRadiusModel::Input data{(double)ha, hs, R};
     y_part.push_back(ha);
-    x_part.push_back(test_it_data[ha] - test_it_alg_exp.calculate(data).psi_d);
+    x_part.push_back(
+        (test_it_data[ha] - test_it_alg_exp.calculate(data).psi_d) * 180 /
+        M_PI);
   }
   customPlot.graph(0)->setPen(QPen(Qt::darkCyan, 2));
   customPlot.graph(0)->setData(x_part, y_part, true);
@@ -75,7 +77,9 @@ void testGraph(
   for (int ha = graph_height; ha > 1000; ha = ha - step) {
     EffectiveRadiusModel::Input data{(double)ha, hs, R};
     y_part.push_back(ha);
-    x_part.push_back(test_it_data[ha] - test_geom_model.calculate_psi_d(data));
+    x_part.push_back(
+        (test_it_data[ha] - test_geom_model.calculate_psi_d(data)) * 180 /
+        M_PI);
   }
   customPlot.graph(1)->setPen(QPen(Qt::green, 2));
   customPlot.graph(1)->setData(x_part, y_part, true);
@@ -88,7 +92,9 @@ void testGraph(
   for (int ha = graph_height; ha > 1000; ha = ha - step) {
     EffectiveRadiusModel::Input data{(double)ha, hs, R};
     y_part.push_back(ha);
-    x_part.push_back(test_it_data[ha] - test_model_4div3.calculate(data).psi_d);
+    x_part.push_back(
+        (test_it_data[ha] - test_model_4div3.calculate(data).psi_d) * 180 /
+        M_PI);
   }
   customPlot.graph(2)->setPen(QPen(Qt::red, 2));
   customPlot.graph(2)->setData(x_part, y_part, true);
@@ -101,8 +107,9 @@ void testGraph(
   for (int ha = graph_height; ha > 1000; ha = ha - step) {
     EffectiveRadiusModel::Input data{(double)ha, hs, R};
     y_part.push_back(ha);
-    x_part.push_back(test_it_data[ha] -
-                     test_average_k_exp.calculate(data).psi_d);
+    x_part.push_back(
+        (test_it_data[ha] - test_average_k_exp.calculate(data).psi_d) * 180 /
+        M_PI);
   }
   customPlot.graph(3)->setPen(QPen(Qt::magenta, 2));
   customPlot.graph(3)->setData(x_part, y_part, true);
@@ -115,7 +122,8 @@ void testGraph(
   for (int ha = graph_height; ha > 1000; ha = ha - step) {
     EffectiveRadiusModel::Input data{(double)ha, hs, R};
     y_part.push_back(ha);
-    x_part.push_back(test_it_data[ha] - test_average_k.calculate(data).psi_d);
+    x_part.push_back((test_it_data[ha] - test_average_k.calculate(data).psi_d) *
+                     180 / M_PI);
   }
   customPlot.graph(4)->setPen(QPen(Qt::black, 2));
   customPlot.graph(4)->setData(x_part, y_part, true);
@@ -130,7 +138,8 @@ void testGraph(
   for (int ha = graph_height; ha > 1000; ha = ha - step) {
     EffectiveRadiusModel::Input data{(double)ha, hs, R};
     y_part.push_back(ha);
-    x_part.push_back(test_it_data[ha] - test_average_p.calculate(data).psi_d);
+    x_part.push_back((test_it_data[ha] - test_average_p.calculate(data).psi_d) *
+                     180 / M_PI);
   }
   customPlot.graph(5)->setPen(QPen(Qt::blue, 2));
   customPlot.graph(5)->setData(x_part, y_part, true);
@@ -139,7 +148,7 @@ void testGraph(
                              QCP::iSelectPlottables);
   customPlot.yAxis->scaleRange(1000, 1);
   customPlot.xAxis->scaleRange(0.001, 0);
-  customPlot.xAxis->setLabel("Разность углов, рад");
+  customPlot.xAxis->setLabel("Разность углов, градусы");
   customPlot.yAxis->setLabel("Высота, м");
   customPlot.show();
   customPlot.resize(640, 480);
