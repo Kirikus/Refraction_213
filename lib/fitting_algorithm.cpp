@@ -28,9 +28,9 @@ FittingAlgorithm::FittingAlgorithm(
     double hs)
     : RefractionAwareModel(angle_difference_algorithm) {
   double N = 1000;
-  double d_psi = M_PI / N;
+  double d_psi = 2 * M_PI / N;
   for (int i = 0; i < N; ++i) {
-    psi_g.push_back(i * d_psi);
+    psi_g.push_back(-M_PI + i * d_psi);
     psi_d.push_back(angle_difference_algorithm->psi_d(ha, hs, psi_g[i]));
     d.push_back(angle_difference_algorithm->d(ha, hs, psi_g[i]));
   }
