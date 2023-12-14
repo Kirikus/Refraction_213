@@ -115,7 +115,7 @@ void chooseRefractionModel() {
       break;
     }
     case (gui::RefractionModel::AverageK): {
-      if (user_input_data.getCountingMethod() == gui::Integration) {
+      if (user_input_data.getCountingMethod() == gui::Fitting) {
         if (ExponentAtmosphericModel* exponent_atmosphere =
                 dynamic_cast<ExponentAtmosphericModel*>(atmosphere.get())) {
           AverageKModel_forExponent average_k_model_for_exponent(
@@ -128,7 +128,7 @@ void chooseRefractionModel() {
       }
     } break;
     case (gui::RefractionModel::AverageRho): {
-      if (user_input_data.getCountingMethod() == gui::Integration) {
+      if (user_input_data.getCountingMethod() == gui::Fitting) {
         if (ExponentAtmosphericModel* exponent_atmosphere =
                 dynamic_cast<ExponentAtmosphericModel*>(atmosphere.get())) {
           AveragePModel_forExponent average_p_model_for_exponent(
