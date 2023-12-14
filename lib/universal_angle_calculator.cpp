@@ -26,8 +26,5 @@ double UniversalAngleCalculator::psi_g(double ha, double hs, double psi_d) {
                 (pow(10, -6) * (atmosphere->N(hs + dh * i) -
                                 atmosphere->N(hs + dh * (i - 1))));
   double cos_psi_g = std::cos(psi_d) * exp(integral) * (Re + ha) / (Re + hs);
-  if (std::sin(psi_d) == 0) {
-    return std::acos(cos_psi_g);
-  }
-  return std::acos(cos_psi_g) * std::sin(psi_d) / std::abs(std::sin(psi_d));
+  return std::acos(cos_psi_g) * ((0 < psi_d < M_PI) ? 1 : -1);
 }
