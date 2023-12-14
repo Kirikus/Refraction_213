@@ -18,9 +18,9 @@ BOOST_AUTO_TEST_CASE(ground_level) {
   BOOST_TEST(testModel.N(0) == 324.8, tt::tolerance(1e-6));
 }
 
-BOOST_AUTO_TEST_CASE(N_3000m_not_equal) {
+BOOST_AUTO_TEST_CASE(N_3000m) {
   // for different means
-  BOOST_TEST(testModel.N(3000 - 1e-6) != testModel.N(3000 + 1e-6),
+  BOOST_TEST(testModel.N(3000 - 1e-6) == testModel.N(3000 + 1e-6),
              tt::tolerance(1e-6));
 }
 

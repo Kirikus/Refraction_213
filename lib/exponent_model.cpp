@@ -3,12 +3,6 @@
 double ExponentAtmosphericModel::N(double h) {
   double hb = 12192;
   double Nb = 66.65;
-  if (h < 3000.0) {
-    double dN = -0.00732 * exp(0.005577 * Ns);
-    double He = 1000 / log(Ns / (Ns + 1000 * dN));
-    double N = Ns * exp(-(h - hs) / He);
-    return N;
-  }
   if (h < 10000.0) {
     hb = 9144;
     Nb = 102.9;
