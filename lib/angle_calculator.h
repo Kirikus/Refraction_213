@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "atmospheric_model.h"
+#include "refraction_model.h"
 
 class AngleCalculator {
  public:
@@ -28,6 +29,8 @@ class AngleCalculator {
   // ha : height of aircraft above sea level, m
   // hs : height of target above sea level, m
   double d(double ha, double hs, double psi_g);
+  virtual double G(const RefractionModel::Input &data,
+                   double h) = 0;  // THIS IS A TEMPORARY SOLUTION!!!
 };
 
 #endif  // ANGLE_CALCULATOR_H

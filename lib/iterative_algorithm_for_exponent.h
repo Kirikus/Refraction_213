@@ -12,9 +12,8 @@ class IterativeAlgorithmForExponentModel : public RefractionAwareModel {
       double mu, double eps0, double delta_psi_g);
 
  private:
-  double G(const Input &data, double h);
-  double mu = 1;
-  double eps0 = 1;
+  double mu = 0.1;
+  double eps0 = 0.1;
   double delta_psi_g = 0.1;
 };
 #endif  // ITERATIVE_ALGORITHM_FOR_EXPONENT_H

@@ -11,7 +11,6 @@ class IterativeAlgorithm : public RefractionAwareModel {
       double eps0, double delta_psi_g);
 
  private:
-  double G(const Input &data, double h);
   double delta_psi_g = 0.1;
   double mu = 0.1;
   double eps0 = 0.1;

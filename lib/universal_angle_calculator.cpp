@@ -17,6 +17,18 @@ double UniversalAngleCalculator::psi_d(double ha, double hs, double psi_g) {
   return std::acos(cos_psi_d) * std::sin(psi_g) / std::abs(std::sin(psi_g));
 }
 
+double UniversalAngleCalculator::G(const RefractionModel::Input &data,
+                                   double h) {
+  double integral = 0;
+  double N = 1000;
+  double dh = (h - data.hs) / N;
+  for (int i = 1; i < N; ++i)
+    integral += 1 / (1 + pow(10, -6) * atmosphere->N(data.hs + dh * i)) *
+                (pow(10, -6) * (atmosphere->N(data.hs + dh * i) -
+                                atmosphere->N(data.hs + dh * (i - 1))));
+  return exp(-integral) * (Re + data.hs) / (Re + h);
+}
+
 double UniversalAngleCalculator::psi_g(double ha, double hs, double psi_d) {
   double integral = 0;
   double N = 1000;
