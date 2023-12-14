@@ -87,8 +87,6 @@ void chooseAtmosphericModel() {
       atmosphere =
           std::dynamic_pointer_cast<AtmosphericModel>(exponent_atmosphere);
 
-      qDebug() << typeid(atmosphere).name();
-
       break;
     }
   }
