@@ -20,502 +20,364 @@
       <item row="0" column="3" colspan="2">
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QTabWidget" name="tabWidget">
-            <property name="palette">
-             <palette>
-              <active>
-               <colorrole role="Light">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Base">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Window">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>246</red>
-                  <green>245</green>
-                  <blue>244</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="PlaceholderText">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="128">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </brush>
-               </colorrole>
-              </active>
-              <inactive>
-               <colorrole role="Light">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Base">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Window">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>246</red>
-                  <green>245</green>
-                  <blue>244</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="PlaceholderText">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="128">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </brush>
-               </colorrole>
-              </inactive>
-              <disabled>
-               <colorrole role="Light">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Base">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>246</red>
-                  <green>245</green>
-                  <blue>244</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Window">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>246</red>
-                  <green>245</green>
-                  <blue>244</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="PlaceholderText">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="128">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </brush>
-               </colorrole>
-              </disabled>
-             </palette>
+         <layout class="QVBoxLayout" name="verticalLayout_2"/>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="input_data_box">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>140</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>Входные данные                                                                                                                </string>
+          </property>
+          <widget class="QWidget" name="gridLayoutWidget_2">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>581</width>
+             <height>112</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
             </property>
-            <property name="currentIndex">
-             <number>0</number>
-            </property>
-            <widget class="QWidget" name="tab">
-             <attribute name="title">
-              <string>Прямая задача</string>
-             </attribute>
-             <layout class="QGridLayout" name="gridLayout_7">
-              <item row="0" column="0">
-               <widget class="QGroupBox" name="input_data_box">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>140</height>
-                 </size>
-                </property>
-                <property name="title">
-                 <string>Входные данные                                                                                                                </string>
-                </property>
-                <widget class="QWidget" name="gridLayoutWidget_2">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>30</y>
-                   <width>581</width>
-                   <height>112</height>
-                  </rect>
-                 </property>
-                 <layout class="QGridLayout" name="gridLayout_8">
-                  <property name="sizeConstraint">
-                   <enum>QLayout::SetFixedSize</enum>
-                  </property>
-                  <item row="2" column="1">
-                   <widget class="QLineEdit" name="distanceToTargetEdit">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>320</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="1">
-                   <widget class="QLineEdit" name="targetCoordinatesEdit">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>320</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QLineEdit" name="stationCoordinatesEdit">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>320</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="inputMask">
-                     <string/>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="maxLength">
-                     <number>32767</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0">
-                   <widget class="QLabel" name="label">
-                    <property name="text">
-                     <string>Расстояние от станции до цели, м:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QLabel" name="label_3">
-                    <property name="text">
-                     <string>высота цели, м:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_2">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string>высота станции, м:</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </widget>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="distanceToTargetEdit">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>320</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="targetCoordinatesEdit">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>320</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="stationCoordinatesEdit">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>320</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="inputMask">
+               <string/>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="maxLength">
+               <number>32767</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Расстояние от станции до цели, м:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>высота цели, м:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>высота станции, м:</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>2</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>350</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>Модели</string>
+          </property>
+          <widget class="QWidget" name="gridLayoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>581</width>
+             <height>310</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Модель преломления:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="refractionModelBox">
+              <item>
+               <property name="text">
+                <string>Геометрическая модель</string>
+               </property>
               </item>
-              <item row="1" column="0">
-               <widget class="QGroupBox" name="groupBox">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>2</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>330</height>
-                 </size>
-                </property>
-                <property name="title">
-                 <string>Модели</string>
-                </property>
-                <widget class="QWidget" name="gridLayoutWidget">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>30</y>
-                   <width>581</width>
-                   <height>310</height>
-                  </rect>
-                 </property>
-                 <layout class="QGridLayout" name="gridLayout">
-                  <item row="2" column="0">
-                   <widget class="QLabel" name="label_5">
-                    <property name="text">
-                     <string>Модель преломления:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="1">
-                   <widget class="QComboBox" name="refractionModelBox">
-                    <item>
-                     <property name="text">
-                      <string>Геометрическая модель</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Модель эффективного радиуса 4/3</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Модель среднего K</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Модель среднего P</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Модель плоской Земли</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Подбор угла</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Итерационный алгоритм</string>
-                     </property>
-                    </item>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_4">
-                    <property name="text">
-                     <string>Модель атмосферы:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QComboBox" name="atmosphericModelBox">
-                    <item>
-                     <property name="text">
-                      <string>Сегментированная модель</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Модель ГОСТ 4401-81</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Экспоненциальная модель</string>
-                     </property>
-                    </item>
-                   </widget>
-                  </item>
-                  <item row="3" column="0" colspan="2">
-                   <widget class="QStackedWidget" name="refractionStackedWidget">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>80</height>
-                     </size>
-                    </property>
-                    <property name="palette">
-                     <palette>
-                      <active>
-                       <colorrole role="Base">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>255</red>
-                          <green>255</green>
-                          <blue>255</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                       <colorrole role="Window">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>246</red>
-                          <green>245</green>
-                          <blue>244</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                       <colorrole role="AlternateBase">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>192</red>
-                          <green>191</green>
-                          <blue>188</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                      </active>
-                      <inactive>
-                       <colorrole role="Base">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>255</red>
-                          <green>255</green>
-                          <blue>255</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                       <colorrole role="Window">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>246</red>
-                          <green>245</green>
-                          <blue>244</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                       <colorrole role="AlternateBase">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>192</red>
-                          <green>191</green>
-                          <blue>188</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                      </inactive>
-                      <disabled>
-                       <colorrole role="Base">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>246</red>
-                          <green>245</green>
-                          <blue>244</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                       <colorrole role="Window">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>246</red>
-                          <green>245</green>
-                          <blue>244</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                       <colorrole role="AlternateBase">
-                        <brush brushstyle="SolidPattern">
-                         <color alpha="255">
-                          <red>192</red>
-                          <green>191</green>
-                          <blue>188</blue>
-                         </color>
-                        </brush>
-                       </colorrole>
-                      </disabled>
-                     </palette>
-                    </property>
-                    <widget class="QWidget" name="page_3"/>
-                    <widget class="QWidget" name="page_4"/>
-                   </widget>
-                  </item>
-                  <item row="1" column="0" colspan="2">
-                   <widget class="QStackedWidget" name="atmosphericStackedWidget">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>150</height>
-                     </size>
-                    </property>
-                    <widget class="QWidget" name="page"/>
-                    <widget class="QWidget" name="page_2"/>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </widget>
+              <item>
+               <property name="text">
+                <string>Модель эффективного радиуса 4/3</string>
+               </property>
               </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="tab_2">
-             <attribute name="title">
-              <string>Обратная задача</string>
-             </attribute>
-            </widget>
-           </widget>
-          </item>
-         </layout>
+              <item>
+               <property name="text">
+                <string>Модель среднего K</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Модель среднего P</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Модель плоской Земли</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Подбор угла</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Итерационный алгоритм</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Модель атмосферы:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="atmosphericModelBox">
+              <item>
+               <property name="text">
+                <string>Сегментированная модель</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Модель ГОСТ 4401-81</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Экспоненциальная модель</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2">
+             <widget class="QStackedWidget" name="refractionStackedWidget">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="palette">
+               <palette>
+                <active>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>255</red>
+                    <green>255</green>
+                    <blue>255</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>246</red>
+                    <green>245</green>
+                    <blue>244</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="AlternateBase">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>192</red>
+                    <green>191</green>
+                    <blue>188</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </active>
+                <inactive>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>255</red>
+                    <green>255</green>
+                    <blue>255</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>246</red>
+                    <green>245</green>
+                    <blue>244</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="AlternateBase">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>192</red>
+                    <green>191</green>
+                    <blue>188</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </inactive>
+                <disabled>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>246</red>
+                    <green>245</green>
+                    <blue>244</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>246</red>
+                    <green>245</green>
+                    <blue>244</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="AlternateBase">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>192</red>
+                    <green>191</green>
+                    <blue>188</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </disabled>
+               </palette>
+              </property>
+              <widget class="QWidget" name="page_3"/>
+              <widget class="QWidget" name="page_4"/>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QStackedWidget" name="atmosphericStackedWidget">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>150</height>
+               </size>
+              </property>
+              <widget class="QWidget" name="page"/>
+              <widget class="QWidget" name="page_2"/>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
         </item>
         <item>
          <widget class="QGroupBox" name="output_box">
@@ -549,50 +411,9 @@
               <property name="sizeConstraint">
                <enum>QLayout::SetDefaultConstraint</enum>
               </property>
-              <item row="2" column="0" colspan="2">
+              <item row="0" column="0" colspan="2">
                <layout class="QGridLayout" name="gridLayout_3">
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="recalculatedDeclinationAngleEdit">
-                  <property name="readOnly">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="recalculatedDistanceToTargetEdit">
-                  <property name="readOnly">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="recalculatedDistanceToTarget">
-                  <property name="text">
-                   <string> Восстановленная дальность до цели:</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0" colspan="2">
-                 <widget class="QLabel" name="label_6">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="recalculatedDeclinationAngle">
-                  <property name="text">
-                   <string>Восстановленный угол склонения:</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0" colspan="2">
+                <item row="0" column="0" colspan="2">
                  <layout class="QGridLayout" name="gridLayout_2">
                   <property name="sizeConstraint">
                    <enum>QLayout::SetFixedSize</enum>
@@ -677,41 +498,14 @@
                   </item>
                  </layout>
                 </item>
+                <item row="1" column="0" colspan="2">
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
                </layout>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="inaccuracyOfTargetDistance">
-                <property name="text">
-                 <string>Ошибка расстояния до цели:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="inaccuracyOfDeclinationAngleEdit">
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="inaccuracyOfTargetDistanceEdit">
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="inaccuracyOfDeclinationAngle">
-                <property name="text">
-                 <string>Ошибка угла склонения:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
               </item>
              </layout>
             </item>
