@@ -1,30 +1,35 @@
 #include "mainwindow.h"
 
 #include <QLocale>
+#include <QString>
 #include <iostream>
 
 #include "./ui_mainwindow.h"
 #include "Section.h"
 #include "calculateResult.h"
 #include "doubleValidator.h"
+#include "plotting.h"
 
 constexpr double min_height = -500;
 constexpr double max_distance = 1000000;
 constexpr double max_height = 15000;
 constexpr double max_decimals = 5;
 constexpr double max_surface_height = 20000;
-constexpr double max_refractive_index = 2000;
+constexpr double max_refractive_index = 1000;
 
 std::map<std::string, gui::AtmosphericModel> string_to_atmospheric_model = {
     {"Модель ГОСТ4401-81", gui::AtmosphericModel::GOST440481},
     {"Сегментированная модель", gui::AtmosphericModel::Segmented},
     {"Экспоненциальная модель", gui::AtmosphericModel::Exponential}};
 std::map<std::string, gui::RefractionModel> string_to_refraction_model = {
+    {"Модель плоской Земли", gui::RefractionModel::GeometricLine},
     {"Модель эффективного радиуса 4/3",
      gui::RefractionModel::Effective_Radius43},
     {"Геометрическая модель", gui::RefractionModel::Geometric},
     {"Модель среднего K", gui::RefractionModel::AverageK},
-    {"Модель среднего P", gui::RefractionModel::AverageRho}};
+    {"Модель среднего P", gui::RefractionModel::AverageRho},
+    {"Подбор угла", gui::RefractionModel::FittingAngle},
+    {"Итерационный алгоритм", gui::RefractionModel::IterativeAlgorithm}};
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -145,7 +150,7 @@ MainWindow::MainWindow(QWidget* parent)
       this);  // Создаем LineEdit, куда будем записывать высоту поверхности
 
   auto* ExponentHeightAboveTheSeaEditValidator = new betterDoubleValidator(
-      0, max_refractive_index, max_decimals, ExponentHeightAboveTheSeaEdit);
+      0, max_surface_height, max_decimals, ExponentHeightAboveTheSeaEdit);
   ExponentHeightAboveTheSeaEditValidator->setLocale(
       QLocale(QLocale::English, QLocale::Europe));
 
@@ -185,17 +190,39 @@ MainWindow::MainWindow(QWidget* parent)
 
   // Создаем и добавляем секцию для задания модели атмосферы ГОСТ 4401-81
   // Создаем кнопку загрузки данных из файла
+  auto* gost_tab_widget = new QTabWidget();
 
-  ui::Section* section_gost_model = new ui::Section(
-      "Параметры", 300, this, false,
-      ModelType::Atmospheric);  // Создаем Секцию с подписью "Параметры"
-  auto* gost_model_layout =
-      new QGridLayout();  // Создаем layout для этой секции
-  downloadGostButton =
-      new QPushButton("Загрузить параметры из файла", section_gost_model);
-  gost_model_layout->addWidget(downloadGostButton);
-  section_gost_model->setContentLayout(*gost_model_layout);
-  ui->atmosphericStackedWidget->insertWidget(2, section_gost_model);
+  ui::Section* section_gost_model_temperature = new ui::Section(
+      "Параметры Температуры", 300, this, false, ModelType::Atmospheric);
+  auto* gost_model_layout_temperature = new QGridLayout();
+  downloadTemperatureGostButton = new QPushButton(
+      "Загрузить Температуру из файла", section_gost_model_temperature);
+  gost_model_layout_temperature->addWidget(downloadTemperatureGostButton);
+  temperatureLinearButton =
+      new QRadioButton("Использовать линейную интерполяцию");
+  gost_model_layout_temperature->addWidget(temperatureLinearButton);
+  temperatureSplineButton =
+      new QRadioButton("Использовать Spline интерполяцию");
+  gost_model_layout_temperature->addWidget(temperatureSplineButton);
+  section_gost_model_temperature->setContentLayout(
+      *gost_model_layout_temperature);
+  gost_tab_widget->addTab(section_gost_model_temperature, "Температура");
+
+  ui::Section* section_gost_model_pressure = new ui::Section(
+      "Параметры Давления", 300, this, false, ModelType::Atmospheric);
+  auto* gost_model_layout_pressure = new QGridLayout();
+  downloadPressureGostButton = new QPushButton("Загрузить Давление из файла",
+                                               section_gost_model_pressure);
+  gost_model_layout_pressure->addWidget(downloadPressureGostButton);
+  pressureLinearButton = new QRadioButton("Использовать линейную интерполяцию");
+  gost_model_layout_pressure->addWidget(pressureLinearButton);
+  pressureSplineButton = new QRadioButton("Использовать Spline интерполяцию");
+  gost_model_layout_pressure->addWidget(pressureSplineButton);
+  section_gost_model_pressure->setContentLayout(*gost_model_layout_pressure);
+
+  gost_tab_widget->addTab(section_gost_model_pressure, "Давление");
+
+  ui->atmosphericStackedWidget->insertWidget(2, gost_tab_widget);
 
   // Создаем и добавляем секцию для задания модели рефракции Среднее К
 
@@ -260,13 +287,33 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::on_fittingButton_clicked);
   QObject::connect(averagepFittingButton, &QRadioButton::clicked, this,
                    &MainWindow::on_fittingButton_clicked);
-  QObject::connect(downloadGostButton, &QPushButton::clicked, this,
-                   &MainWindow::on_downloadGostButton_clicked);
+
+  QObject::connect(downloadTemperatureGostButton, &QPushButton::clicked, this,
+                   &MainWindow::on_downloadTemperatureGostButton_clicked);
+  QObject::connect(temperatureSplineButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_temperatureSplineButton_clicked);
+  QObject::connect(temperatureLinearButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_temperatureLinearButton_clicked);
+
+  QObject::connect(downloadPressureGostButton, &QPushButton::clicked, this,
+                   &MainWindow::on_downloadPressureGostButton_clicked);
+  QObject::connect(pressureSplineButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_pressureSplineButton_clicked);
+  QObject::connect(pressureLinearButton, &QRadioButton::clicked, this,
+                   &MainWindow::on_pressureLinearButton_clicked);
+  averagekFittingButton->setEnabled(false);
+  averagepFittingButton->setEnabled(false);
+}
+
+void MainWindow::showAnswer() {
+  ui->declinationAngleEdit->setText(QString::number(answer.psi_d));
+  ui->slidingAngleEdit->setText(QString::number(answer.psi_g));
+  ui->distanceToSurfaceEdit->setText(QString::number(answer.d));
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_downloadGostButton_clicked() {
+void MainWindow::on_downloadTemperatureGostButton_clicked() {
   QFile gost_qfile(QFileDialog::getOpenFileName(0, "Открыть модель ГОСТ4401-81",
                                                 "", "*.csv"));
   if (!gost_qfile.open(QFile::ReadOnly | QFile::Text)) {
@@ -276,10 +323,36 @@ void MainWindow::on_downloadGostButton_clicked() {
     msg->show();
     return;
   }
-  int fd = gost_qfile.handle();
-  FILE* gost_file = fdopen(fd, "rb");
-  gost_qfile.close();
-  // to do: use gost model on gost_file;
+  std::vector<std::string> gost_temperature_data;
+  QTextStream in(&gost_qfile);
+  while (!in.atEnd())
+    gost_temperature_data.push_back(in.readLine().toStdString());
+  user_input_data.setGostTemperature(gost_temperature_data);
+  calculateAndShow();
+}
+
+void MainWindow::on_downloadPressureGostButton_clicked() {
+  QFile gost_qfile(QFileDialog::getOpenFileName(0, "Открыть модель ГОСТ4401-81",
+                                                "", "*.csv"));
+  if (!gost_qfile.open(QFile::ReadOnly | QFile::Text)) {
+    QMessageBox* msg = new QMessageBox(this);
+    msg->setWindowTitle("Ошибка чтения файла");
+    msg->setText("Не удалось прочитать информацию о модели");
+    msg->show();
+    return;
+  }
+  std::vector<std::string> gost_pressure_data;
+  QTextStream in(&gost_qfile);
+  while (!in.atEnd()) gost_pressure_data.push_back(in.readLine().toStdString());
+  user_input_data.setGostPressure(gost_pressure_data);
+  calculateAndShow();
+}
+
+void MainWindow::calculateAndShow() {
+  calculateResult();
+  user_input_data.setAnswer(answer);
+  addTargetAndStation();
+  showAnswer();
 }
 
 void MainWindow::on_atmosphericModelBox_currentIndexChanged(
@@ -290,19 +363,28 @@ void MainWindow::on_atmosphericModelBox_currentIndexChanged(
   switch (current_atmoshperic_model) {
     case gui::AtmosphericModel::Segmented: {
       ui->atmosphericStackedWidget->setCurrentIndex(0);
+      averagekFittingButton->setEnabled(false);
+      averagepFittingButton->setEnabled(false);
+      averagekIntegrateButton->click();
+      averagepIntegrateButton->click();
       break;
     }
     case gui::AtmosphericModel::Exponential: {
       ui->atmosphericStackedWidget->setCurrentIndex(1);
+      averagekFittingButton->setEnabled(true);
+      averagepFittingButton->setEnabled(true);
       break;
     }
     case gui::AtmosphericModel::GOST440481: {
       ui->atmosphericStackedWidget->setCurrentIndex(2);
+      averagekFittingButton->setEnabled(false);
+      averagepFittingButton->setEnabled(false);
+      averagekIntegrateButton->click();
+      averagepIntegrateButton->click();
       break;
     }
   }
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
 void MainWindow::on_refractionModelBox_currentIndexChanged(
@@ -327,13 +409,38 @@ void MainWindow::on_refractionModelBox_currentIndexChanged(
       ui->refractionStackedWidget->setCurrentIndex(3);
       break;
     }
+    case gui::RefractionModel::GeometricLine: {
+      ui->refractionStackedWidget->setCurrentIndex(0);
+      break;
+    }
+    case gui::RefractionModel::FittingAngle: {
+      ui->refractionStackedWidget->setCurrentIndex(0);
+      break;
+    }
+    case gui::RefractionModel::IterativeAlgorithm: {
+      ui->refractionStackedWidget->setCurrentIndex(0);
+      break;
+    }
   }
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
-void MainWindow::showAnswer() {
-  ui->declinationAngleEdit->setText(QString::number(answer.psi_d));
-  ui->slidingAngleEdit->setText(QString::number(answer.psi_g));
-  ui->distanceToSurfaceEdit->setText(QString::number(answer.d));
+void MainWindow::on_temperatureSplineButton_clicked() {
+  user_input_data.setTemperatureInterpolationMethod(gui::Spline);
+  calculateAndShow();
+}
+
+void MainWindow::on_temperatureLinearButton_clicked() {
+  user_input_data.setTemperatureInterpolationMethod(gui::Linear);
+  calculateAndShow();
+}
+
+void MainWindow::on_pressureSplineButton_clicked() {
+  user_input_data.setPressureInterpolationMethod(gui::Spline);
+  calculateAndShow();
+}
+
+void MainWindow::on_pressureLinearButton_clicked() {
+  user_input_data.setPressureInterpolationMethod(gui::Linear);
+  calculateAndShow();
 }

@@ -5,39 +5,33 @@
 void MainWindow::ExponentRefractiveIndexNearSurfaceEdit_textEdited(
     const QString& index) {
   user_input_data.setRefractiveIndex(index.QString::toDouble());
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
 void MainWindow::ExponentHeightAboveTheSeaEdit_textEdited(
     const QString& height) {
   user_input_data.setHeightOfSurface(height.QString::toDouble());
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
 void MainWindow::SegmentedRefractiveIndexNearSurfaceEdit_textEdited(
     const QString& index) {
   user_input_data.setRefractiveIndex(index.QString::toDouble());
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
 void MainWindow::SegmentedHeightAboveTheSeaEdit_textEdited(
     const QString& height) {
   user_input_data.setHeightOfSurface(height.QString::toDouble());
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
 void MainWindow::on_integrateButton_clicked() {
   user_input_data.setCountingMethod(gui::Integration);
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }
 
 void MainWindow::on_fittingButton_clicked() {
   user_input_data.setCountingMethod(gui::Fitting);
-  calculateResult();
-  showAnswer();
+  calculateAndShow();
 }

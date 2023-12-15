@@ -49,5 +49,52 @@ void addTargetAndStation() {
       std::max(y_middle + x_dist * recession_koef,
                y_middle + y_dist * recession_koef));
   user_input_data.plot->legend->setVisible(true);
+
+  // drawing station vector
+
+  QVector<double> station_angle_x(2), station_angle_y(2);
+  double vector_length = user_input_data.getDistance() * 0.1;
+  station_angle_x[0] = 0;
+  station_angle_y[0] = user_input_data.getStation();
+  station_angle_x[1] =
+      station_angle_x[0] +
+      vector_length * std::cos(user_input_data.getDeclinationAngle());
+  station_angle_y[1] =
+      station_angle_y[0] -
+      vector_length * std::sin(user_input_data.getDeclinationAngle());
+  user_input_data.plot->addGraph();
+  user_input_data.plot->legend
+      ->itemWithPlottable(user_input_data.plot->graph(2))
+      ->setVisible(false);
+  user_input_data.plot->graph(2);
+  user_input_data.plot->graph(2)->setData(station_angle_x, station_angle_y);
+  user_input_data.plot->graph(2)->setPen(QColor(255, 50, 70, 255));
+
+  // drawing target vector
+
+  QVector<double> target_angle_x(2), target_angle_y(2);
+  target_angle_x[0] =
+      sqrt(user_input_data.getDistance() * user_input_data.getDistance() -
+           (user_input_data.getTarget() - user_input_data.getStation()) *
+               (user_input_data.getTarget() - user_input_data.getStation()));
+  target_angle_y[0] = user_input_data.getTarget();
+  target_angle_x[1] =
+      target_angle_x[0] -
+      vector_length * std::cos(user_input_data.getSlidingAngle());
+  target_angle_y[1] =
+      target_angle_y[0] +
+      vector_length * std::sin(user_input_data.getSlidingAngle());
+  user_input_data.plot->addGraph();
+  user_input_data.plot->legend
+      ->itemWithPlottable(user_input_data.plot->graph(3))
+      ->setVisible(false);
+  user_input_data.plot->graph(3);
+  user_input_data.plot->graph(3)->setData(target_angle_x, target_angle_y);
+  user_input_data.plot->graph(3)->setPen(QColor(0, 255, 70, 255));
   user_input_data.plot->replot();
+
+  // Drawing trajectory
+
+  // QCPCurve *beamTrajectory =
+  //   new QCPCurve(user_input_data.plot->xAxis, user_input_data.plot->yAxis);
 }

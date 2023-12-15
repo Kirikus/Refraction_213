@@ -16,8 +16,7 @@ BOOST_AUTO_TEST_CASE(d_simple) {
   ExponentAtmosphericModel atmosphere(0, 313);
   AverageKModel_forExponent testModel(atmosphere);
   EffectiveRadiusModel::Input data{0, 2000, 2000};
-  BOOST_TEST(testModel.calculate_d(M_PI / 3, M_PI / 6,
-                                   reinterpret_cast<void *>(&data)) ==
+  BOOST_TEST(testModel.calculate_d(M_PI / 3, M_PI / 6, data) ==
                  4 / 3 * (Re + data.hs) * M_PI / 6,
              tt::tolerance(1e-6));
 }

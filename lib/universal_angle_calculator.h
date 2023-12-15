@@ -20,7 +20,8 @@ class UniversalAngleCalculator : public AngleCalculator {
   //    hs : height of target above sea level, m
   //    psi_d : declination angle, radians
   virtual double psi_g(double ha, double hs, double psi_d) override;
-
+  virtual double G(const RefractionModel::Input &data,
+                   double h) override;  // TEMPORARY SOLUTION!!!
   UniversalAngleCalculator(std::shared_ptr<AtmosphericModel> atmosphere)
       : atmosphere{atmosphere} {}
 
