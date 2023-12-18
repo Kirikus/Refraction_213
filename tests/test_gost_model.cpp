@@ -22,8 +22,8 @@ BOOST_AUTO_TEST_CASE(vector_string_gost_construction) {
   SplineModel* data_p = new SplineModel(data1);
   LinearModel* data_t = new LinearModel(data2);
   GOSTModel test_gost(data_p, data_t);
-  BOOST_TEST(test_gost.Ro(1000) == 0.0057, tt::tolerance(0.01));
-  BOOST_TEST(test_gost.N(1000) == 2602, tt::tolerance(1.0));
+  BOOST_TEST(test_gost.Ro(1000) == 5.7, tt::tolerance(0.01));
+  BOOST_TEST(test_gost.N(1000) == 16.74, tt::tolerance(0.1));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
