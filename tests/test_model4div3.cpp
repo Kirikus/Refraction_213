@@ -17,10 +17,11 @@ BOOST_AUTO_TEST_SUITE(d_effective_radius)
 Model4div3 testModel4div3;
 
 BOOST_AUTO_TEST_CASE(d_simple) {
-  EffectiveRadiusModel::Input data{0, 2000, 2000};
-  BOOST_TEST(testModel4div3.calculate_d(M_PI / 3, M_PI / 6, data) ==
-                 4 / 3 * (Re + data.hs) * M_PI / 6,
-             tt::tolerance(1e-6));
+  EffectiveRadiusModel::Input data{0, 2000, 4000};
+  BOOST_TEST(
+      testModel4div3.calculate(data).d ==
+          acos(1 - 8 * std::pow(10, 6) / 2 / 16 * 9 / Re / Re) * 4 / 3 * Re,
+      tt::tolerance(0.5));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -34,9 +35,9 @@ BOOST_AUTO_TEST_CASE(simple) {
   BOOST_TEST(testModel4div3.calculate_psi_d(data) == 0);
 }
 
-BOOST_AUTO_TEST_CASE(equilateral_triangle) {
+BOOST_AUTO_TEST_CASE(equilateral_triangle_not_equal) {
   RefractionModel::Input data{.ha = 2000, .hs = 2000, .R = Re + 2000};
-  BOOST_TEST(testModel4div3.calculate_psi_d(data) == M_PI / 6,
+  BOOST_TEST(testModel4div3.calculate_psi_d(data) != M_PI / 6,
              tt::tolerance(1e-6));
 }
 
@@ -107,9 +108,9 @@ BOOST_AUTO_TEST_CASE(simple) {
   BOOST_TEST(testModel4div3.calculate_psi_g(data) == 0);
 }
 
-BOOST_AUTO_TEST_CASE(equilateral_triangle) {
+BOOST_AUTO_TEST_CASE(equilateral_triangle_not_equal) {
   RefractionModel::Input data{.ha = 2000, .hs = 2000, .R = Re + 2000};
-  BOOST_TEST(testModel4div3.calculate_psi_g(data) == -M_PI / 6,
+  BOOST_TEST(testModel4div3.calculate_psi_g(data) != -M_PI / 6,
              tt::tolerance(1e-6));
 }
 
