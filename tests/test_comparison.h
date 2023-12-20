@@ -1,0 +1,4 @@
+#ifndef TEST_COMPARISON_H
+#define TEST_COMPARISON_H
+
+#endif  // TEST_COMPARISON_H
